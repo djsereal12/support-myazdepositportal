@@ -64,6 +64,13 @@
       "when": 1788373128274,
       "tag": "0008_user_profiles_landlord_profiles_admins",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1788373781562,
+      "tag": "0009_tighten_definer_exec_and_write_policies",
+      "breakpoints": true
     }
   ]
 }
