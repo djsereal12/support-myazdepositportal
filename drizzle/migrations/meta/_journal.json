@@ -43,6 +43,13 @@
       "when": 1788367612142,
       "tag": "0005_harden_functions_storage_purchases",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1788372570291,
+      "tag": "0006_current_email_require_verified",
+      "breakpoints": true
     }
   ]
 }
