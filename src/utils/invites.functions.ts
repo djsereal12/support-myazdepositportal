@@ -272,8 +272,13 @@ export const respondToInvite = createServerFn({ method: "POST" })
       .eq("token", data.token)
       .maybeSingle();
     if (!invite) throw new Error("This link is no longer valid.");
-    if (invite.status !== "pending") throw new Error("This report has already received a response.");
-    if (new Date(invite.expires_at).getTime() < Date.now()) throw new Error("This link has expired.");
+    if (invite.status === "accepted") throw new Error("This report has already been accepted.");
+    if (invite.status === "disputed" && data.action === "disputed") {
+      throw new Error("This report is already disputed. Add a reply instead.");
+    }
+    if (invite.status === "pending" && new Date(invite.expires_at).getTime() < Date.now()) {
+      throw new Error("This link has expired.");
+    }
 
     const rawIp =
       getRequestHeader("cf-connecting-ip") ??
@@ -295,4 +300,136 @@ export const respondToInvite = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
 
     return { status: data.action };
+  });
+
+export type PortalInvite = {
+  token: string;
+  status: string;
+  sent_at: string;
+  expires_at: string;
+  responded_at: string | null;
+  response_note: string | null;
+  response_signature_name: string | null;
+  report_number: string;
+  report_type: string;
+  report_created_at: string;
+  overall_hash: string | null;
+  address: string;
+  unit: string | null;
+  tenant_name: string | null;
+  messages: { id: string; author_role: string; author_name: string | null; body: string; created_at: string }[];
+};
+
+/** Public: with any valid invite token, load every request sent to that landlord email. */
+export const getLandlordPortal = createServerFn({ method: "POST" })
+  .inputValidator((input: { token: string }) => ({ token: (input.token ?? "").trim() }))
+  .handler(async ({ data }): Promise<
+    { ok: false; reason: "not_found" } | { ok: true; landlordEmail: string; invites: PortalInvite[] }
+  > => {
+    if (!data.token) return { ok: false, reason: "not_found" };
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const { data: seed } = await supabaseAdmin
+      .from("landlord_invites")
+      .select("landlord_email")
+      .eq("token", data.token)
+      .maybeSingle();
+    if (!seed) return { ok: false, reason: "not_found" };
+
+    const { data: invites } = await supabaseAdmin
+      .from("landlord_invites")
+      .select(
+        "id, token, status, sent_at, expires_at, responded_at, response_note, response_signature_name, report_id, reports(report_number, type, created_at, overall_hash, user_id, properties(address, unit))",
+      )
+      .eq("landlord_email", seed.landlord_email)
+      .order("sent_at", { ascending: false });
+
+    const rows = invites ?? [];
+    const ids = rows.map((r) => r.id);
+    const { data: messages } = ids.length
+      ? await supabaseAdmin
+          .from("invite_messages")
+          .select("id, invite_id, author_role, author_name, body, created_at")
+          .in("invite_id", ids)
+          .order("created_at")
+      : { data: [] as never[] };
+
+    const tenantIds = Array.from(
+      new Set(
+        rows
+          .map((r) => (r.reports as unknown as { user_id?: string } | null)?.user_id)
+          .filter((v): v is string => Boolean(v)),
+      ),
+    );
+    const { data: profiles } = tenantIds.length
+      ? await supabaseAdmin.from("profiles").select("id, full_name").in("id", tenantIds)
+      : { data: [] as never[] };
+    const nameById = new Map((profiles ?? []).map((p) => [p.id, p.full_name]));
+
+    const list: PortalInvite[] = rows.map((r) => {
+      const report = r.reports as unknown as {
+        report_number: string;
+        type: string;
+        created_at: string;
+        overall_hash: string | null;
+        user_id: string;
+        properties: { address: string; unit: string | null } | null;
+      } | null;
+      return {
+        token: r.token,
+        status: r.status,
+        sent_at: r.sent_at,
+        expires_at: r.expires_at,
+        responded_at: r.responded_at,
+        response_note: r.response_note,
+        response_signature_name: r.response_signature_name,
+        report_number: report?.report_number ?? "—",
+        report_type: report?.type ?? "move_in",
+        report_created_at: report?.created_at ?? r.sent_at,
+        overall_hash: report?.overall_hash ?? null,
+        address: report?.properties?.address ?? "Rental property",
+        unit: report?.properties?.unit ?? null,
+        tenant_name: report ? (nameById.get(report.user_id) ?? null) : null,
+        messages: (messages ?? [])
+          .filter((m) => m.invite_id === r.id)
+          .map((m) => ({
+            id: m.id,
+            author_role: m.author_role,
+            author_name: m.author_name,
+            body: m.body,
+            created_at: m.created_at,
+          })),
+      };
+    });
+
+    return { ok: true, landlordEmail: seed.landlord_email, invites: list };
+  });
+
+/** Public: landlord posts a reply on a dispute thread using their link token. */
+export const postLandlordReply = createServerFn({ method: "POST" })
+  .inputValidator((input: { token: string; body: string; authorName?: string }) => {
+    const token = (input.token ?? "").trim();
+    const body = (input.body ?? "").trim().slice(0, 4000);
+    if (!token) throw new Error("Missing link token.");
+    if (body.length < 3) throw new Error("Write a reply before sending.");
+    return { token, body, authorName: (input.authorName ?? "").trim().slice(0, 120) };
+  })
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: invite } = await supabaseAdmin
+      .from("landlord_invites")
+      .select("id, report_id, landlord_name")
+      .eq("token", data.token)
+      .maybeSingle();
+    if (!invite) throw new Error("This link is no longer valid.");
+
+    const { error } = await supabaseAdmin.from("invite_messages").insert({
+      invite_id: invite.id,
+      report_id: invite.report_id,
+      author_role: "landlord",
+      author_name: data.authorName || invite.landlord_name || null,
+      body: data.body,
+    });
+    if (error) throw new Error(error.message);
+    return { ok: true };
   });
