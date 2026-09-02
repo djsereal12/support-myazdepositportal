@@ -114,8 +114,30 @@ export const createLandlordInvite = createServerFn({ method: "POST" })
       .single();
     if (error || !report) throw new Error("Report not found.");
 
+    // Payment gate: the report must be unlocked before it can be sent to a landlord.
+    const { data: paid } = await supabase
+      .from("purchases")
+      .select("price_id, report_id, property_id, created_at")
+      .eq("status", "paid");
+    const yearAgo = Date.now() - 365 * 24 * 60 * 60 * 1000;
+    const hasAccess = (paid ?? []).some(
+      (p) =>
+        p.report_id === report.id ||
+        (p.price_id === "protection_bundle_onetime" &&
+          !!report.property_id &&
+          p.property_id === report.property_id) ||
+        (p.price_id === "landlord_unlimited_yearly" &&
+          new Date(p.created_at).getTime() > yearAgo),
+    );
+    if (!hasAccess) {
+      throw new Error(
+        "Unlock this report before sending it to your landlord ($14.99 single report, or $24.99 for the property bundle).",
+      );
+    }
+
     const property = report.properties as unknown as { address: string; unit: string | null } | null;
     const token = randomToken();
+
 
     const { data: invite, error: insertError } = await supabase
       .from("landlord_invites")
