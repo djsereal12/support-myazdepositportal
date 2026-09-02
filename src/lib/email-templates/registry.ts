@@ -26,5 +26,6 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   welcome: welcomeTemplate,
   'report-ready': reportReadyTemplate,
   'landlord-response': landlordResponseTemplate,
+  'landlord-invite': landlordInviteTemplate,
 }
 
