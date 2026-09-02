@@ -1,5 +1,4 @@
 import { auth, defineMcp } from "@lovable.dev/mcp-js";
-import type { AnyToolDefinition } from "@lovable.dev/mcp-js";
 import listPropertiesTool from "./tools/list-properties";
 import createPropertyTool from "./tools/create-property";
 import listReportsTool from "./tools/list-reports";
@@ -17,5 +16,5 @@ export default defineMcp({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated",
   }),
-  tools: [listPropertiesTool, createPropertyTool, listReportsTool, getReportTool] as AnyToolDefinition[],
+  tools: [listPropertiesTool, createPropertyTool, listReportsTool, getReportTool] as unknown as Parameters<typeof defineMcp>[0]["tools"],
 });
