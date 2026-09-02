@@ -8,6 +8,10 @@ import { lovable } from "@/integrations/lovable/index";
 import { Logo } from "@/components/site-shell";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (s: Record<string, unknown>): { next?: string } => {
+    const raw = s['next'];
+    return typeof raw === "string" && raw.startsWith("/") && !raw.startsWith("//") ? { next: raw } : {};
+  },
   head: () => ({
     meta: [
       { title: "Sign in — deposit" },
@@ -18,6 +22,7 @@ export const Route = createFileRoute("/auth")({
   }),
   component: AuthPage,
 });
+
 
 const schema = z.object({
   email: z.string().trim().email("Enter a valid email").max(255),
@@ -53,6 +58,7 @@ function roleNoun(role: Role) {
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [role, setRole] = useState<Role>("tenant");
   const [email, setEmail] = useState("");
@@ -67,6 +73,10 @@ function AuthPage() {
   }, [navigate]);
 
   async function redirectForRole(userId: string) {
+    if (next) {
+      window.location.href = next;
+      return;
+    }
     const { data: roles } = await supabase
       .from("user_roles")
       .select("role")
@@ -76,6 +86,7 @@ function AuthPage() {
     const firstRole = roles?.[0]?.role as Role | undefined;
     navigate({ to: firstRole ? roleDetails[firstRole].home : "/dashboard", replace: true });
   }
+
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -91,7 +102,7 @@ function AuthPage() {
           email: parsed.data.email,
           password: parsed.data.password,
           options: {
-            emailRedirectTo: `${window.location.origin}/dashboard`,
+            emailRedirectTo: `${window.location.origin}${next ?? "/dashboard"}`,
             data: { full_name: parsed.data.fullName ?? "", role },
           },
         });
@@ -117,7 +128,7 @@ function AuthPage() {
 
   async function google() {
     try {
-      sessionStorage.setItem("deposit:after-auth", roleDetails[role].home);
+      sessionStorage.setItem("deposit:after-auth", next ?? roleDetails[role].home);
       sessionStorage.setItem("deposit:pending-role", role);
     } catch {
       /* ignore */

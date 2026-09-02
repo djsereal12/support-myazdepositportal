@@ -14,12 +14,15 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as LawRouteImport } from './routes/law'
 import { Route as LegalRouteImport } from './routes/legal'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedLandlordRouteImport } from './routes/_authenticated/landlord'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as VerifyTokenRouteImport } from './routes/verify.$token'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as AuthenticatedComparePropertyIdRouteImport } from './routes/_authenticated/compare.$propertyId'
 import { Route as AuthenticatedDemandPropertyIdRouteImport } from './routes/_authenticated/demand.$propertyId'
 import { Route as AuthenticatedLandlordReportIdRouteImport } from './routes/_authenticated/landlord.$reportId'
@@ -53,11 +56,22 @@ const LegalRoute = LegalRouteImport.update({
   path: '/legal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -81,6 +95,11 @@ const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
 const VerifyTokenRoute = VerifyTokenRouteImport.update({
   id: '/verify/$token',
   path: '/verify/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedComparePropertyIdRoute =
@@ -137,12 +156,15 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteWithChildren
   '/law': typeof LawRoute
   '/legal': typeof LegalRoute
+  '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$token': typeof VerifyTokenRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
   '/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
@@ -157,12 +179,15 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
   '/law': typeof LawRoute
   '/legal': typeof LegalRoute
+  '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$token': typeof VerifyTokenRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
   '/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
@@ -179,12 +204,15 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteWithChildren
   '/law': typeof LawRoute
   '/legal': typeof LegalRoute
+  '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$token': typeof VerifyTokenRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/_authenticated/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/_authenticated/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
   '/_authenticated/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
@@ -201,12 +229,15 @@ export interface FileRouteTypes {
     | '/auth'
     | '/law'
     | '/legal'
+    | '/mcp'
     | '/pricing'
+    | '/.well-known/oauth-protected-resource'
     | '/dashboard'
     | '/landlord'
     | '/auth/callback'
     | '/checkout/return'
     | '/verify/$token'
+    | '/.lovable/oauth/consent'
     | '/compare/$propertyId'
     | '/demand/$propertyId'
     | '/landlord/$reportId'
@@ -221,12 +252,15 @@ export interface FileRouteTypes {
     | '/auth'
     | '/law'
     | '/legal'
+    | '/mcp'
     | '/pricing'
+    | '/.well-known/oauth-protected-resource'
     | '/dashboard'
     | '/landlord'
     | '/auth/callback'
     | '/checkout/return'
     | '/verify/$token'
+    | '/.lovable/oauth/consent'
     | '/compare/$propertyId'
     | '/demand/$propertyId'
     | '/landlord/$reportId'
@@ -242,12 +276,15 @@ export interface FileRouteTypes {
     | '/auth'
     | '/law'
     | '/legal'
+    | '/mcp'
     | '/pricing'
+    | '/.well-known/oauth-protected-resource'
     | '/_authenticated/dashboard'
     | '/_authenticated/landlord'
     | '/auth/callback'
     | '/checkout/return'
     | '/verify/$token'
+    | '/.lovable/oauth/consent'
     | '/_authenticated/compare/$propertyId'
     | '/_authenticated/demand/$propertyId'
     | '/_authenticated/landlord/$reportId'
@@ -264,9 +301,12 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   LawRoute: typeof LawRoute
   LegalRoute: typeof LegalRoute
+  McpRoute: typeof McpRoute
   PricingRoute: typeof PricingRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   VerifyTokenRoute: typeof VerifyTokenRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
@@ -307,11 +347,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LegalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard': {
@@ -347,6 +401,13 @@ declare module '@tanstack/react-router' {
       path: '/verify/$token'
       fullPath: '/verify/$token'
       preLoaderRoute: typeof VerifyTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/compare/$propertyId': {
@@ -463,9 +524,13 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   LawRoute: LawRoute,
   LegalRoute: LegalRoute,
+  McpRoute: McpRoute,
   PricingRoute: PricingRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
   VerifyTokenRoute: VerifyTokenRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport

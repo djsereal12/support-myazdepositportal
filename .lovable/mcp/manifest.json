@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "sdk_version": "1.0.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://hkelkdflkffffrndofyb.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "deposit",
+      "version": "0.1.0",
+      "title": "Deposit"
+    },
+    "tools": [
+      {
+        "name": "list_properties",
+        "title": "List properties",
+        "description": "List the signed-in user's rental properties with address, deposit amount and lease dates.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "create_property",
+        "title": "Create property",
+        "description": "Add a rental property to the signed-in user's deposit account.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Street address of the rental."
+            },
+            "unit": {
+              "description": "Unit or apartment number.",
+              "type": "string"
+            },
+            "deposit_amount": {
+              "description": "Security deposit amount in dollars.",
+              "type": "number",
+              "minimum": 0
+            },
+            "lease_start": {
+              "description": "Lease start date, YYYY-MM-DD.",
+              "type": "string"
+            },
+            "lease_end": {
+              "description": "Lease end date, YYYY-MM-DD.",
+              "type": "string"
+            },
+            "landlord_name": {
+              "type": "string"
+            },
+            "landlord_email": {
+              "type": "string",
+              "format": "email",
+              "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+            }
+          },
+          "required": [
+            "address"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_reports",
+        "title": "List inspection reports",
+        "description": "List the signed-in user's move-in / move-out inspection reports, optionally filtered by property or type.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "property_id": {
+              "description": "Only return reports for this property.",
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "type": {
+              "description": "Filter by report type.",
+              "type": "string",
+              "enum": [
+                "move_in",
+                "move_out"
+              ]
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_report",
+        "title": "Get report details",
+        "description": "Get one inspection report with its property, tamper-evident hash, and every documented item (room, condition, notes, GPS, timestamps, photo hash).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "report_id": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "description": "The report id."
+            }
+          },
+          "required": [
+            "report_id"
+          ]
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
