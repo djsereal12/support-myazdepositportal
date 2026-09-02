@@ -132,6 +132,12 @@ function RootComponent() {
     return () => data.subscription.unsubscribe();
   }, [router, queryClient]);
 
+  // Safety net: if a provider redirect drops tokens on any page, finish sign-in here.
+  useEffect(() => {
+    if (window.location.pathname === "/auth/callback") return;
+    void consumeOAuthRedirect();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
