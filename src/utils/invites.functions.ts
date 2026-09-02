@@ -57,28 +57,31 @@ function randomToken(): string {
 
 async function sendInviteEmail(args: {
   to: string;
-  subject: string;
-  html: string;
-  text: string;
+  address: string;
+  reportNumber: string;
+  customMessage: string;
+  link: string;
+  inviteId: string;
 }): Promise<{ sent: boolean; reason?: string }> {
-  const apiKey = process.env["RESEND_API_KEY"];
-  const from = process.env["RESEND_FROM_EMAIL"] ?? "deposit <onboarding@resend.dev>";
-  if (!apiKey) return { sent: false, reason: "no_email_provider" };
   try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
+    const { sendTemplateEmail } = await import("@/lib/email-templates/send-email");
+    const result = await sendTemplateEmail("landlord-invite", args.to, {
+      templateData: {
+        address: args.address,
+        reportNumber: args.reportNumber,
+        customMessage: args.customMessage,
+        link: args.link,
       },
-      body: JSON.stringify({ from, to: [args.to], subject: args.subject, html: args.html, text: args.text }),
+      idempotencyKey: `landlord-invite-${args.inviteId}`,
     });
-    if (!res.ok) return { sent: false, reason: `provider_error_${res.status}` };
-    return { sent: true };
-  } catch {
-    return { sent: false, reason: "provider_unreachable" };
+    if (result.sent) return { sent: true };
+    return { sent: false, reason: result.reason ?? "not_sent" };
+  } catch (err) {
+    console.error("landlord invite email failed", err);
+    return { sent: false, reason: "provider_error" };
   }
 }
+
 
 /** Tenant-only: create an e-sign invite for a move-in report and email the landlord. */
 export const createLandlordInvite = createServerFn({ method: "POST" })
@@ -144,20 +147,17 @@ export const createLandlordInvite = createServerFn({ method: "POST" })
     ]
       .filter(Boolean)
       .join("\n");
-    const html = `
-      <div style="font-family:Inter,Helvetica,Arial,sans-serif;color:#111111;background:#F8F7F5;padding:32px">
-        <div style="max-width:560px;margin:0 auto;background:#FFFFFF;border:1px solid #EAE9E5;border-radius:16px;padding:32px">
-          <p style="font-size:22px;margin:0 0 20px">deposit</p>
-          <h1 style="font-size:20px;margin:0 0 16px">Review the move-in inspection for ${address}</h1>
-          <p style="font-size:14px;line-height:1.6;margin:0 0 16px">${(data.customMessage || "Please review and accept the attached move-in inspection report.").replace(/</g, "&lt;")}</p>
-          <p style="font-size:14px;line-height:1.6;margin:0 0 24px">Report ${report.report_number}, created per A.R.S. § 33-1321(C). Photos include GPS, timestamps and SHA-256 hashes.</p>
-          <a href="${link}" style="display:inline-block;background:#111111;color:#FFFFFF;text-decoration:none;padding:12px 22px;border-radius:999px;font-size:14px">View &amp; e-sign the report</a>
-          <p style="font-size:12px;color:#6b675f;margin:24px 0 0">This link expires in 7 days. You can accept the report or dispute it with notes — no account required.</p>
-        </div>
-      </div>`;
 
-    const result = await sendInviteEmail({ to: data.landlordEmail, subject, html, text });
+    const result = await sendInviteEmail({
+      to: data.landlordEmail,
+      address,
+      reportNumber: report.report_number,
+      customMessage: data.customMessage,
+      link,
+      inviteId: invite.id,
+    });
     return { inviteId: invite.id, token: invite.token, link, subject, text, emailSent: result.sent, reason: result.reason ?? null };
+
   });
 
 /** Public: load an invite and its full report by token. */
