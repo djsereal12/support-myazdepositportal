@@ -52,6 +52,59 @@ function ReportView() {
     },
   });
 
+  const queryClient = useQueryClient();
+  const { openCheckout, closeCheckout, isOpen, checkoutElement } = useStripeCheckout();
+  const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
+  const [shareEmail, setShareEmail] = useState("");
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) =>
+      setUser(
+        data.user ? { id: data.user.id, ...(data.user.email ? { email: data.user.email } : {}) } : null,
+      ),
+    );
+  }, []);
+
+  const { data: purchases } = useQuery({ queryKey: ["purchases"], queryFn: fetchPurchases });
+  const { data: shares } = useQuery({
+    queryKey: ["shares", reportId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("report_shares")
+        .select("*")
+        .eq("report_id", reportId);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const unlocked = reportUnlocked(purchases ?? [], reportId, report?.property_id ?? null);
+
+  function unlock(priceId: string) {
+    openCheckout({
+      priceId,
+      reportId,
+      ...(report?.property_id ? { propertyId: report.property_id } : {}),
+      ...(user?.id ? { userId: user.id } : {}),
+      ...(user?.email ? { customerEmail: user.email } : {}),
+      returnUrl: `${window.location.origin}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
+    });
+  }
+
+  async function share() {
+    const email = shareEmail.trim().toLowerCase();
+    if (!email) return;
+    const { error } = await supabase
+      .from("report_shares")
+      .insert({ report_id: reportId, landlord_email: email });
+    if (error) toast.error(error.message);
+    else {
+      toast.success(`Shared with ${email}`);
+      setShareEmail("");
+      queryClient.invalidateQueries({ queryKey: ["shares", reportId] });
+    }
+  }
+
   const property = report?.properties as { address: string; unit: string | null; landlord_email: string | null } | null;
   const verifyUrl = report?.qr_verification_url ?? "";
   const qrSrc = verifyUrl
