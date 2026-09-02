@@ -14,7 +14,9 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as LawRouteImport } from './routes/law'
 import { Route as LegalRouteImport } from './routes/legal'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedLandlordRouteImport } from './routes/_authenticated/landlord'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
@@ -54,11 +56,22 @@ const LegalRoute = LegalRouteImport.update({
   path: '/legal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -143,7 +156,9 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteWithChildren
   '/law': typeof LawRoute
   '/legal': typeof LegalRoute
+  '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
@@ -164,7 +179,9 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
   '/law': typeof LawRoute
   '/legal': typeof LegalRoute
+  '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
@@ -187,7 +204,9 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteWithChildren
   '/law': typeof LawRoute
   '/legal': typeof LegalRoute
+  '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
@@ -210,7 +229,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/law'
     | '/legal'
+    | '/mcp'
     | '/pricing'
+    | '/.well-known/oauth-protected-resource'
     | '/dashboard'
     | '/landlord'
     | '/auth/callback'
@@ -231,7 +252,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/law'
     | '/legal'
+    | '/mcp'
     | '/pricing'
+    | '/.well-known/oauth-protected-resource'
     | '/dashboard'
     | '/landlord'
     | '/auth/callback'
@@ -253,7 +276,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/law'
     | '/legal'
+    | '/mcp'
     | '/pricing'
+    | '/.well-known/oauth-protected-resource'
     | '/_authenticated/dashboard'
     | '/_authenticated/landlord'
     | '/auth/callback'
@@ -276,7 +301,9 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   LawRoute: typeof LawRoute
   LegalRoute: typeof LegalRoute
+  McpRoute: typeof McpRoute
   PricingRoute: typeof PricingRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   VerifyTokenRoute: typeof VerifyTokenRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
@@ -320,11 +347,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LegalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pricing': {
       id: '/pricing'
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard': {
@@ -483,7 +524,10 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   LawRoute: LawRoute,
   LegalRoute: LegalRoute,
+  McpRoute: McpRoute,
   PricingRoute: PricingRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
   VerifyTokenRoute: VerifyTokenRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
