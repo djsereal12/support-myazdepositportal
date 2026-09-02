@@ -8,6 +8,9 @@ import { lovable } from "@/integrations/lovable/index";
 import { Logo } from "@/components/site-shell";
 
 export const Route = createFileRoute("/auth")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s['next'] === "string" && s['next'].startsWith("/") && !s['next'].startsWith("//") ? s['next'] : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Sign in — deposit" },
@@ -18,6 +21,7 @@ export const Route = createFileRoute("/auth")({
   }),
   component: AuthPage,
 });
+
 
 const schema = z.object({
   email: z.string().trim().email("Enter a valid email").max(255),
