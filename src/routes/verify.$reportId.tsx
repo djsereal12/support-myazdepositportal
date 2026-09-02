@@ -8,9 +8,9 @@ import { ShieldCheck } from "lucide-react";
 export const Route = createFileRoute("/verify/$reportId")({
   head: () => ({
     meta: [
-      { title: "Verify a DEPOSIT report" },
-      { name: "description", content: "Check the integrity seal of a DEPOSIT condition report." },
-      { property: "og:title", content: "Verify a DEPOSIT report" },
+      { title: "Verify a deposit report" },
+      { name: "description", content: "Check the integrity seal of a deposit condition report." },
+      { property: "og:title", content: "Verify a deposit report" },
       { property: "og:description", content: "Confirm a report's SHA-256 integrity seal." },
     ],
   }),

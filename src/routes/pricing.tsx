@@ -10,13 +10,13 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — DEPOSIT" },
+      { title: "Pricing — deposit" },
       {
         name: "description",
         content:
           "$14.99 per report, $24.99 for the Move-In + Move-Out + Comparison bundle, $29 for a formal dispute letter.",
       },
-      { property: "og:title", content: "Pricing — DEPOSIT" },
+      { property: "og:title", content: "Pricing — deposit" },
       {
         property: "og:description",
         content: "Protect an $1,800 average deposit loss for less than $25.",

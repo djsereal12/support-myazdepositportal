@@ -4,7 +4,7 @@ import { Page } from "@/components/site-shell";
 export const Route = createFileRoute("/law")({
   head: () => ({
     meta: [
-      { title: "Arizona deposit law — A.R.S. § 33-1321 | DEPOSIT" },
+      { title: "Arizona deposit law — A.R.S. § 33-1321 | deposit" },
       {
         name: "description",
         content:
@@ -59,7 +59,7 @@ function Law() {
         ))}
       </div>
       <p className="mt-8 text-xs text-muted-foreground">
-        DEPOSIT is documentation software and does not provide legal advice. Consult a licensed
+        deposit is documentation software and does not provide legal advice. Consult a licensed
         Arizona attorney for your specific situation.
       </p>
     </Page>

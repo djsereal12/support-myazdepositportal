@@ -9,9 +9,9 @@ import { Logo } from "@/components/site-shell";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — DEPOSIT" },
-      { name: "description", content: "Sign in or create your DEPOSIT account to start a tamper-proof move-in scan." },
-      { property: "og:title", content: "Sign in — DEPOSIT" },
+      { title: "Sign in — deposit" },
+      { name: "description", content: "Sign in or create your deposit account to start a tamper-proof move-in scan." },
+      { property: "og:title", content: "Sign in — deposit" },
       { property: "og:description", content: "Access your Arizona deposit documentation." },
     ],
   }),
@@ -156,7 +156,7 @@ function AuthPage() {
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            {mode === "signin" ? "New to DEPOSIT?" : "Already have an account?"}{" "}
+            {mode === "signin" ? "New to deposit?" : "Already have an account?"}{" "}
             <button
               onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
               className="font-medium text-lavender-deep underline underline-offset-4"

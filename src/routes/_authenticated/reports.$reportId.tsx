@@ -14,9 +14,9 @@ import { Printer, Mail, Lock, Share2 } from "lucide-react";
 export const Route = createFileRoute("/_authenticated/reports/$reportId")({
   head: () => ({
     meta: [
-      { title: "Report — DEPOSIT" },
+      { title: "Report — deposit" },
       { name: "description", content: "A numbered, hashed condition report ready to print or share." },
-      { property: "og:title", content: "Report — DEPOSIT" },
+      { property: "og:title", content: "Report — deposit" },
       { property: "og:description", content: "Court-ready Arizona condition report." },
     ],
   }),

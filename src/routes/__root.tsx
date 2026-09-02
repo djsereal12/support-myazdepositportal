@@ -80,11 +80,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "DEPOSIT — Tamper-proof move-in documentation" },
+      { title: "deposit — Tamper-proof move-in documentation" },
       {
         name: "description",
         content:
-          "DEPOSIT builds cryptographically hashed move-in and move-out records so Arizona renters get their security deposit back.",
+          "deposit builds cryptographically hashed move-in and move-out records so Arizona renters get their security deposit back.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

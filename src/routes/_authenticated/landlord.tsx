@@ -9,12 +9,12 @@ import { formatDate, REPORT_TYPE_LABEL } from "@/lib/deposit";
 export const Route = createFileRoute("/_authenticated/landlord")({
   head: () => ({
     meta: [
-      { title: "Landlord portal — DEPOSIT" },
+      { title: "Landlord portal — deposit" },
       {
         name: "description",
         content: "Review tenant condition reports, file a deposit dispute, and send a response letter.",
       },
-      { property: "og:title", content: "Landlord portal — DEPOSIT" },
+      { property: "og:title", content: "Landlord portal — deposit" },
       { property: "og:description", content: "Tenant reports shared with you, in one place." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

@@ -5,13 +5,13 @@ import { ShieldCheck, Fingerprint, MapPin, FileText, ScanLine, Scale } from "luc
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "DEPOSIT — Get your Arizona security deposit back" },
+      { title: "deposit — Get your Arizona security deposit back" },
       {
         name: "description",
         content:
           "Guided move-in and move-out scans with GPS, timestamps and SHA-256 hashing. Court-ready documentation built for A.R.S. § 33-1321.",
       },
-      { property: "og:title", content: "DEPOSIT — Get your Arizona security deposit back" },
+      { property: "og:title", content: "deposit — Get your Arizona security deposit back" },
       {
         property: "og:description",
         content:
@@ -55,7 +55,7 @@ function Landing() {
           to a deposit they never see again.
         </h1>
         <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
-          DEPOSIT turns move-in day into evidence. Guided room-by-room capture, cryptographic
+          deposit turns move-in day into evidence. Guided room-by-room capture, cryptographic
           hashing, GPS and weather stamps — sealed into a report your landlord can't argue with.
         </p>
         <div className="mt-9 flex flex-wrap gap-3">

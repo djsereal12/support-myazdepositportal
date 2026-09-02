@@ -5,10 +5,10 @@ import { Page } from "@/components/site-shell";
 export const Route = createFileRoute("/checkout/return")({
   head: () => ({
     meta: [
-      { title: "Payment complete — DEPOSIT" },
-      { name: "description", content: "Your DEPOSIT purchase is confirmed and unlocked." },
-      { property: "og:title", content: "Payment complete — DEPOSIT" },
-      { property: "og:description", content: "Your DEPOSIT purchase is confirmed." },
+      { title: "Payment complete — deposit" },
+      { name: "description", content: "Your deposit purchase is confirmed and unlocked." },
+      { property: "og:title", content: "Payment complete — deposit" },
+      { property: "og:description", content: "Your deposit purchase is confirmed." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
