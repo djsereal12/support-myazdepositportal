@@ -17,6 +17,7 @@ import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as VerifyReportIdRouteImport } from './routes/verify.$reportId'
 import { Route as AuthenticatedComparePropertyIdRouteImport } from './routes/_authenticated/compare.$propertyId'
+import { Route as AuthenticatedDemandPropertyIdRouteImport } from './routes/_authenticated/demand.$propertyId'
 import { Route as AuthenticatedPropertiesPropertyIdRouteImport } from './routes/_authenticated/properties.$propertyId'
 import { Route as AuthenticatedPropertiesNewRouteImport } from './routes/_authenticated/properties.new'
 import { Route as AuthenticatedReportsReportIdRouteImport } from './routes/_authenticated/reports.$reportId'
@@ -62,6 +63,12 @@ const AuthenticatedComparePropertyIdRoute =
     path: '/compare/$propertyId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDemandPropertyIdRoute =
+  AuthenticatedDemandPropertyIdRouteImport.update({
+    id: '/demand/$propertyId',
+    path: '/demand/$propertyId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPropertiesPropertyIdRoute =
   AuthenticatedPropertiesPropertyIdRouteImport.update({
     id: '/properties/$propertyId',
@@ -95,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
+  '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
   '/properties/$propertyId': typeof AuthenticatedPropertiesPropertyIdRoute
   '/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
@@ -108,6 +116,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
+  '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
   '/properties/$propertyId': typeof AuthenticatedPropertiesPropertyIdRoute
   '/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
@@ -123,6 +132,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
   '/_authenticated/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
+  '/_authenticated/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
   '/_authenticated/properties/$propertyId': typeof AuthenticatedPropertiesPropertyIdRoute
   '/_authenticated/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/_authenticated/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/verify/$reportId'
     | '/compare/$propertyId'
+    | '/demand/$propertyId'
     | '/properties/$propertyId'
     | '/properties/new'
     | '/reports/$reportId'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/verify/$reportId'
     | '/compare/$propertyId'
+    | '/demand/$propertyId'
     | '/properties/$propertyId'
     | '/properties/new'
     | '/reports/$reportId'
@@ -165,6 +177,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/verify/$reportId'
     | '/_authenticated/compare/$propertyId'
+    | '/_authenticated/demand/$propertyId'
     | '/_authenticated/properties/$propertyId'
     | '/_authenticated/properties/new'
     | '/_authenticated/reports/$reportId'
@@ -238,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedComparePropertyIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/demand/$propertyId': {
+      id: '/_authenticated/demand/$propertyId'
+      path: '/demand/$propertyId'
+      fullPath: '/demand/$propertyId'
+      preLoaderRoute: typeof AuthenticatedDemandPropertyIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/properties/$propertyId': {
       id: '/_authenticated/properties/$propertyId'
       path: '/properties/$propertyId'
@@ -272,6 +292,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedComparePropertyIdRoute: typeof AuthenticatedComparePropertyIdRoute
+  AuthenticatedDemandPropertyIdRoute: typeof AuthenticatedDemandPropertyIdRoute
   AuthenticatedPropertiesPropertyIdRoute: typeof AuthenticatedPropertiesPropertyIdRoute
   AuthenticatedPropertiesNewRoute: typeof AuthenticatedPropertiesNewRoute
   AuthenticatedReportsReportIdRoute: typeof AuthenticatedReportsReportIdRoute
@@ -281,6 +302,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedComparePropertyIdRoute: AuthenticatedComparePropertyIdRoute,
+  AuthenticatedDemandPropertyIdRoute: AuthenticatedDemandPropertyIdRoute,
   AuthenticatedPropertiesPropertyIdRoute:
     AuthenticatedPropertiesPropertyIdRoute,
   AuthenticatedPropertiesNewRoute: AuthenticatedPropertiesNewRoute,
