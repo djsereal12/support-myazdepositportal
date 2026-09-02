@@ -7,6 +7,9 @@ import { Page } from "@/components/site-shell";
 import { MediaThumb } from "@/components/media-image";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDate, money, shortHash, REPORT_TYPE_LABEL } from "@/lib/deposit";
+import { fetchPurchases, landlordLetterUnlocked, landlordUnlimitedActive } from "@/lib/entitlements";
+import { useStripeCheckout } from "@/hooks/useStripeCheckout";
+import { PRICES } from "@/lib/stripe";
 
 export const Route = createFileRoute("/_authenticated/landlord/$reportId")({
   head: () => ({
@@ -33,6 +36,18 @@ function LandlordReport() {
   const [items, setItems] = useState("");
   const [letterBody, setLetterBody] = useState("");
   const [busy, setBusy] = useState(false);
+  const { openCheckout, closeCheckout, isOpen, checkoutElement } = useStripeCheckout();
+  const { data: purchases } = useQuery({ queryKey: ["purchases"], queryFn: fetchPurchases });
+  const letterUnlocked =
+    landlordUnlimitedActive(purchases ?? []) || landlordLetterUnlocked(purchases ?? [], reportId);
+
+  function buyLetter(priceId: string) {
+    openCheckout({
+      priceId,
+      reportId,
+      returnUrl: `${window.location.origin}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
+    });
+  }
 
   const { data: report } = useQuery({
     queryKey: ["landlord-report", reportId],
@@ -275,21 +290,52 @@ function LandlordReport() {
             rows={16}
             className="mt-5 w-full rounded-xl border border-border bg-card px-4 py-3 font-mono text-xs leading-relaxed outline-none focus:ring-2 focus:ring-lavender/40"
           />
-          <div className="mt-6 flex gap-2">
-            <button
-              disabled={busy}
-              onClick={saveLetter}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground disabled:opacity-60"
-            >
-              <Save className="h-4 w-4" /> Send to tenant
-            </button>
-            <button
-              onClick={() => window.print()}
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-medium hover:bg-accent"
-            >
-              <Printer className="h-4 w-4" /> Print
-            </button>
-          </div>
+          {letterUnlocked ? (
+            <div className="mt-6 flex gap-2">
+              <button
+                disabled={busy}
+                onClick={saveLetter}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground disabled:opacity-60"
+              >
+                <Save className="h-4 w-4" /> Send to tenant
+              </button>
+              <button
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-medium hover:bg-accent"
+              >
+                <Printer className="h-4 w-4" /> Print
+              </button>
+            </div>
+          ) : (
+            <div className="mt-6 flex flex-wrap gap-2">
+              <button
+                onClick={() => buyLetter(PRICES.landlordLetter)}
+                className="rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground"
+              >
+                Send this letter — $19
+              </button>
+              <button
+                onClick={() => buyLetter(PRICES.landlordUnlimited)}
+                className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium hover:bg-accent"
+              >
+                Unlimited letters — $299/yr
+              </button>
+            </div>
+          )}
+          {isOpen ? (
+            <div className="mt-6 print:hidden">
+              <div className="mb-3 flex items-center justify-between">
+                <h3 className="text-sm font-semibold">Complete your purchase</h3>
+                <button
+                  onClick={closeCheckout}
+                  className="rounded-full border border-border bg-card px-4 py-2 text-xs font-medium hover:bg-accent"
+                >
+                  Cancel
+                </button>
+              </div>
+              {checkoutElement}
+            </div>
+          ) : null}
         </div>
       </section>
     </Page>

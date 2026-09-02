@@ -66,6 +66,45 @@ const tiers = [
       "Formal, printable demand PDF",
     ],
   },
+  {
+    name: "Certified Court-Ready PDF",
+    price: "$39",
+    tag: "premium export",
+    priceId: PRICES.certifiedPdf,
+    features: [
+      "Full SHA-256 hash manifest page",
+      "Chain-of-custody metadata appendix",
+      "QR verification cover sheet",
+      "Notarization-ready signature block",
+    ],
+  },
+];
+
+const landlordTiers = [
+  {
+    name: "Response Letter",
+    price: "$19",
+    tag: "per letter",
+    priceId: PRICES.landlordLetter,
+    features: [
+      "Auto-filled from the tenant's report",
+      "Itemized deduction breakdown",
+      "Cites A.R.S. § 33-1321(D)",
+      "Delivered to the tenant's file + printable",
+    ],
+  },
+  {
+    name: "Landlord Unlimited",
+    price: "$299",
+    tag: "per year",
+    priceId: PRICES.landlordUnlimited,
+    features: [
+      "Unlimited tenants and reports",
+      "Unlimited disputes and response letters",
+      "Every new tenant you onboard",
+      "Charge your tenants for their own scans",
+    ],
+  },
 ];
 
 function Pricing() {
@@ -117,7 +156,7 @@ function Pricing() {
         </section>
       ) : null}
 
-      <section className="mt-8 grid gap-4 lg:grid-cols-3">
+      <section className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {tiers.map((t) => (
           <article
             key={t.name}
@@ -151,6 +190,37 @@ function Pricing() {
             </button>
           </article>
         ))}
+      </section>
+
+      <section className="mt-14">
+        <h2 className="text-2xl font-semibold">For landlords</h2>
+        <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
+          Review tenant reports, file itemized disputes and send formal responses — one letter at a
+          time, or unlimited for every unit you manage.
+        </p>
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          {landlordTiers.map((t) => (
+            <article key={t.name} className="glass-panel flex flex-col p-8">
+              <h3 className="text-xl font-semibold">{t.name}</h3>
+              <p className="mt-4 text-display text-4xl font-semibold">{t.price}</p>
+              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-muted-foreground">{t.tag}</p>
+              <ul className="mt-6 flex-1 space-y-3 text-sm text-muted-foreground">
+                {t.features.map((f) => (
+                  <li key={f} className="flex gap-2.5">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-lavender" />
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => buy(t.priceId)}
+                className="mt-8 rounded-full border border-border bg-card px-5 py-3 text-center text-sm font-medium transition-opacity hover:bg-accent"
+              >
+                Buy {t.price}
+              </button>
+            </article>
+          ))}
+        </div>
       </section>
     </Page>
   );

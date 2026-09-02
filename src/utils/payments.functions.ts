@@ -75,13 +75,24 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         typeof stripePrice.product === "string" ? stripePrice.product : stripePrice.product.id;
       const product = await stripe.products.retrieve(productId);
 
-      const session = await stripe.checkout.sessions.create({
+      const isRecurring = stripePrice.type === "recurring";
+
+      const params = {
         line_items: [{ price: stripePrice.id, quantity: 1 }],
-        mode: "payment",
+        mode: isRecurring ? "subscription" : "payment",
         ui_mode: "embedded_page",
         return_url: data.returnUrl,
         ...(customerId && { customer: customerId }),
-        payment_intent_data: { description: product.name },
+        ...(isRecurring
+          ? {
+              subscription_data: {
+                metadata: {
+                  ...(data.userId ? { userId: data.userId } : {}),
+                  priceId: data.priceId,
+                },
+              },
+            }
+          : { payment_intent_data: { description: product.name } }),
         managed_payments: { enabled: true },
         metadata: {
           ...(data.userId ? { userId: data.userId } : {}),
@@ -90,7 +101,11 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
           priceId: data.priceId,
           managed_payments: "true",
         },
-      } as import("stripe").Stripe.Checkout.SessionCreateParams);
+      };
+
+      const session = await stripe.checkout.sessions.create(
+        params as unknown as import("stripe").Stripe.Checkout.SessionCreateParams,
+      );
 
       return { clientSecret: session.client_secret ?? "" };
     } catch (error) {
