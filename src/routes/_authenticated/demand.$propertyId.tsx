@@ -60,6 +60,29 @@ function Demand() {
   const deadline = businessDaysFrom(new Date(moveOutDate), 14);
   const doubled = amount * 2;
 
+  const { openCheckout, closeCheckout, isOpen, checkoutElement } = useStripeCheckout();
+  const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: u }) =>
+      setUser(u.user ? { id: u.user.id, ...(u.user.email ? { email: u.user.email } : {}) } : null),
+    );
+  }, []);
+  const { data: purchases } = useQuery({ queryKey: ["purchases"], queryFn: fetchPurchases });
+  const unlocked = demandLetterUnlocked(purchases ?? [], propertyId);
+
+  function unlock() {
+    openCheckout({
+      priceId: PRICES.demandLetter,
+      propertyId,
+      ...(data?.report?.id ? { reportId: data.report.id } : {}),
+      ...(user?.id ? { userId: user.id } : {}),
+      ...(user?.email ? { customerEmail: user.email } : {}),
+      returnUrl: `${window.location.origin}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
+    });
+  }
+
+
+
   async function save() {
     setSaving(true);
     const { data: userData } = await supabase.auth.getUser();
