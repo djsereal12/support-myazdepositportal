@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getRequest, getRequestHeader } from "@tanstack/react-start/server";
+import { getRequestHeader } from "@tanstack/react-start/server";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export type InviteMedia = {
@@ -275,15 +275,12 @@ export const respondToInvite = createServerFn({ method: "POST" })
     if (invite.status !== "pending") throw new Error("This report has already received a response.");
     if (new Date(invite.expires_at).getTime() < Date.now()) throw new Error("This link has expired.");
 
-    let ip = getRequestHeader("cf-connecting-ip") ?? getRequestHeader("x-forwarded-for") ?? null;
-    if (!ip) {
-      try {
-        ip = (getRequest() as unknown as { headers: Headers }).headers.get("x-real-ip");
-      } catch {
-        ip = null;
-      }
-    }
-    if (ip) ip = ip.split(",")[0]!.trim().slice(0, 64);
+    const rawIp =
+      getRequestHeader("cf-connecting-ip") ??
+      getRequestHeader("x-forwarded-for") ??
+      getRequestHeader("x-real-ip") ??
+      null;
+    const ip = rawIp ? rawIp.split(",")[0]!.trim().slice(0, 64) : null;
 
     const { error } = await supabaseAdmin
       .from("landlord_invites")
@@ -296,17 +293,6 @@ export const respondToInvite = createServerFn({ method: "POST" })
       })
       .eq("id", invite.id);
     if (error) throw new Error(error.message);
-
-    if (data.action === "disputed") {
-      await supabaseAdmin.from("disputes").insert({
-        report_id: invite.report_id,
-        property_id: invite.property_id,
-        landlord_id: invite.user_id,
-        amount_claimed: 0,
-        reason: `Move-in report disputed via e-sign link: ${data.note}`,
-        status: "open",
-      });
-    }
 
     return { status: data.action };
   });
