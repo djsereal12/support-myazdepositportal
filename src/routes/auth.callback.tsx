@@ -40,15 +40,17 @@ function CallbackPage() {
         sessionStorage.removeItem("deposit:pending-role");
 
         // If the OAuth signup didn't carry a role, seed it from the pre-auth selection.
-        if (pendingRole && ["tenant", "landlord"].includes(pendingRole)) {
+        const validRole: "tenant" | "landlord" | null =
+          pendingRole === "tenant" || pendingRole === "landlord" ? pendingRole : null;
+        if (validRole) {
           const { data: existing } = await supabase
             .from("user_roles")
             .select("role")
             .eq("user_id", data.session.user.id)
-            .eq("role", pendingRole)
+            .eq("role", validRole)
             .maybeSingle();
           if (!existing) {
-            await supabase.from("user_roles").insert({ user_id: data.session.user.id, role: pendingRole });
+            await supabase.from("user_roles").insert({ user_id: data.session.user.id, role: validRole });
           }
         }
 
