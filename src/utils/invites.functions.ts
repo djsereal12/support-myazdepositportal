@@ -57,28 +57,31 @@ function randomToken(): string {
 
 async function sendInviteEmail(args: {
   to: string;
-  subject: string;
-  html: string;
-  text: string;
+  address: string;
+  reportNumber: string;
+  customMessage: string;
+  link: string;
+  inviteId: string;
 }): Promise<{ sent: boolean; reason?: string }> {
-  const apiKey = process.env["RESEND_API_KEY"];
-  const from = process.env["RESEND_FROM_EMAIL"] ?? "deposit <onboarding@resend.dev>";
-  if (!apiKey) return { sent: false, reason: "no_email_provider" };
   try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
+    const { sendTemplateEmail } = await import("@/lib/email-templates/send-email");
+    const result = await sendTemplateEmail("landlord-invite", args.to, {
+      templateData: {
+        address: args.address,
+        reportNumber: args.reportNumber,
+        customMessage: args.customMessage,
+        link: args.link,
       },
-      body: JSON.stringify({ from, to: [args.to], subject: args.subject, html: args.html, text: args.text }),
+      idempotencyKey: `landlord-invite-${args.inviteId}`,
     });
-    if (!res.ok) return { sent: false, reason: `provider_error_${res.status}` };
-    return { sent: true };
-  } catch {
-    return { sent: false, reason: "provider_unreachable" };
+    if (result.sent) return { sent: true };
+    return { sent: false, reason: result.reason ?? "not_sent" };
+  } catch (err) {
+    console.error("landlord invite email failed", err);
+    return { sent: false, reason: "provider_error" };
   }
 }
+
 
 /** Tenant-only: create an e-sign invite for a move-in report and email the landlord. */
 export const createLandlordInvite = createServerFn({ method: "POST" })
