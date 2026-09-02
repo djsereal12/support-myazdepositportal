@@ -75,13 +75,24 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         typeof stripePrice.product === "string" ? stripePrice.product : stripePrice.product.id;
       const product = await stripe.products.retrieve(productId);
 
+      const isRecurring = stripePrice.type === "recurring";
+
       const session = await stripe.checkout.sessions.create({
         line_items: [{ price: stripePrice.id, quantity: 1 }],
-        mode: "payment",
+        mode: isRecurring ? "subscription" : "payment",
         ui_mode: "embedded_page",
         return_url: data.returnUrl,
         ...(customerId && { customer: customerId }),
-        payment_intent_data: { description: product.name },
+        ...(isRecurring
+          ? {
+              subscription_data: {
+                metadata: {
+                  ...(data.userId ? { userId: data.userId } : {}),
+                  priceId: data.priceId,
+                },
+              },
+            }
+          : { payment_intent_data: { description: product.name } }),
         managed_payments: { enabled: true },
         metadata: {
           ...(data.userId ? { userId: data.userId } : {}),
