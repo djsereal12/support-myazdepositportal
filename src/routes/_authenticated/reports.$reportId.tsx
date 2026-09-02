@@ -136,20 +136,37 @@ function ReportView() {
         >
           ← Property file
         </Link>
-        <div className="flex gap-2">
-          <button
-            onClick={() => window.print()}
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
-          >
-            <Printer className="h-3.5 w-3.5" /> Save as PDF
-          </button>
-          <button
-            onClick={email}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent"
-          >
-            <Mail className="h-3.5 w-3.5" /> Email landlord
-          </button>
-        </div>
+        {unlocked ? (
+          <div className="flex gap-2">
+            <button
+              onClick={() => window.print()}
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
+            >
+              <Printer className="h-3.5 w-3.5" /> Save as PDF
+            </button>
+            <button
+              onClick={email}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent"
+            >
+              <Mail className="h-3.5 w-3.5" /> Email landlord
+            </button>
+          </div>
+        ) : (
+          <div className="flex gap-2">
+            <button
+              onClick={() => unlock(PRICES.singleReport)}
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
+            >
+              <Lock className="h-3.5 w-3.5" /> Unlock this report — $14.99
+            </button>
+            <button
+              onClick={() => unlock(PRICES.bundle)}
+              className="rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent"
+            >
+              Bundle for this property — $24.99
+            </button>
+          </div>
+        )}
       </div>
 
       <article className="mt-6 rounded-2xl border border-border bg-card p-8 shadow-soft sm:p-12">
