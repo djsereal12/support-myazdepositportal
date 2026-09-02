@@ -390,6 +390,15 @@ function ReportView() {
                   {i.response_note ? (
                     <p className="w-full text-muted-foreground">Note: {i.response_note}</p>
                   ) : null}
+                  {(inviteMessages ?? [])
+                    .filter((m) => m.invite_id === i.id)
+                    .map((m) => (
+                      <p key={m.id} className="w-full text-muted-foreground">
+                        {m.author_role === "landlord" ? "Landlord reply" : "Your reply"}
+                        {m.author_name ? ` (${m.author_name})` : ""} ·{" "}
+                        {formatDate(m.created_at)}: {m.body}
+                      </p>
+                    ))}
                 </li>
               ))}
             </ul>
