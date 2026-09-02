@@ -116,6 +116,78 @@ export type Database = {
           },
         ]
       }
+      landlord_invites: {
+        Row: {
+          created_at: string
+          custom_message: string | null
+          expires_at: string
+          id: string
+          landlord_email: string
+          landlord_name: string | null
+          property_id: string | null
+          report_id: string
+          responded_at: string | null
+          response_ip: string | null
+          response_note: string | null
+          response_signature_name: string | null
+          sent_at: string
+          status: string
+          token: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          custom_message?: string | null
+          expires_at?: string
+          id?: string
+          landlord_email: string
+          landlord_name?: string | null
+          property_id?: string | null
+          report_id: string
+          responded_at?: string | null
+          response_ip?: string | null
+          response_note?: string | null
+          response_signature_name?: string | null
+          sent_at?: string
+          status?: string
+          token: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          custom_message?: string | null
+          expires_at?: string
+          id?: string
+          landlord_email?: string
+          landlord_name?: string | null
+          property_id?: string | null
+          report_id?: string
+          responded_at?: string | null
+          response_ip?: string | null
+          response_note?: string | null
+          response_signature_name?: string | null
+          sent_at?: string
+          status?: string
+          token?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "landlord_invites_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "landlord_invites_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       landlord_letters: {
         Row: {
           amount_withheld: number
