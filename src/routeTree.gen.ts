@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as LawRouteImport } from './routes/law'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedLandlordRouteImport } from './routes/_authenticated/landlord'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as VerifyReportIdRouteImport } from './routes/verify.$reportId'
@@ -53,6 +54,11 @@ const PricingRoute = PricingRouteImport.update({
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedLandlordRoute = AuthenticatedLandlordRouteImport.update({
+  id: '/landlord',
+  path: '/landlord',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/law': typeof LawRoute
   '/pricing': typeof PricingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/landlord': typeof AuthenticatedLandlordRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByTo {
   '/law': typeof LawRoute
   '/pricing': typeof PricingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/landlord': typeof AuthenticatedLandlordRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   '/law': typeof LawRoute
   '/pricing': typeof PricingRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/landlord': typeof AuthenticatedLandlordRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
@@ -174,6 +183,7 @@ export interface FileRouteTypes {
     | '/law'
     | '/pricing'
     | '/dashboard'
+    | '/landlord'
     | '/auth/callback'
     | '/checkout/return'
     | '/verify/$reportId'
@@ -191,6 +201,7 @@ export interface FileRouteTypes {
     | '/law'
     | '/pricing'
     | '/dashboard'
+    | '/landlord'
     | '/auth/callback'
     | '/checkout/return'
     | '/verify/$reportId'
@@ -209,6 +220,7 @@ export interface FileRouteTypes {
     | '/law'
     | '/pricing'
     | '/_authenticated/dashboard'
+    | '/_authenticated/landlord'
     | '/auth/callback'
     | '/checkout/return'
     | '/verify/$reportId'
@@ -274,6 +286,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/landlord': {
+      id: '/_authenticated/landlord'
+      path: '/landlord'
+      fullPath: '/landlord'
+      preLoaderRoute: typeof AuthenticatedLandlordRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/auth/callback': {
@@ -351,6 +370,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedLandlordRoute: typeof AuthenticatedLandlordRoute
   AuthenticatedComparePropertyIdRoute: typeof AuthenticatedComparePropertyIdRoute
   AuthenticatedDemandPropertyIdRoute: typeof AuthenticatedDemandPropertyIdRoute
   AuthenticatedPropertiesPropertyIdRoute: typeof AuthenticatedPropertiesPropertyIdRoute
@@ -361,6 +381,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedLandlordRoute: AuthenticatedLandlordRoute,
   AuthenticatedComparePropertyIdRoute: AuthenticatedComparePropertyIdRoute,
   AuthenticatedDemandPropertyIdRoute: AuthenticatedDemandPropertyIdRoute,
   AuthenticatedPropertiesPropertyIdRoute:
