@@ -101,7 +101,7 @@ function AuthPage() {
           email: parsed.data.email,
           password: parsed.data.password,
           options: {
-            emailRedirectTo: `${window.location.origin}/dashboard`,
+            emailRedirectTo: `${window.location.origin}${next ?? "/dashboard"}`,
             data: { full_name: parsed.data.fullName ?? "", role },
           },
         });
@@ -127,7 +127,7 @@ function AuthPage() {
 
   async function google() {
     try {
-      sessionStorage.setItem("deposit:after-auth", roleDetails[role].home);
+      sessionStorage.setItem("deposit:after-auth", next ?? roleDetails[role].home);
       sessionStorage.setItem("deposit:pending-role", role);
     } catch {
       /* ignore */
