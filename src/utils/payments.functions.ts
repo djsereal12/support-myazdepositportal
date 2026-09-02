@@ -101,7 +101,11 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
           priceId: data.priceId,
           managed_payments: "true",
         },
-      } as import("stripe").Stripe.Checkout.SessionCreateParams);
+      };
+
+      const session = await stripe.checkout.sessions.create(
+        params as unknown as import("stripe").Stripe.Checkout.SessionCreateParams,
+      );
 
       return { clientSecret: session.client_secret ?? "" };
     } catch (error) {
