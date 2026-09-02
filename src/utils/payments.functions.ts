@@ -81,7 +81,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
           ? {
               subscription_data: {
                 metadata: {
-                  ...(data.userId ? { userId: data.userId } : {}),
+                  ...(userId ? { userId } : {}),
                   priceId: data.priceId,
                 },
               },
@@ -89,7 +89,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
           : { payment_intent_data: { description: product.name } }),
         managed_payments: { enabled: true },
         metadata: {
-          ...(data.userId ? { userId: data.userId } : {}),
+          ...(userId ? { userId } : {}),
           ...(data.reportId ? { reportId: data.reportId } : {}),
           ...(data.propertyId ? { propertyId: data.propertyId } : {}),
           priceId: data.priceId,
