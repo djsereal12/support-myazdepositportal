@@ -5,19 +5,31 @@ import { ShieldCheck, Fingerprint, MapPin, FileText, ScanLine, Scale } from "luc
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "deposit — Get your Arizona security deposit back" },
+      { title: "DEPOSIT — Arizona Security Deposit Protection" },
       {
         name: "description",
         content:
-          "Guided move-in and move-out scans with GPS, timestamps and SHA-256 hashing. Court-ready documentation built for A.R.S. § 33-1321.",
+          "Protect your Arizona security deposit with verifiable photo evidence per A.R.S. §33-1321. $14.99",
       },
-      { property: "og:title", content: "deposit — Get your Arizona security deposit back" },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://myazdepositportal.live/" },
+      { property: "og:title", content: "DEPOSIT — Arizona Security Deposit Protection" },
       {
         property: "og:description",
         content:
-          "Tamper-proof move-in / move-out documentation for Arizona renters. Hashed media, GPS, weather and a formal demand letter.",
+          "Protect your Arizona security deposit with verifiable photo evidence per A.R.S. §33-1321. $14.99",
       },
+      { property: "og:image", content: "https://myazdepositportal.live/og-image.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "DEPOSIT — Arizona Security Deposit Protection" },
+      {
+        name: "twitter:description",
+        content:
+          "Protect your Arizona security deposit with verifiable photo evidence per A.R.S. §33-1321. $14.99",
+      },
+      { name: "twitter:image", content: "https://myazdepositportal.live/og-image.jpg" },
     ],
+    links: [{ rel: "canonical", href: "https://myazdepositportal.live/" }],
   }),
   component: Landing,
 });
