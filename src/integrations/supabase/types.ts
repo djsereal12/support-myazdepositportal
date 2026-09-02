@@ -62,6 +62,115 @@ export type Database = {
           },
         ]
       }
+      disputes: {
+        Row: {
+          amount_claimed: number
+          created_at: string
+          id: string
+          items: string | null
+          landlord_id: string
+          property_id: string | null
+          reason: string | null
+          report_id: string
+          status: string
+          tenant_id: string | null
+        }
+        Insert: {
+          amount_claimed?: number
+          created_at?: string
+          id?: string
+          items?: string | null
+          landlord_id?: string
+          property_id?: string | null
+          reason?: string | null
+          report_id: string
+          status?: string
+          tenant_id?: string | null
+        }
+        Update: {
+          amount_claimed?: number
+          created_at?: string
+          id?: string
+          items?: string | null
+          landlord_id?: string
+          property_id?: string | null
+          reason?: string | null
+          report_id?: string
+          status?: string
+          tenant_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disputes_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "disputes_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      landlord_letters: {
+        Row: {
+          amount_withheld: number
+          body: string | null
+          created_at: string
+          dispute_id: string | null
+          id: string
+          landlord_id: string
+          property_id: string | null
+          report_id: string
+        }
+        Insert: {
+          amount_withheld?: number
+          body?: string | null
+          created_at?: string
+          dispute_id?: string | null
+          id?: string
+          landlord_id?: string
+          property_id?: string | null
+          report_id: string
+        }
+        Update: {
+          amount_withheld?: number
+          body?: string | null
+          created_at?: string
+          dispute_id?: string | null
+          id?: string
+          landlord_id?: string
+          property_id?: string | null
+          report_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "landlord_letters_dispute_id_fkey"
+            columns: ["dispute_id"]
+            isOneToOne: false
+            referencedRelation: "disputes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "landlord_letters_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "landlord_letters_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       media: {
         Row: {
           condition: string
@@ -181,6 +290,117 @@ export type Database = {
         }
         Relationships: []
       }
+      purchases: {
+        Row: {
+          amount_total: number | null
+          created_at: string
+          currency: string | null
+          email: string | null
+          environment: string
+          id: string
+          price_id: string
+          product_id: string | null
+          property_id: string | null
+          report_id: string | null
+          status: string
+          stripe_customer_id: string | null
+          stripe_session_id: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount_total?: number | null
+          created_at?: string
+          currency?: string | null
+          email?: string | null
+          environment?: string
+          id?: string
+          price_id: string
+          product_id?: string | null
+          property_id?: string | null
+          report_id?: string | null
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_session_id: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount_total?: number | null
+          created_at?: string
+          currency?: string | null
+          email?: string | null
+          environment?: string
+          id?: string
+          price_id?: string
+          product_id?: string | null
+          property_id?: string | null
+          report_id?: string | null
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_session_id?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchases_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchases_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_shares: {
+        Row: {
+          created_at: string
+          id: string
+          landlord_email: string
+          property_id: string | null
+          report_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          landlord_email: string
+          property_id?: string | null
+          report_id: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          landlord_email?: string
+          property_id?: string | null
+          report_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_shares_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "report_shares_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reports: {
         Row: {
           created_at: string
@@ -237,15 +457,52 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      current_email: { Args: never; Returns: string }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      landlord_can_view_property: {
+        Args: { _property_id: string }
+        Returns: boolean
+      }
+      landlord_can_view_report: {
+        Args: { _report_id: string }
+        Returns: boolean
+      }
+      report_owner: { Args: { _report_id: string }; Returns: string }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "tenant" | "landlord"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -372,6 +629,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["tenant", "landlord"],
+    },
   },
 } as const
