@@ -9,7 +9,12 @@ import { formatDate, shortHash, REPORT_TYPE_LABEL } from "@/lib/deposit";
 import { fetchPurchases, reportUnlocked, certifiedPdfUnlocked } from "@/lib/entitlements";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 import { PRICES } from "@/lib/stripe";
-import { Printer, Mail, Lock, Share2 } from "lucide-react";
+import { Printer, Mail, Lock, Share2, Send, CheckCircle2, AlertTriangle } from "lucide-react";
+import { createLandlordInvite } from "@/utils/invites.functions";
+import { useServerFn } from "@tanstack/react-start";
+
+const DEFAULT_INVITE_MESSAGE =
+  "Per A.R.S. §33-1321, please review and accept the attached move-in inspection report within 5 days. This creates a joint record of pre-existing conditions.";
 
 export const Route = createFileRoute("/_authenticated/reports/$reportId")({
   head: () => ({
@@ -56,6 +61,13 @@ function ReportView() {
   const { openCheckout, closeCheckout, isOpen, checkoutElement } = useStripeCheckout();
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
   const [shareEmail, setShareEmail] = useState("");
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteName, setInviteName] = useState("");
+  const [inviteMessage, setInviteMessage] = useState(DEFAULT_INVITE_MESSAGE);
+  const [inviteLink, setInviteLink] = useState<string | null>(null);
+  const [sending, setSending] = useState(false);
+  const sendInvite = useServerFn(createLandlordInvite);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) =>
@@ -73,6 +85,19 @@ function ReportView() {
         .from("report_shares")
         .select("*")
         .eq("report_id", reportId);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: invites } = useQuery({
+    queryKey: ["invites", reportId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("landlord_invites")
+        .select("*")
+        .eq("report_id", reportId)
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -106,7 +131,37 @@ function ReportView() {
     }
   }
 
-  const property = report?.properties as { address: string; unit: string | null; landlord_email: string | null } | null;
+  async function sendLandlordRequest() {
+    setSending(true);
+    try {
+      const res = await sendInvite({
+        data: {
+          reportId,
+          landlordEmail: inviteEmail,
+          landlordName: inviteName,
+          customMessage: inviteMessage,
+          origin: window.location.origin,
+        },
+      });
+      setInviteLink(res.link);
+      if (res.emailSent) toast.success(`Request emailed to ${inviteEmail}`);
+      else
+        toast.info("Request created. Email sending isn't configured yet — copy the link or send it yourself.");
+      queryClient.invalidateQueries({ queryKey: ["invites", reportId] });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not send the request.");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  const property = report?.properties as { address: string; unit: string | null; landlord_email: string | null; landlord_name: string | null } | null;
+  useEffect(() => {
+    if (property?.landlord_email && !inviteEmail) setInviteEmail(property.landlord_email);
+    if (property?.landlord_name && !inviteName) setInviteName(property.landlord_name);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [property?.landlord_email]);
+
   const verifyUrl = report?.qr_verification_url ?? "";
   const qrSrc = verifyUrl
     ? `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(verifyUrl)}`
@@ -194,6 +249,136 @@ function ReportView() {
             </button>
           </div>
           {checkoutElement}
+        </section>
+      ) : null}
+
+      {report?.type === "move_in" ? (
+        <section className="glass-panel mt-6 p-6 print:hidden">
+          <div className="flex items-center gap-2">
+            <Send className="h-4 w-4 text-lavender" strokeWidth={1.5} />
+            <h2 className="text-sm font-semibold">Landlord acceptance</h2>
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Send a secure review link. Your landlord can accept and e-sign or dispute with notes —
+            no account required.
+          </p>
+
+          {!inviteOpen ? (
+            <button
+              onClick={() => setInviteOpen(true)}
+              className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
+            >
+              <Send className="h-3.5 w-3.5" /> Send to Landlord for Acceptance
+            </button>
+          ) : (
+            <div className="mt-5 space-y-4 rounded-2xl border border-border bg-card p-5">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="block text-sm">
+                  <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                    Landlord email
+                  </span>
+                  <input
+                    type="email"
+                    value={inviteEmail}
+                    onChange={(e) => setInviteEmail(e.target.value)}
+                    placeholder="landlord@example.com"
+                    className="mt-2 w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-lavender/40"
+                  />
+                </label>
+                <label className="block text-sm">
+                  <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                    Landlord name
+                  </span>
+                  <input
+                    value={inviteName}
+                    onChange={(e) => setInviteName(e.target.value)}
+                    placeholder="Jane Landlord"
+                    className="mt-2 w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-lavender/40"
+                  />
+                </label>
+              </div>
+              <label className="block text-sm">
+                <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  Message
+                </span>
+                <textarea
+                  value={inviteMessage}
+                  onChange={(e) => setInviteMessage(e.target.value)}
+                  rows={4}
+                  className="mt-2 w-full rounded-xl border border-border bg-card px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-lavender/40"
+                />
+              </label>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  disabled={sending || !inviteEmail.trim()}
+                  onClick={sendLandlordRequest}
+                  className="rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground disabled:opacity-40"
+                >
+                  {sending ? "Sending…" : "Send Request via Email"}
+                </button>
+                <button
+                  onClick={() => setInviteOpen(false)}
+                  className="rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent"
+                >
+                  Cancel
+                </button>
+              </div>
+              {inviteLink ? (
+                <div className="rounded-xl border border-border bg-muted/50 p-4 text-xs">
+                  <p className="text-muted-foreground">Shareable review link (expires in 7 days):</p>
+                  <p className="mt-2 break-all font-mono">{inviteLink}</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(inviteLink);
+                        toast.success("Link copied");
+                      }}
+                      className="rounded-full border border-border bg-card px-4 py-2 font-medium hover:bg-accent"
+                    >
+                      Copy link
+                    </button>
+                    <a
+                      href={`mailto:${inviteEmail}?subject=${encodeURIComponent(`Action Required: Review Move-In Report for ${property?.address ?? ""}`)}&body=${encodeURIComponent(`${inviteMessage}\n\nView report: ${inviteLink}\n\nThis link expires in 7 days.`)}`}
+                      className="rounded-full border border-border bg-card px-4 py-2 font-medium hover:bg-accent"
+                    >
+                      Open in email app
+                    </a>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          )}
+
+          {invites?.length ? (
+            <ul className="mt-5 space-y-2">
+              {invites.map((i) => (
+                <li
+                  key={i.id}
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3 text-xs"
+                >
+                  <span className="font-medium">{i.landlord_email}</span>
+                  <span className="flex items-center gap-2 text-muted-foreground">
+                    {i.status === "accepted" ? (
+                      <>
+                        <CheckCircle2 className="h-3.5 w-3.5 text-lavender-deep" /> Accepted &amp;
+                        e-signed by {i.response_signature_name} · {formatDate(i.responded_at)}
+                      </>
+                    ) : i.status === "disputed" ? (
+                      <>
+                        <AlertTriangle className="h-3.5 w-3.5 text-lavender-deep" /> Disputed ·{" "}
+                        {formatDate(i.responded_at)}
+                      </>
+                    ) : (
+                      <>Pending · sent {formatDate(i.sent_at)}</>
+                    )}
+                  </span>
+                  {i.response_note ? (
+                    <p className="w-full text-muted-foreground">Note: {i.response_note}</p>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </section>
       ) : null}
 

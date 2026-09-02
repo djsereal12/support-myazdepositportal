@@ -19,7 +19,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedLandlordRouteImport } from './routes/_authenticated/landlord'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
-import { Route as VerifyReportIdRouteImport } from './routes/verify.$reportId'
+import { Route as VerifyTokenRouteImport } from './routes/verify.$token'
 import { Route as AuthenticatedComparePropertyIdRouteImport } from './routes/_authenticated/compare.$propertyId'
 import { Route as AuthenticatedDemandPropertyIdRouteImport } from './routes/_authenticated/demand.$propertyId'
 import { Route as AuthenticatedLandlordReportIdRouteImport } from './routes/_authenticated/landlord.$reportId'
@@ -78,9 +78,9 @@ const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
   path: '/checkout/return',
   getParentRoute: () => rootRouteImport,
 } as any)
-const VerifyReportIdRoute = VerifyReportIdRouteImport.update({
-  id: '/verify/$reportId',
-  path: '/verify/$reportId',
+const VerifyTokenRoute = VerifyTokenRouteImport.update({
+  id: '/verify/$token',
+  path: '/verify/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedComparePropertyIdRoute =
@@ -142,7 +142,7 @@ export interface FileRoutesByFullPath {
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
-  '/verify/$reportId': typeof VerifyReportIdRoute
+  '/verify/$token': typeof VerifyTokenRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
   '/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
@@ -162,7 +162,7 @@ export interface FileRoutesByTo {
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
-  '/verify/$reportId': typeof VerifyReportIdRoute
+  '/verify/$token': typeof VerifyTokenRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
   '/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
@@ -184,7 +184,7 @@ export interface FileRoutesById {
   '/_authenticated/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
-  '/verify/$reportId': typeof VerifyReportIdRoute
+  '/verify/$token': typeof VerifyTokenRoute
   '/_authenticated/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/_authenticated/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
   '/_authenticated/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
@@ -206,7 +206,7 @@ export interface FileRouteTypes {
     | '/landlord'
     | '/auth/callback'
     | '/checkout/return'
-    | '/verify/$reportId'
+    | '/verify/$token'
     | '/compare/$propertyId'
     | '/demand/$propertyId'
     | '/landlord/$reportId'
@@ -226,7 +226,7 @@ export interface FileRouteTypes {
     | '/landlord'
     | '/auth/callback'
     | '/checkout/return'
-    | '/verify/$reportId'
+    | '/verify/$token'
     | '/compare/$propertyId'
     | '/demand/$propertyId'
     | '/landlord/$reportId'
@@ -247,7 +247,7 @@ export interface FileRouteTypes {
     | '/_authenticated/landlord'
     | '/auth/callback'
     | '/checkout/return'
-    | '/verify/$reportId'
+    | '/verify/$token'
     | '/_authenticated/compare/$propertyId'
     | '/_authenticated/demand/$propertyId'
     | '/_authenticated/landlord/$reportId'
@@ -266,7 +266,7 @@ export interface RootRouteChildren {
   LegalRoute: typeof LegalRoute
   PricingRoute: typeof PricingRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
-  VerifyReportIdRoute: typeof VerifyReportIdRoute
+  VerifyTokenRoute: typeof VerifyTokenRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
@@ -342,11 +342,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutReturnRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/verify/$reportId': {
-      id: '/verify/$reportId'
-      path: '/verify/$reportId'
-      fullPath: '/verify/$reportId'
-      preLoaderRoute: typeof VerifyReportIdRouteImport
+    '/verify/$token': {
+      id: '/verify/$token'
+      path: '/verify/$token'
+      fullPath: '/verify/$token'
+      preLoaderRoute: typeof VerifyTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/compare/$propertyId': {
@@ -465,7 +465,7 @@ const rootRouteChildren: RootRouteChildren = {
   LegalRoute: LegalRoute,
   PricingRoute: PricingRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
-  VerifyReportIdRoute: VerifyReportIdRoute,
+  VerifyTokenRoute: VerifyTokenRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport
