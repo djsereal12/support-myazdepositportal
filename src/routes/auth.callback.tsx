@@ -35,7 +35,25 @@ function CallbackPage() {
       if (cancelled) return;
       if (data.session) {
         const dest = sessionStorage.getItem("deposit:after-auth");
+        const pendingRole = sessionStorage.getItem("deposit:pending-role");
         sessionStorage.removeItem("deposit:after-auth");
+        sessionStorage.removeItem("deposit:pending-role");
+
+        // If the OAuth signup didn't carry a role, seed it from the pre-auth selection.
+        const validRole: "tenant" | "landlord" | null =
+          pendingRole === "tenant" || pendingRole === "landlord" ? pendingRole : null;
+        if (validRole) {
+          const { data: existing } = await supabase
+            .from("user_roles")
+            .select("role")
+            .eq("user_id", data.session.user.id)
+            .eq("role", validRole)
+            .maybeSingle();
+          if (!existing) {
+            await supabase.from("user_roles").insert({ user_id: data.session.user.id, role: validRole });
+          }
+        }
+
         window.location.replace(dest && dest.startsWith("/") ? dest : "/dashboard");
       } else {
         navigate({ to: "/auth", replace: true });
