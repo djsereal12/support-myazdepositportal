@@ -206,7 +206,7 @@ function AuthPage() {
             onClick={google}
             className="mt-7 w-full rounded-full border border-border bg-card px-5 py-3 text-sm font-medium transition-colors hover:bg-accent"
           >
-            Continue with Google as {activeRole.label.split(" ").slice(2).join(" ")}
+            Continue with Google as {roleNoun(role)}
           </button>
 
           <div className="my-6 flex items-center gap-4 text-[0.68rem] uppercase tracking-[0.24em] text-muted-foreground">
