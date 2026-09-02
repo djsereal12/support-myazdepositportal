@@ -169,6 +169,60 @@ function ReportView() {
         )}
       </div>
 
+      {isOpen ? (
+        <section className="glass-panel mt-6 p-6 print:hidden">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Complete your purchase</h2>
+            <button
+              onClick={closeCheckout}
+              className="rounded-full border border-border bg-card px-4 py-2 text-xs font-medium hover:bg-accent"
+            >
+              Cancel
+            </button>
+          </div>
+          {checkoutElement}
+        </section>
+      ) : null}
+
+      <section className="glass-panel mt-6 p-6 print:hidden">
+        <div className="flex items-center gap-2">
+          <Share2 className="h-4 w-4 text-lavender" strokeWidth={1.5} />
+          <h2 className="text-sm font-semibold">Share with your landlord</h2>
+        </div>
+        <p className="mt-2 text-xs text-muted-foreground">
+          They sign in with this email address and see the report read-only in the landlord portal.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <input
+            value={shareEmail}
+            onChange={(e) => setShareEmail(e.target.value)}
+            type="email"
+            placeholder="landlord@example.com"
+            className="min-w-[16rem] flex-1 rounded-full border border-border bg-card px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-lavender/40"
+          />
+          <button
+            onClick={share}
+            className="rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
+          >
+            Share
+          </button>
+        </div>
+        {shares?.length ? (
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {shares.map((s) => (
+              <li
+                key={s.id}
+                className="rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground"
+              >
+                {s.landlord_email}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </section>
+
+
+
       <article className="mt-6 rounded-2xl border border-border bg-card p-8 shadow-soft sm:p-12">
         <header className="flex flex-wrap items-start justify-between gap-6 border-b border-border pb-8">
           <div>
