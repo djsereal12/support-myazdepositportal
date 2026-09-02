@@ -84,16 +84,25 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer className="mt-24 border-t border-border/70 py-10">
-      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
         <span className="font-script text-lg text-lavender-deep">Deposit</span>
         <p className="max-w-md">
           Documentation software, not legal advice. Statute references are for informational
           purposes under A.R.S. § 33-1321.
         </p>
+        <div className="flex gap-4">
+          <Link to="/law" className="transition-colors hover:text-foreground">
+            Arizona law
+          </Link>
+          <Link to="/legal" className="transition-colors hover:text-foreground">
+            Disclaimer & privacy
+          </Link>
+        </div>
       </div>
     </footer>
   );
 }
+
 
 export function Page({ children }: { children: ReactNode }) {
   return (
