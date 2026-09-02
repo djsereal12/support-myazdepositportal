@@ -9,7 +9,7 @@ import { EmailChangeEmail } from '@/lib/email-templates/email-change'
 import { ReauthenticationEmail } from '@/lib/email-templates/reauthentication'
 
 // Configuration
-const SITE_NAME = "Deposit"
+const SITE_NAME = "deposit"
 const SENDER_DOMAIN = "notify.myazdepositportal.live"
 const ROOT_DOMAIN = "myazdepositportal.live"
 const FROM_DOMAIN = "myazdepositportal.live"
