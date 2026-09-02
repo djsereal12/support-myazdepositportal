@@ -74,14 +74,24 @@ function AuthPage() {
   }
 
   async function google() {
+    try {
+      sessionStorage.setItem("deposit:after-auth", "/dashboard");
+    } catch {
+      /* ignore */
+    }
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+      redirect_uri: `${window.location.origin}/auth/callback`,
     });
     if (result.error) {
-      toast.error("Google sign-in failed");
+      toast.error(result.error.message || "Google sign-in failed");
       return;
     }
     if (result.redirected) return;
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) {
+      toast.error("Sign-in did not complete. Please try again.");
+      return;
+    }
     navigate({ to: "/dashboard" });
   }
 

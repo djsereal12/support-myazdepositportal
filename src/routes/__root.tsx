@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { consumeOAuthRedirect } from "@/lib/oauth-callback";
 
 function NotFoundComponent() {
   return (
@@ -131,6 +132,12 @@ function RootComponent() {
     });
     return () => data.subscription.unsubscribe();
   }, [router, queryClient]);
+
+  // Safety net: if a provider redirect drops tokens on any page, finish sign-in here.
+  useEffect(() => {
+    if (window.location.pathname === "/auth/callback") return;
+    void consumeOAuthRedirect();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
