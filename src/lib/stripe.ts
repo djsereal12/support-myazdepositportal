@@ -30,4 +30,7 @@ export const PRICES = {
   singleReport: "single_report_onetime",
   bundle: "protection_bundle_onetime",
   demandLetter: "demand_letter_onetime",
+  certifiedPdf: "certified_pdf_onetime",
+  landlordLetter: "landlord_response_letter_onetime",
+  landlordUnlimited: "landlord_unlimited_yearly",
 } as const;
