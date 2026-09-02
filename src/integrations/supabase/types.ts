@@ -116,6 +116,51 @@ export type Database = {
           },
         ]
       }
+      invite_messages: {
+        Row: {
+          author_name: string | null
+          author_role: string
+          body: string
+          created_at: string
+          id: string
+          invite_id: string
+          report_id: string
+        }
+        Insert: {
+          author_name?: string | null
+          author_role: string
+          body: string
+          created_at?: string
+          id?: string
+          invite_id: string
+          report_id: string
+        }
+        Update: {
+          author_name?: string | null
+          author_role?: string
+          body?: string
+          created_at?: string
+          id?: string
+          invite_id?: string
+          report_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invite_messages_invite_id_fkey"
+            columns: ["invite_id"]
+            isOneToOne: false
+            referencedRelation: "landlord_invites"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invite_messages_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       landlord_invites: {
         Row: {
           created_at: string

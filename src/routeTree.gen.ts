@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as LandlordAccessRouteImport } from './routes/landlord-access'
 import { Route as LawRouteImport } from './routes/law'
 import { Route as LegalRouteImport } from './routes/legal'
 import { Route as McpRouteImport } from './routes/mcp'
@@ -50,6 +51,11 @@ const AuthRoute = AuthRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LandlordAccessRoute = LandlordAccessRouteImport.update({
+  id: '/landlord-access',
+  path: '/landlord-access',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LawRoute = LawRouteImport.update({
@@ -161,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
   '/faq': typeof FaqRoute
+  '/landlord-access': typeof LandlordAccessRoute
   '/law': typeof LawRoute
   '/legal': typeof LegalRoute
   '/mcp': typeof McpRoute
@@ -185,6 +192,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
   '/faq': typeof FaqRoute
+  '/landlord-access': typeof LandlordAccessRoute
   '/law': typeof LawRoute
   '/legal': typeof LegalRoute
   '/mcp': typeof McpRoute
@@ -211,6 +219,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/faq': typeof FaqRoute
+  '/landlord-access': typeof LandlordAccessRoute
   '/law': typeof LawRoute
   '/legal': typeof LegalRoute
   '/mcp': typeof McpRoute
@@ -237,6 +246,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/faq'
+    | '/landlord-access'
     | '/law'
     | '/legal'
     | '/mcp'
@@ -261,6 +271,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/faq'
+    | '/landlord-access'
     | '/law'
     | '/legal'
     | '/mcp'
@@ -286,6 +297,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/faq'
+    | '/landlord-access'
     | '/law'
     | '/legal'
     | '/mcp'
@@ -312,6 +324,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
   FaqRoute: typeof FaqRoute
+  LandlordAccessRoute: typeof LandlordAccessRoute
   LawRoute: typeof LawRoute
   LegalRoute: typeof LegalRoute
   McpRoute: typeof McpRoute
@@ -351,6 +364,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/landlord-access': {
+      id: '/landlord-access'
+      path: '/landlord-access'
+      fullPath: '/landlord-access'
+      preLoaderRoute: typeof LandlordAccessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/law': {
@@ -543,6 +563,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
   FaqRoute: FaqRoute,
+  LandlordAccessRoute: LandlordAccessRoute,
   LawRoute: LawRoute,
   LegalRoute: LegalRoute,
   McpRoute: McpRoute,
