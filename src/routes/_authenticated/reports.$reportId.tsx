@@ -6,7 +6,7 @@ import { Page } from "@/components/site-shell";
 import { MediaThumb } from "@/components/media-image";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDate, shortHash, REPORT_TYPE_LABEL } from "@/lib/deposit";
-import { fetchPurchases, reportUnlocked } from "@/lib/entitlements";
+import { fetchPurchases, reportUnlocked, certifiedPdfUnlocked } from "@/lib/entitlements";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 import { PRICES } from "@/lib/stripe";
 import { Printer, Mail, Lock, Share2 } from "lucide-react";
@@ -79,6 +79,7 @@ function ReportView() {
   });
 
   const unlocked = reportUnlocked(purchases ?? [], reportId, report?.property_id ?? null);
+  const certified = certifiedPdfUnlocked(purchases ?? [], reportId);
 
   function unlock(priceId: string) {
     openCheckout({
@@ -150,6 +151,18 @@ function ReportView() {
             >
               <Mail className="h-3.5 w-3.5" /> Email landlord
             </button>
+            {certified ? (
+              <span className="inline-flex items-center gap-2 rounded-full border border-lavender/40 bg-lavender-soft px-5 py-2.5 text-xs font-medium">
+                Certified export active
+              </span>
+            ) : (
+              <button
+                onClick={() => unlock(PRICES.certifiedPdf)}
+                className="rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent"
+              >
+                Certified court-ready PDF — $39
+              </button>
+            )}
           </div>
         ) : (
           <div className="flex gap-2">
