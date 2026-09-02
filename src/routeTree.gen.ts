@@ -16,6 +16,7 @@ import { Route as LawRouteImport } from './routes/law'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as VerifyReportIdRouteImport } from './routes/verify.$reportId'
 import { Route as AuthenticatedComparePropertyIdRouteImport } from './routes/_authenticated/compare.$propertyId'
 import { Route as AuthenticatedDemandPropertyIdRouteImport } from './routes/_authenticated/demand.$propertyId'
@@ -58,6 +59,11 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/callback',
   path: '/callback',
   getParentRoute: () => AuthRoute,
+} as any)
+const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
+  id: '/checkout/return',
+  path: '/checkout/return',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const VerifyReportIdRoute = VerifyReportIdRouteImport.update({
   id: '/verify/$reportId',
@@ -114,6 +120,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
@@ -130,6 +137,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
@@ -148,6 +156,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
   '/_authenticated/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/_authenticated/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/dashboard'
     | '/auth/callback'
+    | '/checkout/return'
     | '/verify/$reportId'
     | '/compare/$propertyId'
     | '/demand/$propertyId'
@@ -182,6 +192,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/dashboard'
     | '/auth/callback'
+    | '/checkout/return'
     | '/verify/$reportId'
     | '/compare/$propertyId'
     | '/demand/$propertyId'
@@ -199,6 +210,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/_authenticated/dashboard'
     | '/auth/callback'
+    | '/checkout/return'
     | '/verify/$reportId'
     | '/_authenticated/compare/$propertyId'
     | '/_authenticated/demand/$propertyId'
@@ -215,6 +227,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   LawRoute: typeof LawRoute
   PricingRoute: typeof PricingRoute
+  CheckoutReturnRoute: typeof CheckoutReturnRoute
   VerifyReportIdRoute: typeof VerifyReportIdRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
@@ -269,6 +282,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/callback'
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof AuthRoute
+    }
+    '/checkout/return': {
+      id: '/checkout/return'
+      path: '/checkout/return'
+      fullPath: '/checkout/return'
+      preLoaderRoute: typeof CheckoutReturnRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/verify/$reportId': {
       id: '/verify/$reportId'
@@ -369,6 +389,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   LawRoute: LawRoute,
   PricingRoute: PricingRoute,
+  CheckoutReturnRoute: CheckoutReturnRoute,
   VerifyReportIdRoute: VerifyReportIdRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }

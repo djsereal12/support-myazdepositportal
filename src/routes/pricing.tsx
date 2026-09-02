@@ -1,6 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Page } from "@/components/site-shell";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
+import { Page } from "@/components/site-shell";
+import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
+import { useStripeCheckout } from "@/hooks/useStripeCheckout";
+import { PRICES } from "@/lib/stripe";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -16,6 +21,8 @@ export const Route = createFileRoute("/pricing")({
         property: "og:description",
         content: "Protect an $1,800 average deposit loss for less than $25.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Pricing,
@@ -26,6 +33,7 @@ const tiers = [
     name: "Single Report",
     price: "$14.99",
     tag: "per report",
+    priceId: PRICES.singleReport,
     features: [
       "One guided 8-room scan",
       "SHA-256 hash on every file",
@@ -38,6 +46,7 @@ const tiers = [
     price: "$24.99",
     tag: "move-in + move-out + comparison",
     featured: true,
+    priceId: PRICES.bundle,
     features: [
       "Everything in Single Report, twice",
       "Automatic side-by-side comparison",
@@ -49,6 +58,7 @@ const tiers = [
     name: "Dispute Letter",
     price: "$29",
     tag: "one-time add-on",
+    priceId: PRICES.demandLetter,
     features: [
       "Auto-filled tenant + landlord details",
       "Cites A.R.S. § 33-1321(D) and (E)",
@@ -59,9 +69,28 @@ const tiers = [
 ];
 
 function Pricing() {
+  const { openCheckout, closeCheckout, isOpen, checkoutElement } = useStripeCheckout();
+  const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) =>
+      setUser(data.user ? { id: data.user.id, ...(data.user.email ? { email: data.user.email } : {}) } : null),
+    );
+  }, []);
+
+  function buy(priceId: string) {
+    openCheckout({
+      priceId,
+      ...(user?.id ? { userId: user.id } : {}),
+      ...(user?.email ? { customerEmail: user.email } : {}),
+      returnUrl: `${window.location.origin}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
+    });
+  }
+
   return (
     <Page>
-      <section className="rounded-3xl border border-border lavender-wash px-6 py-14 shadow-lift sm:px-12">
+      <PaymentTestModeBanner />
+      <section className="mt-4 rounded-3xl border border-border lavender-wash px-6 py-14 shadow-lift sm:px-12">
         <h1 className="max-w-2xl text-4xl font-semibold leading-tight sm:text-5xl">
           Less than a dinner out. Against an{" "}
           <span className="font-script text-5xl font-normal text-lavender-deep">$1,800</span> average
@@ -72,6 +101,21 @@ function Pricing() {
           Every plan below costs under 2% of that.
         </p>
       </section>
+
+      {isOpen ? (
+        <section className="glass-panel mt-8 p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Complete your purchase</h2>
+            <button
+              onClick={closeCheckout}
+              className="rounded-full border border-border bg-card px-4 py-2 text-xs font-medium hover:bg-accent"
+            >
+              Cancel
+            </button>
+          </div>
+          {checkoutElement}
+        </section>
+      ) : null}
 
       <section className="mt-8 grid gap-4 lg:grid-cols-3">
         {tiers.map((t) => (
@@ -95,16 +139,16 @@ function Pricing() {
                 </li>
               ))}
             </ul>
-            <Link
-              to="/dashboard"
+            <button
+              onClick={() => buy(t.priceId)}
               className={`mt-8 rounded-full px-5 py-3 text-center text-sm font-medium transition-opacity hover:opacity-90 ${
                 t.featured
                   ? "bg-primary text-primary-foreground"
                   : "border border-border bg-card hover:bg-accent"
               }`}
             >
-              Get started
-            </Link>
+              Buy {t.price}
+            </button>
           </article>
         ))}
       </section>
