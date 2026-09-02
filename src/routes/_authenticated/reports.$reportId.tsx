@@ -103,6 +103,21 @@ function ReportView() {
     },
   });
 
+  const { data: inviteMessages } = useQuery({
+    queryKey: ["invite-messages", reportId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("invite_messages")
+        .select("id, invite_id, author_role, author_name, body, created_at")
+        .eq("report_id", reportId)
+        .order("created_at");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+
+
   const unlocked = reportUnlocked(purchases ?? [], reportId, report?.property_id ?? null);
   const certified = certifiedPdfUnlocked(purchases ?? [], reportId);
 
