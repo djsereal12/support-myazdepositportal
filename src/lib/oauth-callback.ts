@@ -6,10 +6,10 @@ export type OAuthCallbackResult =
   | { status: "error"; message: string };
 
 function readTokens(): {
-  access_token?: string;
-  refresh_token?: string;
-  error?: string;
-  error_description?: string;
+  access_token?: string | undefined;
+  refresh_token?: string | undefined;
+  error?: string | undefined;
+  error_description?: string | undefined;
 } | null {
   if (typeof window === "undefined") return null;
   const fromHash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
@@ -20,10 +20,10 @@ function readTokens(): {
   const error = pick("error");
   if (!access_token && !refresh_token && !error) return null;
   return {
-    ...(access_token ? { access_token } : {}),
-    ...(refresh_token ? { refresh_token } : {}),
-    ...(error ? { error } : {}),
-    ...(pick("error_description") ? { error_description: pick("error_description") } : {}),
+    access_token,
+    refresh_token,
+    error,
+    error_description: pick("error_description"),
   };
 }
 
