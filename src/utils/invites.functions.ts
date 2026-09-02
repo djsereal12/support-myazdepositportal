@@ -147,20 +147,17 @@ export const createLandlordInvite = createServerFn({ method: "POST" })
     ]
       .filter(Boolean)
       .join("\n");
-    const html = `
-      <div style="font-family:Inter,Helvetica,Arial,sans-serif;color:#111111;background:#F8F7F5;padding:32px">
-        <div style="max-width:560px;margin:0 auto;background:#FFFFFF;border:1px solid #EAE9E5;border-radius:16px;padding:32px">
-          <p style="font-size:22px;margin:0 0 20px">deposit</p>
-          <h1 style="font-size:20px;margin:0 0 16px">Review the move-in inspection for ${address}</h1>
-          <p style="font-size:14px;line-height:1.6;margin:0 0 16px">${(data.customMessage || "Please review and accept the attached move-in inspection report.").replace(/</g, "&lt;")}</p>
-          <p style="font-size:14px;line-height:1.6;margin:0 0 24px">Report ${report.report_number}, created per A.R.S. § 33-1321(C). Photos include GPS, timestamps and SHA-256 hashes.</p>
-          <a href="${link}" style="display:inline-block;background:#111111;color:#FFFFFF;text-decoration:none;padding:12px 22px;border-radius:999px;font-size:14px">View &amp; e-sign the report</a>
-          <p style="font-size:12px;color:#6b675f;margin:24px 0 0">This link expires in 7 days. You can accept the report or dispute it with notes — no account required.</p>
-        </div>
-      </div>`;
 
-    const result = await sendInviteEmail({ to: data.landlordEmail, subject, html, text });
+    const result = await sendInviteEmail({
+      to: data.landlordEmail,
+      address,
+      reportNumber: report.report_number,
+      customMessage: data.customMessage,
+      link,
+      inviteId: invite.id,
+    });
     return { inviteId: invite.id, token: invite.token, link, subject, text, emailSent: result.sent, reason: result.reason ?? null };
+
   });
 
 /** Public: load an invite and its full report by token. */
