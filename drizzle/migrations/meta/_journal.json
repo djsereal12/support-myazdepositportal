@@ -1,5 +1,20 @@
 {
   "version": "7",
   "dialect": "postgresql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1788363219224,
+      "tag": "0000_deposit_core_schema",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788363249628,
+      "tag": "0001_media_storage_policies",
+      "breakpoints": true
+    }
+  ]
 }

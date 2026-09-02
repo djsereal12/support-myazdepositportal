@@ -14,7 +14,229 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      demand_letters: {
+        Row: {
+          amount_withheld: number | null
+          body: string | null
+          created_at: string
+          id: string
+          letter_pdf_url: string | null
+          property_id: string | null
+          report_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount_withheld?: number | null
+          body?: string | null
+          created_at?: string
+          id?: string
+          letter_pdf_url?: string | null
+          property_id?: string | null
+          report_id?: string | null
+          user_id?: string
+        }
+        Update: {
+          amount_withheld?: number | null
+          body?: string | null
+          created_at?: string
+          id?: string
+          letter_pdf_url?: string | null
+          property_id?: string | null
+          report_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "demand_letters_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "demand_letters_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      media: {
+        Row: {
+          condition: string
+          created_at: string
+          device_model: string | null
+          exif_timestamp: string | null
+          file_hash_sha256: string | null
+          file_url: string
+          gps_lat: number | null
+          gps_lng: number | null
+          id: string
+          note: string | null
+          report_id: string
+          room_label: string
+          user_id: string
+        }
+        Insert: {
+          condition?: string
+          created_at?: string
+          device_model?: string | null
+          exif_timestamp?: string | null
+          file_hash_sha256?: string | null
+          file_url: string
+          gps_lat?: number | null
+          gps_lng?: number | null
+          id?: string
+          note?: string | null
+          report_id: string
+          room_label: string
+          user_id?: string
+        }
+        Update: {
+          condition?: string
+          created_at?: string
+          device_model?: string | null
+          exif_timestamp?: string | null
+          file_hash_sha256?: string | null
+          file_url?: string
+          gps_lat?: number | null
+          gps_lng?: number | null
+          id?: string
+          note?: string | null
+          report_id?: string
+          room_label?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "media_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      properties: {
+        Row: {
+          address: string
+          created_at: string
+          deposit_amount: number | null
+          id: string
+          landlord_email: string | null
+          landlord_name: string | null
+          lease_end: string | null
+          lease_start: string | null
+          status: string
+          unit: string | null
+          user_id: string
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          deposit_amount?: number | null
+          id?: string
+          landlord_email?: string | null
+          landlord_name?: string | null
+          lease_end?: string | null
+          lease_start?: string | null
+          status?: string
+          unit?: string | null
+          user_id?: string
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          deposit_amount?: number | null
+          id?: string
+          landlord_email?: string | null
+          landlord_name?: string | null
+          lease_end?: string | null
+          lease_start?: string | null
+          status?: string
+          unit?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          created_at: string
+          gps_lat: number | null
+          gps_lng: number | null
+          id: string
+          overall_hash: string | null
+          pdf_url: string | null
+          property_id: string
+          qr_verification_url: string | null
+          report_number: string
+          status: string
+          type: string
+          user_id: string
+          weather_snapshot: string | null
+        }
+        Insert: {
+          created_at?: string
+          gps_lat?: number | null
+          gps_lng?: number | null
+          id?: string
+          overall_hash?: string | null
+          pdf_url?: string | null
+          property_id: string
+          qr_verification_url?: string | null
+          report_number?: string
+          status?: string
+          type?: string
+          user_id?: string
+          weather_snapshot?: string | null
+        }
+        Update: {
+          created_at?: string
+          gps_lat?: number | null
+          gps_lng?: number | null
+          id?: string
+          overall_hash?: string | null
+          pdf_url?: string | null
+          property_id?: string
+          qr_verification_url?: string | null
+          report_number?: string
+          status?: string
+          type?: string
+          user_id?: string
+          weather_snapshot?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
