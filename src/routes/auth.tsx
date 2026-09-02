@@ -57,6 +57,7 @@ function roleNoun(role: Role) {
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [role, setRole] = useState<Role>("tenant");
   const [email, setEmail] = useState("");
@@ -71,6 +72,10 @@ function AuthPage() {
   }, [navigate]);
 
   async function redirectForRole(userId: string) {
+    if (next) {
+      window.location.href = next;
+      return;
+    }
     const { data: roles } = await supabase
       .from("user_roles")
       .select("role")
@@ -80,6 +85,7 @@ function AuthPage() {
     const firstRole = roles?.[0]?.role as Role | undefined;
     navigate({ to: firstRole ? roleDetails[firstRole].home : "/dashboard", replace: true });
   }
+
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
