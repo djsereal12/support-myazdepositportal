@@ -57,6 +57,13 @@
       "when": 1788372790651,
       "tag": "0007_invite_messages_thread",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1788373128274,
+      "tag": "0008_user_profiles_landlord_profiles_admins",
+      "breakpoints": true
     }
   ]
 }
