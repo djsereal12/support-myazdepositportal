@@ -21,6 +21,7 @@ import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as VerifyReportIdRouteImport } from './routes/verify.$reportId'
 import { Route as AuthenticatedComparePropertyIdRouteImport } from './routes/_authenticated/compare.$propertyId'
 import { Route as AuthenticatedDemandPropertyIdRouteImport } from './routes/_authenticated/demand.$propertyId'
+import { Route as AuthenticatedLandlordReportIdRouteImport } from './routes/_authenticated/landlord.$reportId'
 import { Route as AuthenticatedPropertiesPropertyIdRouteImport } from './routes/_authenticated/properties.$propertyId'
 import { Route as AuthenticatedPropertiesNewRouteImport } from './routes/_authenticated/properties.new'
 import { Route as AuthenticatedReportsReportIdRouteImport } from './routes/_authenticated/reports.$reportId'
@@ -88,6 +89,12 @@ const AuthenticatedDemandPropertyIdRoute =
     path: '/demand/$propertyId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedLandlordReportIdRoute =
+  AuthenticatedLandlordReportIdRouteImport.update({
+    id: '/$reportId',
+    path: '/$reportId',
+    getParentRoute: () => AuthenticatedLandlordRoute,
+  } as any)
 const AuthenticatedPropertiesPropertyIdRoute =
   AuthenticatedPropertiesPropertyIdRouteImport.update({
     id: '/properties/$propertyId',
@@ -125,12 +132,13 @@ export interface FileRoutesByFullPath {
   '/law': typeof LawRoute
   '/pricing': typeof PricingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/landlord': typeof AuthenticatedLandlordRoute
+  '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
+  '/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
   '/properties/$propertyId': typeof AuthenticatedPropertiesPropertyIdRoute
   '/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
@@ -143,12 +151,13 @@ export interface FileRoutesByTo {
   '/law': typeof LawRoute
   '/pricing': typeof PricingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/landlord': typeof AuthenticatedLandlordRoute
+  '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
+  '/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
   '/properties/$propertyId': typeof AuthenticatedPropertiesPropertyIdRoute
   '/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
@@ -163,12 +172,13 @@ export interface FileRoutesById {
   '/law': typeof LawRoute
   '/pricing': typeof PricingRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/landlord': typeof AuthenticatedLandlordRoute
+  '/_authenticated/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
   '/_authenticated/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/_authenticated/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
+  '/_authenticated/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
   '/_authenticated/properties/$propertyId': typeof AuthenticatedPropertiesPropertyIdRoute
   '/_authenticated/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/_authenticated/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
@@ -189,6 +199,7 @@ export interface FileRouteTypes {
     | '/verify/$reportId'
     | '/compare/$propertyId'
     | '/demand/$propertyId'
+    | '/landlord/$reportId'
     | '/properties/$propertyId'
     | '/properties/new'
     | '/reports/$reportId'
@@ -207,6 +218,7 @@ export interface FileRouteTypes {
     | '/verify/$reportId'
     | '/compare/$propertyId'
     | '/demand/$propertyId'
+    | '/landlord/$reportId'
     | '/properties/$propertyId'
     | '/properties/new'
     | '/reports/$reportId'
@@ -226,6 +238,7 @@ export interface FileRouteTypes {
     | '/verify/$reportId'
     | '/_authenticated/compare/$propertyId'
     | '/_authenticated/demand/$propertyId'
+    | '/_authenticated/landlord/$reportId'
     | '/_authenticated/properties/$propertyId'
     | '/_authenticated/properties/new'
     | '/_authenticated/reports/$reportId'
@@ -330,6 +343,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDemandPropertyIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/landlord/$reportId': {
+      id: '/_authenticated/landlord/$reportId'
+      path: '/$reportId'
+      fullPath: '/landlord/$reportId'
+      preLoaderRoute: typeof AuthenticatedLandlordReportIdRouteImport
+      parentRoute: typeof AuthenticatedLandlordRoute
+    }
     '/_authenticated/properties/$propertyId': {
       id: '/_authenticated/properties/$propertyId'
       path: '/properties/$propertyId'
@@ -368,9 +388,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedLandlordRouteChildren {
+  AuthenticatedLandlordReportIdRoute: typeof AuthenticatedLandlordReportIdRoute
+}
+
+const AuthenticatedLandlordRouteChildren: AuthenticatedLandlordRouteChildren = {
+  AuthenticatedLandlordReportIdRoute: AuthenticatedLandlordReportIdRoute,
+}
+
+const AuthenticatedLandlordRouteWithChildren =
+  AuthenticatedLandlordRoute._addFileChildren(
+    AuthenticatedLandlordRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedLandlordRoute: typeof AuthenticatedLandlordRoute
+  AuthenticatedLandlordRoute: typeof AuthenticatedLandlordRouteWithChildren
   AuthenticatedComparePropertyIdRoute: typeof AuthenticatedComparePropertyIdRoute
   AuthenticatedDemandPropertyIdRoute: typeof AuthenticatedDemandPropertyIdRoute
   AuthenticatedPropertiesPropertyIdRoute: typeof AuthenticatedPropertiesPropertyIdRoute
@@ -381,7 +414,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
-  AuthenticatedLandlordRoute: AuthenticatedLandlordRoute,
+  AuthenticatedLandlordRoute: AuthenticatedLandlordRouteWithChildren,
   AuthenticatedComparePropertyIdRoute: AuthenticatedComparePropertyIdRoute,
   AuthenticatedDemandPropertyIdRoute: AuthenticatedDemandPropertyIdRoute,
   AuthenticatedPropertiesPropertyIdRoute:
