@@ -241,7 +241,7 @@ function AuthPage() {
               disabled={busy}
               className="w-full rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
             >
-              {busy ? "Working…" : mode === "signin" ? `Sign in as ${activeRole.label.split(" ").slice(2).join(" ")}` : "Create account"}
+              {busy ? "Working…" : mode === "signin" ? `Sign in as ${roleNoun(role)}` : "Create account"}
             </button>
           </form>
 
