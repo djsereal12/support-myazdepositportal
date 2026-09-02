@@ -15,9 +15,7 @@ function getSupabase() {
 
 async function recordPurchase(session: any, env: StripeEnv, status: string) {
   const metadata = session.metadata ?? {};
-  await getSupabase()
-    .from("purchases")
-    .upsert(
+  await (getSupabase().from("purchases") as any).upsert(
       {
         user_id: metadata.userId ?? null,
         email: session.customer_details?.email ?? null,
