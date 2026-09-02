@@ -1,11 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Page } from "@/components/site-shell";
 import { supabase } from "@/integrations/supabase/client";
 import { money, businessDaysFrom, formatDate } from "@/lib/deposit";
-import { Printer, Save } from "lucide-react";
+import { fetchPurchases, demandLetterUnlocked } from "@/lib/entitlements";
+import { useStripeCheckout } from "@/hooks/useStripeCheckout";
+import { PRICES } from "@/lib/stripe";
+import { Printer, Save, Lock } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/demand/$propertyId")({
   head: () => ({
