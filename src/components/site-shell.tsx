@@ -42,6 +42,9 @@ export function SiteHeader() {
           <Link to="/pricing" className="transition-colors hover:text-foreground">
             Pricing
           </Link>
+          <Link to="/landlord-access" className="transition-colors hover:text-foreground">
+            Landlord portal
+          </Link>
           <Link to="/faq" className="transition-colors hover:text-foreground">
             Tenant FAQ
           </Link>
