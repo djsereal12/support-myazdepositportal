@@ -46,9 +46,14 @@ export function SiteHeader() {
             Arizona law
           </Link>
           {email ? (
-            <Link to="/dashboard" className="transition-colors hover:text-foreground">
-              Dashboard
-            </Link>
+            <>
+              <Link to="/dashboard" className="transition-colors hover:text-foreground">
+                Dashboard
+              </Link>
+              <Link to="/landlord" className="transition-colors hover:text-foreground">
+                Landlord
+              </Link>
+            </>
           ) : null}
         </nav>
         {email ? (
