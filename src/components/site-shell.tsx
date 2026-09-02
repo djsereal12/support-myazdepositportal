@@ -59,6 +59,9 @@ export function SiteHeader() {
               <Link to="/landlord" className="transition-colors hover:text-foreground">
                 Landlord
               </Link>
+              <Link to="/profile" className="transition-colors hover:text-foreground">
+                Account
+              </Link>
             </>
           ) : null}
         </nav>
