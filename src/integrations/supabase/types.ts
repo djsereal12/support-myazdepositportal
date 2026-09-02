@@ -14,6 +14,21 @@ export type Database = {
   }
   public: {
     Tables: {
+      admins: {
+        Row: {
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       demand_letters: {
         Row: {
           amount_withheld: number | null
@@ -288,6 +303,48 @@ export type Database = {
           },
         ]
       }
+      landlord_profiles: {
+        Row: {
+          city: string | null
+          company_name: string | null
+          contact_name: string | null
+          created_at: string
+          license_number: string | null
+          mailing_address: string | null
+          phone: string | null
+          postal_code: string | null
+          state: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          city?: string | null
+          company_name?: string | null
+          contact_name?: string | null
+          created_at?: string
+          license_number?: string | null
+          mailing_address?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          state?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          city?: string | null
+          company_name?: string | null
+          contact_name?: string | null
+          created_at?: string
+          license_number?: string | null
+          mailing_address?: string | null
+          phone?: string | null
+          postal_code?: string | null
+          state?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       media: {
         Row: {
           condition: string
@@ -346,22 +403,46 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
+          city: string | null
           created_at: string
           email: string | null
           full_name: string | null
           id: string
+          mailing_address: string | null
+          notify_email: boolean
+          phone: string | null
+          postal_code: string | null
+          state: string | null
+          updated_at: string
         }
         Insert: {
+          avatar_url?: string | null
+          city?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           id: string
+          mailing_address?: string | null
+          notify_email?: boolean
+          phone?: string | null
+          postal_code?: string | null
+          state?: string | null
+          updated_at?: string
         }
         Update: {
+          avatar_url?: string | null
+          city?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           id?: string
+          mailing_address?: string | null
+          notify_email?: boolean
+          phone?: string | null
+          postal_code?: string | null
+          state?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -608,6 +689,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin: { Args: { _user_id: string }; Returns: boolean }
       landlord_can_view_property: {
         Args: { _property_id: string }
         Returns: boolean
