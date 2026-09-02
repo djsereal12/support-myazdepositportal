@@ -1,10 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Page } from "@/components/site-shell";
 import { MediaThumb } from "@/components/media-image";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDate, shortHash, REPORT_TYPE_LABEL } from "@/lib/deposit";
-import { Printer, Mail } from "lucide-react";
+import { fetchPurchases, reportUnlocked } from "@/lib/entitlements";
+import { useStripeCheckout } from "@/hooks/useStripeCheckout";
+import { PRICES } from "@/lib/stripe";
+import { Printer, Mail, Lock, Share2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/reports/$reportId")({
   head: () => ({
