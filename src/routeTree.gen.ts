@@ -15,14 +15,18 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as LawRouteImport } from './routes/law'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedLandlordRouteImport } from './routes/_authenticated/landlord'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as VerifyReportIdRouteImport } from './routes/verify.$reportId'
 import { Route as AuthenticatedComparePropertyIdRouteImport } from './routes/_authenticated/compare.$propertyId'
 import { Route as AuthenticatedDemandPropertyIdRouteImport } from './routes/_authenticated/demand.$propertyId'
+import { Route as AuthenticatedLandlordReportIdRouteImport } from './routes/_authenticated/landlord.$reportId'
 import { Route as AuthenticatedPropertiesPropertyIdRouteImport } from './routes/_authenticated/properties.$propertyId'
 import { Route as AuthenticatedPropertiesNewRouteImport } from './routes/_authenticated/properties.new'
 import { Route as AuthenticatedReportsReportIdRouteImport } from './routes/_authenticated/reports.$reportId'
 import { Route as AuthenticatedScanReportIdRouteImport } from './routes/_authenticated/scan.$reportId'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -53,10 +57,20 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedLandlordRoute = AuthenticatedLandlordRouteImport.update({
+  id: '/landlord',
+  path: '/landlord',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/callback',
   path: '/callback',
   getParentRoute: () => AuthRoute,
+} as any)
+const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
+  id: '/checkout/return',
+  path: '/checkout/return',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const VerifyReportIdRoute = VerifyReportIdRouteImport.update({
   id: '/verify/$reportId',
@@ -74,6 +88,12 @@ const AuthenticatedDemandPropertyIdRoute =
     id: '/demand/$propertyId',
     path: '/demand/$propertyId',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedLandlordReportIdRoute =
+  AuthenticatedLandlordReportIdRouteImport.update({
+    id: '/$reportId',
+    path: '/$reportId',
+    getParentRoute: () => AuthenticatedLandlordRoute,
   } as any)
 const AuthenticatedPropertiesPropertyIdRoute =
   AuthenticatedPropertiesPropertyIdRouteImport.update({
@@ -99,6 +119,12 @@ const AuthenticatedScanReportIdRoute =
     path: '/scan/$reportId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -106,14 +132,18 @@ export interface FileRoutesByFullPath {
   '/law': typeof LawRoute
   '/pricing': typeof PricingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
+  '/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
   '/properties/$propertyId': typeof AuthenticatedPropertiesPropertyIdRoute
   '/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
   '/scan/$reportId': typeof AuthenticatedScanReportIdRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -121,14 +151,18 @@ export interface FileRoutesByTo {
   '/law': typeof LawRoute
   '/pricing': typeof PricingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
+  '/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
   '/properties/$propertyId': typeof AuthenticatedPropertiesPropertyIdRoute
   '/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
   '/scan/$reportId': typeof AuthenticatedScanReportIdRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -138,14 +172,18 @@ export interface FileRoutesById {
   '/law': typeof LawRoute
   '/pricing': typeof PricingRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$reportId': typeof VerifyReportIdRoute
   '/_authenticated/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/_authenticated/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
+  '/_authenticated/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
   '/_authenticated/properties/$propertyId': typeof AuthenticatedPropertiesPropertyIdRoute
   '/_authenticated/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/_authenticated/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
   '/_authenticated/scan/$reportId': typeof AuthenticatedScanReportIdRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -155,14 +193,18 @@ export interface FileRouteTypes {
     | '/law'
     | '/pricing'
     | '/dashboard'
+    | '/landlord'
     | '/auth/callback'
+    | '/checkout/return'
     | '/verify/$reportId'
     | '/compare/$propertyId'
     | '/demand/$propertyId'
+    | '/landlord/$reportId'
     | '/properties/$propertyId'
     | '/properties/new'
     | '/reports/$reportId'
     | '/scan/$reportId'
+    | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -170,14 +212,18 @@ export interface FileRouteTypes {
     | '/law'
     | '/pricing'
     | '/dashboard'
+    | '/landlord'
     | '/auth/callback'
+    | '/checkout/return'
     | '/verify/$reportId'
     | '/compare/$propertyId'
     | '/demand/$propertyId'
+    | '/landlord/$reportId'
     | '/properties/$propertyId'
     | '/properties/new'
     | '/reports/$reportId'
     | '/scan/$reportId'
+    | '/api/public/payments/webhook'
   id:
     | '__root__'
     | '/'
@@ -186,14 +232,18 @@ export interface FileRouteTypes {
     | '/law'
     | '/pricing'
     | '/_authenticated/dashboard'
+    | '/_authenticated/landlord'
     | '/auth/callback'
+    | '/checkout/return'
     | '/verify/$reportId'
     | '/_authenticated/compare/$propertyId'
     | '/_authenticated/demand/$propertyId'
+    | '/_authenticated/landlord/$reportId'
     | '/_authenticated/properties/$propertyId'
     | '/_authenticated/properties/new'
     | '/_authenticated/reports/$reportId'
     | '/_authenticated/scan/$reportId'
+    | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -202,7 +252,9 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   LawRoute: typeof LawRoute
   PricingRoute: typeof PricingRoute
+  CheckoutReturnRoute: typeof CheckoutReturnRoute
   VerifyReportIdRoute: typeof VerifyReportIdRoute
+  ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -249,12 +301,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/landlord': {
+      id: '/_authenticated/landlord'
+      path: '/landlord'
+      fullPath: '/landlord'
+      preLoaderRoute: typeof AuthenticatedLandlordRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/auth/callback': {
       id: '/auth/callback'
       path: '/callback'
       fullPath: '/auth/callback'
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof AuthRoute
+    }
+    '/checkout/return': {
+      id: '/checkout/return'
+      path: '/checkout/return'
+      fullPath: '/checkout/return'
+      preLoaderRoute: typeof CheckoutReturnRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/verify/$reportId': {
       id: '/verify/$reportId'
@@ -276,6 +342,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/demand/$propertyId'
       preLoaderRoute: typeof AuthenticatedDemandPropertyIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/landlord/$reportId': {
+      id: '/_authenticated/landlord/$reportId'
+      path: '/$reportId'
+      fullPath: '/landlord/$reportId'
+      preLoaderRoute: typeof AuthenticatedLandlordReportIdRouteImport
+      parentRoute: typeof AuthenticatedLandlordRoute
     }
     '/_authenticated/properties/$propertyId': {
       id: '/_authenticated/properties/$propertyId'
@@ -305,11 +378,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedScanReportIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedLandlordRouteChildren {
+  AuthenticatedLandlordReportIdRoute: typeof AuthenticatedLandlordReportIdRoute
+}
+
+const AuthenticatedLandlordRouteChildren: AuthenticatedLandlordRouteChildren = {
+  AuthenticatedLandlordReportIdRoute: AuthenticatedLandlordReportIdRoute,
+}
+
+const AuthenticatedLandlordRouteWithChildren =
+  AuthenticatedLandlordRoute._addFileChildren(
+    AuthenticatedLandlordRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedLandlordRoute: typeof AuthenticatedLandlordRouteWithChildren
   AuthenticatedComparePropertyIdRoute: typeof AuthenticatedComparePropertyIdRoute
   AuthenticatedDemandPropertyIdRoute: typeof AuthenticatedDemandPropertyIdRoute
   AuthenticatedPropertiesPropertyIdRoute: typeof AuthenticatedPropertiesPropertyIdRoute
@@ -320,6 +414,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedLandlordRoute: AuthenticatedLandlordRouteWithChildren,
   AuthenticatedComparePropertyIdRoute: AuthenticatedComparePropertyIdRoute,
   AuthenticatedDemandPropertyIdRoute: AuthenticatedDemandPropertyIdRoute,
   AuthenticatedPropertiesPropertyIdRoute:
@@ -348,7 +443,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   LawRoute: LawRoute,
   PricingRoute: PricingRoute,
+  CheckoutReturnRoute: CheckoutReturnRoute,
   VerifyReportIdRoute: VerifyReportIdRoute,
+  ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

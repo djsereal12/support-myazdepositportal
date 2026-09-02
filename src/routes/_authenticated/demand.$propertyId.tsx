@@ -1,11 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Page } from "@/components/site-shell";
 import { supabase } from "@/integrations/supabase/client";
 import { money, businessDaysFrom, formatDate } from "@/lib/deposit";
-import { Printer, Save } from "lucide-react";
+import { fetchPurchases, demandLetterUnlocked } from "@/lib/entitlements";
+import { useStripeCheckout } from "@/hooks/useStripeCheckout";
+import { PRICES } from "@/lib/stripe";
+import { Printer, Save, Lock } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/demand/$propertyId")({
   head: () => ({
@@ -57,6 +60,29 @@ function Demand() {
   const deadline = businessDaysFrom(new Date(moveOutDate), 14);
   const doubled = amount * 2;
 
+  const { openCheckout, closeCheckout, isOpen, checkoutElement } = useStripeCheckout();
+  const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: u }) =>
+      setUser(u.user ? { id: u.user.id, ...(u.user.email ? { email: u.user.email } : {}) } : null),
+    );
+  }, []);
+  const { data: purchases } = useQuery({ queryKey: ["purchases"], queryFn: fetchPurchases });
+  const unlocked = demandLetterUnlocked(purchases ?? [], propertyId);
+
+  function unlock() {
+    openCheckout({
+      priceId: PRICES.demandLetter,
+      propertyId,
+      ...(data?.report?.id ? { reportId: data.report.id } : {}),
+      ...(user?.id ? { userId: user.id } : {}),
+      ...(user?.email ? { customerEmail: user.email } : {}),
+      returnUrl: `${window.location.origin}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
+    });
+  }
+
+
+
   async function save() {
     setSaving(true);
     const { data: userData } = await supabase.auth.getUser();
@@ -103,22 +129,48 @@ function Demand() {
         >
           ← Property file
         </Link>
-        <div className="flex gap-2">
+        {unlocked ? (
+          <div className="flex gap-2">
+            <button
+              onClick={save}
+              disabled={saving}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent disabled:opacity-50"
+            >
+              <Save className="h-3.5 w-3.5" /> Save to file
+            </button>
+            <button
+              onClick={() => window.print()}
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
+            >
+              <Printer className="h-3.5 w-3.5" /> Save as PDF
+            </button>
+          </div>
+        ) : (
           <button
-            onClick={save}
-            disabled={saving}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent disabled:opacity-50"
-          >
-            <Save className="h-3.5 w-3.5" /> Save to file
-          </button>
-          <button
-            onClick={() => window.print()}
+            onClick={unlock}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
           >
-            <Printer className="h-3.5 w-3.5" /> Save as PDF
+            <Lock className="h-3.5 w-3.5" /> Unlock demand letter — $29
           </button>
-        </div>
+        )}
       </div>
+
+      {isOpen ? (
+        <section className="glass-panel mt-6 p-6 print:hidden">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Complete your purchase</h2>
+            <button
+              onClick={closeCheckout}
+              className="rounded-full border border-border bg-card px-4 py-2 text-xs font-medium hover:bg-accent"
+            >
+              Cancel
+            </button>
+          </div>
+          {checkoutElement}
+        </section>
+      ) : null}
+
+
 
       <div className="mt-6 grid gap-5 lg:grid-cols-[320px_1fr]">
         <aside className="glass-panel h-fit space-y-4 p-6 print:hidden">

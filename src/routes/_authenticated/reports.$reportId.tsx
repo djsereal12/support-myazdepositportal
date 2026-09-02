@@ -1,10 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Page } from "@/components/site-shell";
 import { MediaThumb } from "@/components/media-image";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDate, shortHash, REPORT_TYPE_LABEL } from "@/lib/deposit";
-import { Printer, Mail } from "lucide-react";
+import { fetchPurchases, reportUnlocked } from "@/lib/entitlements";
+import { useStripeCheckout } from "@/hooks/useStripeCheckout";
+import { PRICES } from "@/lib/stripe";
+import { Printer, Mail, Lock, Share2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/reports/$reportId")({
   head: () => ({
@@ -47,6 +52,59 @@ function ReportView() {
     },
   });
 
+  const queryClient = useQueryClient();
+  const { openCheckout, closeCheckout, isOpen, checkoutElement } = useStripeCheckout();
+  const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
+  const [shareEmail, setShareEmail] = useState("");
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) =>
+      setUser(
+        data.user ? { id: data.user.id, ...(data.user.email ? { email: data.user.email } : {}) } : null,
+      ),
+    );
+  }, []);
+
+  const { data: purchases } = useQuery({ queryKey: ["purchases"], queryFn: fetchPurchases });
+  const { data: shares } = useQuery({
+    queryKey: ["shares", reportId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("report_shares")
+        .select("*")
+        .eq("report_id", reportId);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const unlocked = reportUnlocked(purchases ?? [], reportId, report?.property_id ?? null);
+
+  function unlock(priceId: string) {
+    openCheckout({
+      priceId,
+      reportId,
+      ...(report?.property_id ? { propertyId: report.property_id } : {}),
+      ...(user?.id ? { userId: user.id } : {}),
+      ...(user?.email ? { customerEmail: user.email } : {}),
+      returnUrl: `${window.location.origin}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
+    });
+  }
+
+  async function share() {
+    const email = shareEmail.trim().toLowerCase();
+    if (!email) return;
+    const { error } = await supabase
+      .from("report_shares")
+      .insert({ report_id: reportId, landlord_email: email });
+    if (error) toast.error(error.message);
+    else {
+      toast.success(`Shared with ${email}`);
+      setShareEmail("");
+      queryClient.invalidateQueries({ queryKey: ["shares", reportId] });
+    }
+  }
+
   const property = report?.properties as { address: string; unit: string | null; landlord_email: string | null } | null;
   const verifyUrl = report?.qr_verification_url ?? "";
   const qrSrc = verifyUrl
@@ -78,21 +136,92 @@ function ReportView() {
         >
           ← Property file
         </Link>
-        <div className="flex gap-2">
+        {unlocked ? (
+          <div className="flex gap-2">
+            <button
+              onClick={() => window.print()}
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
+            >
+              <Printer className="h-3.5 w-3.5" /> Save as PDF
+            </button>
+            <button
+              onClick={email}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent"
+            >
+              <Mail className="h-3.5 w-3.5" /> Email landlord
+            </button>
+          </div>
+        ) : (
+          <div className="flex gap-2">
+            <button
+              onClick={() => unlock(PRICES.singleReport)}
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
+            >
+              <Lock className="h-3.5 w-3.5" /> Unlock this report — $14.99
+            </button>
+            <button
+              onClick={() => unlock(PRICES.bundle)}
+              className="rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent"
+            >
+              Bundle for this property — $24.99
+            </button>
+          </div>
+        )}
+      </div>
+
+      {isOpen ? (
+        <section className="glass-panel mt-6 p-6 print:hidden">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Complete your purchase</h2>
+            <button
+              onClick={closeCheckout}
+              className="rounded-full border border-border bg-card px-4 py-2 text-xs font-medium hover:bg-accent"
+            >
+              Cancel
+            </button>
+          </div>
+          {checkoutElement}
+        </section>
+      ) : null}
+
+      <section className="glass-panel mt-6 p-6 print:hidden">
+        <div className="flex items-center gap-2">
+          <Share2 className="h-4 w-4 text-lavender" strokeWidth={1.5} />
+          <h2 className="text-sm font-semibold">Share with your landlord</h2>
+        </div>
+        <p className="mt-2 text-xs text-muted-foreground">
+          They sign in with this email address and see the report read-only in the landlord portal.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <input
+            value={shareEmail}
+            onChange={(e) => setShareEmail(e.target.value)}
+            type="email"
+            placeholder="landlord@example.com"
+            className="min-w-[16rem] flex-1 rounded-full border border-border bg-card px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-lavender/40"
+          />
           <button
-            onClick={() => window.print()}
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
+            onClick={share}
+            className="rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
           >
-            <Printer className="h-3.5 w-3.5" /> Save as PDF
-          </button>
-          <button
-            onClick={email}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent"
-          >
-            <Mail className="h-3.5 w-3.5" /> Email landlord
+            Share
           </button>
         </div>
-      </div>
+        {shares?.length ? (
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {shares.map((s) => (
+              <li
+                key={s.id}
+                className="rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground"
+              >
+                {s.landlord_email}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </section>
+
+
 
       <article className="mt-6 rounded-2xl border border-border bg-card p-8 shadow-soft sm:p-12">
         <header className="flex flex-wrap items-start justify-between gap-6 border-b border-border pb-8">

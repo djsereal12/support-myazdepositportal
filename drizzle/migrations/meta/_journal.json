@@ -15,6 +15,13 @@
       "when": 1788363249628,
       "tag": "0001_media_storage_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788364970317,
+      "tag": "0002_landlord_access_and_purchases",
+      "breakpoints": true
     }
   ]
 }
