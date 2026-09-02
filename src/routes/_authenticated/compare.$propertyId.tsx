@@ -8,9 +8,9 @@ import { CHECKLIST, compareConditions, shortHash, type DamageFlag } from "@/lib/
 export const Route = createFileRoute("/_authenticated/compare/$propertyId")({
   head: () => ({
     meta: [
-      { title: "Move-in vs move-out — DEPOSIT" },
+      { title: "Move-in vs move-out — deposit" },
       { name: "description", content: "Side-by-side comparison with new damage and pre-existing flags." },
-      { property: "og:title", content: "Move-in vs move-out — DEPOSIT" },
+      { property: "og:title", content: "Move-in vs move-out — deposit" },
       { property: "og:description", content: "See exactly what changed, room by room." },
     ],
   }),

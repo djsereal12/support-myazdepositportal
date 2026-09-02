@@ -5,13 +5,13 @@ import { Page } from "@/components/site-shell";
 export const Route = createFileRoute("/legal")({
   head: () => ({
     meta: [
-      { title: "Legal disclaimer & privacy policy — DEPOSIT" },
+      { title: "Legal disclaimer & privacy policy — deposit" },
       {
         name: "description",
         content:
-          "How DEPOSIT handles Arizona landlord-tenant documentation, what it is not (legal advice), and exactly how your photos, hashes and report data are stored and shared.",
+          "How deposit handles Arizona landlord-tenant documentation, what it is not (legal advice), and exactly how your photos, hashes and report data are stored and shared.",
       },
-      { property: "og:title", content: "Legal disclaimer & privacy policy — DEPOSIT" },
+      { property: "og:title", content: "Legal disclaimer & privacy policy — deposit" },
       {
         property: "og:description",
         content:
@@ -34,7 +34,7 @@ function Legal() {
           Disclaimer & privacy
         </p>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
-          What DEPOSIT is, what it{" "}
+          What deposit is, what it{" "}
           <span className="font-script text-5xl font-normal text-lavender-deep">isn't</span>, and
           where your evidence lives.
         </h1>
@@ -69,7 +69,7 @@ function Legal() {
       <div className="mt-6 grid gap-5">
         <Section id="disclaimer" icon={Scale} title="Legal disclaimer">
           <p>
-            DEPOSIT is documentation software. It is <strong>not a law firm</strong>, does not
+            deposit is documentation software. It is <strong>not a law firm</strong>, does not
             provide legal advice, and using it does not create an attorney-client relationship. The
             statutory references, deadlines and letter templates in the product are general
             information about Arizona law and are not a substitute for advice from a licensed
@@ -83,7 +83,7 @@ function Legal() {
             evaluating it.
           </p>
           <p>
-            DEPOSIT is designed for residential tenancies in Arizona governed by the Arizona
+            deposit is designed for residential tenancies in Arizona governed by the Arizona
             Residential Landlord and Tenant Act. Mobile home parks, commercial leases, and tenancies
             outside Arizona are governed by different statutes and deadlines; the timelines this app
             computes may not apply to them.
@@ -92,7 +92,7 @@ function Legal() {
 
         <Section id="arizona" icon={Scale} title="Arizona landlord-tenant law">
           <p>
-            The provisions DEPOSIT references most often, all within{" "}
+            The provisions deposit references most often, all within{" "}
             <a
               className="underline underline-offset-4"
               href="https://www.azleg.gov/ars/33/01321.htm"
@@ -107,7 +107,7 @@ function Legal() {
             <li>
               <strong>§ 33-1321(C)</strong> — a tenant is entitled to be present at a move-in
               inspection and to receive a signed, itemized statement of existing damages. Move-in
-              reports in DEPOSIT are built to serve as that record.
+              reports in deposit are built to serve as that record.
             </li>
             <li>
               <strong>§ 33-1321(D)</strong> — after the tenancy ends and the tenant provides a
@@ -147,7 +147,7 @@ function Legal() {
             sources.
           </p>
           <p>
-            We make no representation that a DEPOSIT report will be admitted as evidence in any
+            We make no representation that a deposit report will be admitted as evidence in any
             proceeding. Admissibility is decided by the court.
           </p>
         </Section>
@@ -206,7 +206,7 @@ function Legal() {
               You listed their email address as the landlord contact on the property, or you shared
               the report with that email address from the report page; and
             </li>
-            <li>they sign in to DEPOSIT with that same email address.</li>
+            <li>they sign in to deposit with that same email address.</li>
           </ul>
           <p className="mt-3">
             Their access is read-only for your report and its media. They can file a dispute or
@@ -234,7 +234,7 @@ function Legal() {
             contacting us.
           </p>
           <p>
-            DEPOSIT is not intended for anyone under 18. Cookies and local storage are used only to
+            deposit is not intended for anyone under 18. Cookies and local storage are used only to
             keep you signed in — we do not run third-party advertising trackers.
           </p>
         </Section>

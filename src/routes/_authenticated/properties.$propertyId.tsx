@@ -9,9 +9,9 @@ import { ScanLine, GitCompareArrows, Gavel, FileText } from "lucide-react";
 export const Route = createFileRoute("/_authenticated/properties/$propertyId")({
   head: () => ({
     meta: [
-      { title: "Property file — DEPOSIT" },
+      { title: "Property file — deposit" },
       { name: "description", content: "Reports, scans and dispute tools for this rental unit." },
-      { property: "og:title", content: "Property file — DEPOSIT" },
+      { property: "og:title", content: "Property file — deposit" },
       { property: "og:description", content: "Everything documented for this unit." },
     ],
   }),

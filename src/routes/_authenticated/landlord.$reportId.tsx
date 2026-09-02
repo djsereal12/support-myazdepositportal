@@ -11,12 +11,12 @@ import { formatDate, money, shortHash, REPORT_TYPE_LABEL } from "@/lib/deposit";
 export const Route = createFileRoute("/_authenticated/landlord/$reportId")({
   head: () => ({
     meta: [
-      { title: "Review tenant report — DEPOSIT" },
+      { title: "Review tenant report — deposit" },
       {
         name: "description",
         content: "Review a tenant's condition report, dispute the deposit, or send a response letter.",
       },
-      { property: "og:title", content: "Review tenant report — DEPOSIT" },
+      { property: "og:title", content: "Review tenant report — deposit" },
       { property: "og:description", content: "Landlord review, dispute, and response letter." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -150,7 +150,7 @@ function LandlordReport() {
       <article className="mt-6 rounded-2xl border border-border bg-card p-8 shadow-soft sm:p-12">
         <header className="flex flex-wrap items-start justify-between gap-6 border-b border-border pb-8">
           <div>
-            <p className="font-script text-3xl text-lavender-deep">Deposit</p>
+            <p className="font-script text-3xl text-lavender-deep">deposit</p>
             <h1 className="mt-4 text-3xl font-semibold">
               {REPORT_TYPE_LABEL[report?.type ?? "move_in"]} Condition Report
             </h1>

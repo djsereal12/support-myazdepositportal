@@ -14,9 +14,9 @@ import { Printer, Mail, Lock, Share2 } from "lucide-react";
 export const Route = createFileRoute("/_authenticated/reports/$reportId")({
   head: () => ({
     meta: [
-      { title: "Report — DEPOSIT" },
+      { title: "Report — deposit" },
       { name: "description", content: "A numbered, hashed condition report ready to print or share." },
-      { property: "og:title", content: "Report — DEPOSIT" },
+      { property: "og:title", content: "Report — deposit" },
       { property: "og:description", content: "Court-ready Arizona condition report." },
     ],
   }),
@@ -226,7 +226,7 @@ function ReportView() {
       <article className="mt-6 rounded-2xl border border-border bg-card p-8 shadow-soft sm:p-12">
         <header className="flex flex-wrap items-start justify-between gap-6 border-b border-border pb-8">
           <div>
-            <p className="font-script text-3xl text-lavender-deep">Deposit</p>
+            <p className="font-script text-3xl text-lavender-deep">deposit</p>
             <h1 className="mt-4 text-3xl font-semibold">
               {REPORT_TYPE_LABEL[report?.type ?? "move_in"]} Condition Report
             </h1>

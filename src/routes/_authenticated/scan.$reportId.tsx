@@ -21,9 +21,9 @@ import { Camera, Check, Loader2, MapPin } from "lucide-react";
 export const Route = createFileRoute("/_authenticated/scan/$reportId")({
   head: () => ({
     meta: [
-      { title: "Guided scan — DEPOSIT" },
+      { title: "Guided scan — deposit" },
       { name: "description", content: "Capture every room the guided way: hashed, stamped and sealed." },
-      { property: "og:title", content: "Guided scan — DEPOSIT" },
+      { property: "og:title", content: "Guided scan — deposit" },
       { property: "og:description", content: "Eight prompts, tamper-proof evidence." },
     ],
   }),

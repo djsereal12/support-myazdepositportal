@@ -13,13 +13,13 @@ import { Printer, Save, Lock } from "lucide-react";
 export const Route = createFileRoute("/_authenticated/demand/$propertyId")({
   head: () => ({
     meta: [
-      { title: "Demand letter — DEPOSIT" },
+      { title: "Demand letter — deposit" },
       {
         name: "description",
         content:
           "Generate a formal Arizona security deposit demand letter citing A.R.S. § 33-1321(D) and (E).",
       },
-      { property: "og:title", content: "Demand letter — DEPOSIT" },
+      { property: "og:title", content: "Demand letter — deposit" },
       { property: "og:description", content: "A formal, statute-cited demand your landlord must answer." },
     ],
   }),
@@ -110,7 +110,7 @@ function Demand() {
       "",
       `Under A.R.S. § 33-1321(E), a tenant may recover the property and money wrongfully withheld plus damages of up to twice the amount wrongfully withheld — in this case up to ${money(doubled)}.`,
       "",
-      `The condition of the unit is documented in DEPOSIT report ${data?.report?.report_number ?? "(move-out report pending)"}. Every media file is fingerprinted with SHA-256 and stamped with GPS coordinates and capture time; the report integrity seal is ${data?.report?.overall_hash?.slice(0, 32) ?? "pending"}…`,
+      `The condition of the unit is documented in deposit report ${data?.report?.report_number ?? "(move-out report pending)"}. Every media file is fingerprinted with SHA-256 and stamped with GPS coordinates and capture time; the report integrity seal is ${data?.report?.overall_hash?.slice(0, 32) ?? "pending"}…`,
       "",
       `Please remit ${money(amount)} within ten (10) days of the date of this letter. If payment is not received, I intend to pursue all remedies available under A.R.S. § 33-1321(E), including double damages and court costs.`,
       "",
@@ -197,7 +197,7 @@ function Demand() {
         </aside>
 
         <article className="rounded-2xl border border-border bg-card p-8 shadow-soft sm:p-12">
-          <p className="font-script text-3xl text-lavender-deep">Deposit</p>
+          <p className="font-script text-3xl text-lavender-deep">deposit</p>
           <p className="mt-8 text-xs text-muted-foreground">
             {new Date().toLocaleDateString("en-US", { dateStyle: "long" })}
           </p>

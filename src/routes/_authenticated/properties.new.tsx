@@ -8,9 +8,9 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/_authenticated/properties/new")({
   head: () => ({
     meta: [
-      { title: "Add a property — DEPOSIT" },
+      { title: "Add a property — deposit" },
       { name: "description", content: "Add the unit, landlord contact and deposit amount you're protecting." },
-      { property: "og:title", content: "Add a property — DEPOSIT" },
+      { property: "og:title", content: "Add a property — deposit" },
       { property: "og:description", content: "Start documenting a new rental unit." },
     ],
   }),

@@ -9,10 +9,10 @@ export const Route = createFileRoute("/auth/callback")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Signing you in — DEPOSIT" },
-      { name: "description", content: "Completing your DEPOSIT sign-in." },
-      { property: "og:title", content: "Signing you in — DEPOSIT" },
-      { property: "og:description", content: "Completing your DEPOSIT sign-in." },
+      { title: "Signing you in — deposit" },
+      { name: "description", content: "Completing your deposit sign-in." },
+      { property: "og:title", content: "Signing you in — deposit" },
+      { property: "og:description", content: "Completing your deposit sign-in." },
     ],
   }),
   component: CallbackPage,
