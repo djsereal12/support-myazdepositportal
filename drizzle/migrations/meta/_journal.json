@@ -36,6 +36,13 @@
       "when": 1788366524015,
       "tag": "0004_create_landlord_invites",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1788367612142,
+      "tag": "0005_harden_functions_storage_purchases",
+      "breakpoints": true
     }
   ]
 }
