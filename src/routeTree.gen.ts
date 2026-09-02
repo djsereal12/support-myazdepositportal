@@ -23,6 +23,7 @@ import { Route as AuthenticatedPropertiesPropertyIdRouteImport } from './routes/
 import { Route as AuthenticatedPropertiesNewRouteImport } from './routes/_authenticated/properties.new'
 import { Route as AuthenticatedReportsReportIdRouteImport } from './routes/_authenticated/reports.$reportId'
 import { Route as AuthenticatedScanReportIdRouteImport } from './routes/_authenticated/scan.$reportId'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -99,6 +100,12 @@ const AuthenticatedScanReportIdRoute =
     path: '/scan/$reportId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -114,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
   '/scan/$reportId': typeof AuthenticatedScanReportIdRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -129,6 +137,7 @@ export interface FileRoutesByTo {
   '/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
   '/scan/$reportId': typeof AuthenticatedScanReportIdRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -146,6 +155,7 @@ export interface FileRoutesById {
   '/_authenticated/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/_authenticated/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
   '/_authenticated/scan/$reportId': typeof AuthenticatedScanReportIdRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -163,6 +173,7 @@ export interface FileRouteTypes {
     | '/properties/new'
     | '/reports/$reportId'
     | '/scan/$reportId'
+    | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -178,6 +189,7 @@ export interface FileRouteTypes {
     | '/properties/new'
     | '/reports/$reportId'
     | '/scan/$reportId'
+    | '/api/public/payments/webhook'
   id:
     | '__root__'
     | '/'
@@ -194,6 +206,7 @@ export interface FileRouteTypes {
     | '/_authenticated/properties/new'
     | '/_authenticated/reports/$reportId'
     | '/_authenticated/scan/$reportId'
+    | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -203,6 +216,7 @@ export interface RootRouteChildren {
   LawRoute: typeof LawRoute
   PricingRoute: typeof PricingRoute
   VerifyReportIdRoute: typeof VerifyReportIdRoute
+  ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -305,6 +319,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedScanReportIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -349,6 +370,7 @@ const rootRouteChildren: RootRouteChildren = {
   LawRoute: LawRoute,
   PricingRoute: PricingRoute,
   VerifyReportIdRoute: VerifyReportIdRoute,
+  ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
