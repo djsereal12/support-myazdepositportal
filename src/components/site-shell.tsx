@@ -42,6 +42,9 @@ export function SiteHeader() {
           <Link to="/pricing" className="transition-colors hover:text-foreground">
             Pricing
           </Link>
+          <Link to="/faq" className="transition-colors hover:text-foreground">
+            Tenant FAQ
+          </Link>
           <Link to="/law" className="transition-colors hover:text-foreground">
             Arizona law
           </Link>
