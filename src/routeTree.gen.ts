@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as LawRouteImport } from './routes/law'
+import { Route as LegalRouteImport } from './routes/legal'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedLandlordRouteImport } from './routes/_authenticated/landlord'
@@ -45,6 +46,11 @@ const AuthRoute = AuthRouteImport.update({
 const LawRoute = LawRouteImport.update({
   id: '/law',
   path: '/law',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalRoute = LegalRouteImport.update({
+  id: '/legal',
+  path: '/legal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
   '/law': typeof LawRoute
+  '/legal': typeof LegalRoute
   '/pricing': typeof PricingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
@@ -149,6 +156,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
   '/law': typeof LawRoute
+  '/legal': typeof LegalRoute
   '/pricing': typeof PricingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
@@ -170,6 +178,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/law': typeof LawRoute
+  '/legal': typeof LegalRoute
   '/pricing': typeof PricingRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/landlord': typeof AuthenticatedLandlordRouteWithChildren
@@ -191,6 +200,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/law'
+    | '/legal'
     | '/pricing'
     | '/dashboard'
     | '/landlord'
@@ -210,6 +220,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/law'
+    | '/legal'
     | '/pricing'
     | '/dashboard'
     | '/landlord'
@@ -230,6 +241,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/law'
+    | '/legal'
     | '/pricing'
     | '/_authenticated/dashboard'
     | '/_authenticated/landlord'
@@ -251,6 +263,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
   LawRoute: typeof LawRoute
+  LegalRoute: typeof LegalRoute
   PricingRoute: typeof PricingRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   VerifyReportIdRoute: typeof VerifyReportIdRoute
@@ -285,6 +298,13 @@ declare module '@tanstack/react-router' {
       path: '/law'
       fullPath: '/law'
       preLoaderRoute: typeof LawRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal': {
+      id: '/legal'
+      path: '/legal'
+      fullPath: '/legal'
+      preLoaderRoute: typeof LegalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -442,6 +462,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
   LawRoute: LawRoute,
+  LegalRoute: LegalRoute,
   PricingRoute: PricingRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
   VerifyReportIdRoute: VerifyReportIdRoute,
