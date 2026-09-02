@@ -9,7 +9,9 @@ import { formatDate, shortHash, REPORT_TYPE_LABEL } from "@/lib/deposit";
 import { fetchPurchases, reportUnlocked, certifiedPdfUnlocked } from "@/lib/entitlements";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 import { PRICES } from "@/lib/stripe";
-import { Printer, Mail, Lock, Share2 } from "lucide-react";
+import { Printer, Mail, Lock, Share2, Send, CheckCircle2, AlertTriangle } from "lucide-react";
+import { createLandlordInvite } from "@/utils/invites.functions";
+import { useServerFn } from "@tanstack/react-start";
 
 export const Route = createFileRoute("/_authenticated/reports/$reportId")({
   head: () => ({
@@ -56,6 +58,13 @@ function ReportView() {
   const { openCheckout, closeCheckout, isOpen, checkoutElement } = useStripeCheckout();
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
   const [shareEmail, setShareEmail] = useState("");
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteName, setInviteName] = useState("");
+  const [inviteMessage, setInviteMessage] = useState(DEFAULT_INVITE_MESSAGE);
+  const [inviteLink, setInviteLink] = useState<string | null>(null);
+  const [sending, setSending] = useState(false);
+  const sendInvite = useServerFn(createLandlordInvite);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) =>
@@ -73,6 +82,19 @@ function ReportView() {
         .from("report_shares")
         .select("*")
         .eq("report_id", reportId);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: invites } = useQuery({
+    queryKey: ["invites", reportId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("landlord_invites")
+        .select("*")
+        .eq("report_id", reportId)
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -106,7 +128,37 @@ function ReportView() {
     }
   }
 
+  async function sendLandlordRequest() {
+    setSending(true);
+    try {
+      const res = await sendInvite({
+        data: {
+          reportId,
+          landlordEmail: inviteEmail,
+          landlordName: inviteName,
+          customMessage: inviteMessage,
+          origin: window.location.origin,
+        },
+      });
+      setInviteLink(res.link);
+      if (res.emailSent) toast.success(`Request emailed to ${inviteEmail}`);
+      else
+        toast.info("Request created. Email sending isn't configured yet — copy the link or send it yourself.");
+      queryClient.invalidateQueries({ queryKey: ["invites", reportId] });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not send the request.");
+    } finally {
+      setSending(false);
+    }
+  }
+
   const property = report?.properties as { address: string; unit: string | null; landlord_email: string | null } | null;
+  useEffect(() => {
+    if (property?.landlord_email && !inviteEmail) setInviteEmail(property.landlord_email);
+    if (property?.landlord_name && !inviteName) setInviteName(property.landlord_name as unknown as string);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [property?.landlord_email]);
+
   const verifyUrl = report?.qr_verification_url ?? "";
   const qrSrc = verifyUrl
     ? `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(verifyUrl)}`
