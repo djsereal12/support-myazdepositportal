@@ -15,6 +15,8 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as LawRouteImport } from './routes/law'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as VerifyReportIdRouteImport } from './routes/verify.$reportId'
+import { Route as AuthenticatedComparePropertyIdRouteImport } from './routes/_authenticated/compare.$propertyId'
 import { Route as AuthenticatedPropertiesPropertyIdRouteImport } from './routes/_authenticated/properties.$propertyId'
 import { Route as AuthenticatedPropertiesNewRouteImport } from './routes/_authenticated/properties.new'
 import { Route as AuthenticatedReportsReportIdRouteImport } from './routes/_authenticated/reports.$reportId'
@@ -49,6 +51,17 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const VerifyReportIdRoute = VerifyReportIdRouteImport.update({
+  id: '/verify/$reportId',
+  path: '/verify/$reportId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedComparePropertyIdRoute =
+  AuthenticatedComparePropertyIdRouteImport.update({
+    id: '/compare/$propertyId',
+    path: '/compare/$propertyId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPropertiesPropertyIdRoute =
   AuthenticatedPropertiesPropertyIdRouteImport.update({
     id: '/properties/$propertyId',
@@ -80,6 +93,8 @@ export interface FileRoutesByFullPath {
   '/law': typeof LawRoute
   '/pricing': typeof PricingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/verify/$reportId': typeof VerifyReportIdRoute
+  '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/properties/$propertyId': typeof AuthenticatedPropertiesPropertyIdRoute
   '/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
@@ -91,6 +106,8 @@ export interface FileRoutesByTo {
   '/law': typeof LawRoute
   '/pricing': typeof PricingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/verify/$reportId': typeof VerifyReportIdRoute
+  '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/properties/$propertyId': typeof AuthenticatedPropertiesPropertyIdRoute
   '/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
@@ -104,6 +121,8 @@ export interface FileRoutesById {
   '/law': typeof LawRoute
   '/pricing': typeof PricingRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/verify/$reportId': typeof VerifyReportIdRoute
+  '/_authenticated/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/_authenticated/properties/$propertyId': typeof AuthenticatedPropertiesPropertyIdRoute
   '/_authenticated/properties/new': typeof AuthenticatedPropertiesNewRoute
   '/_authenticated/reports/$reportId': typeof AuthenticatedReportsReportIdRoute
@@ -117,6 +136,8 @@ export interface FileRouteTypes {
     | '/law'
     | '/pricing'
     | '/dashboard'
+    | '/verify/$reportId'
+    | '/compare/$propertyId'
     | '/properties/$propertyId'
     | '/properties/new'
     | '/reports/$reportId'
@@ -128,6 +149,8 @@ export interface FileRouteTypes {
     | '/law'
     | '/pricing'
     | '/dashboard'
+    | '/verify/$reportId'
+    | '/compare/$propertyId'
     | '/properties/$propertyId'
     | '/properties/new'
     | '/reports/$reportId'
@@ -140,6 +163,8 @@ export interface FileRouteTypes {
     | '/law'
     | '/pricing'
     | '/_authenticated/dashboard'
+    | '/verify/$reportId'
+    | '/_authenticated/compare/$propertyId'
     | '/_authenticated/properties/$propertyId'
     | '/_authenticated/properties/new'
     | '/_authenticated/reports/$reportId'
@@ -152,6 +177,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   LawRoute: typeof LawRoute
   PricingRoute: typeof PricingRoute
+  VerifyReportIdRoute: typeof VerifyReportIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -198,6 +224,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/verify/$reportId': {
+      id: '/verify/$reportId'
+      path: '/verify/$reportId'
+      fullPath: '/verify/$reportId'
+      preLoaderRoute: typeof VerifyReportIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/compare/$propertyId': {
+      id: '/_authenticated/compare/$propertyId'
+      path: '/compare/$propertyId'
+      fullPath: '/compare/$propertyId'
+      preLoaderRoute: typeof AuthenticatedComparePropertyIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/properties/$propertyId': {
       id: '/_authenticated/properties/$propertyId'
       path: '/properties/$propertyId'
@@ -231,6 +271,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedComparePropertyIdRoute: typeof AuthenticatedComparePropertyIdRoute
   AuthenticatedPropertiesPropertyIdRoute: typeof AuthenticatedPropertiesPropertyIdRoute
   AuthenticatedPropertiesNewRoute: typeof AuthenticatedPropertiesNewRoute
   AuthenticatedReportsReportIdRoute: typeof AuthenticatedReportsReportIdRoute
@@ -239,6 +280,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedComparePropertyIdRoute: AuthenticatedComparePropertyIdRoute,
   AuthenticatedPropertiesPropertyIdRoute:
     AuthenticatedPropertiesPropertyIdRoute,
   AuthenticatedPropertiesNewRoute: AuthenticatedPropertiesNewRoute,
@@ -255,6 +297,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   LawRoute: LawRoute,
   PricingRoute: PricingRoute,
+  VerifyReportIdRoute: VerifyReportIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
