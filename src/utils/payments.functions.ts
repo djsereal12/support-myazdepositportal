@@ -9,33 +9,20 @@ type CheckoutSessionResult = { clientSecret: string } | { error: string };
 
 async function resolveOrCreateCustomer(
   stripe: ReturnType<typeof createStripeClient>,
-  options: { email?: string; userId?: string },
+  options: { email?: string; userId: string },
 ): Promise<string> {
-  if (options.userId && !/^[a-zA-Z0-9_-]+$/.test(options.userId)) {
+  if (!/^[a-zA-Z0-9_-]+$/.test(options.userId)) {
     throw new Error("Invalid userId");
   }
-  if (options.userId) {
-    const found = await stripe.customers.search({
-      query: `metadata['userId']:'${options.userId}'`,
-      limit: 1,
-    });
-    if (found.data.length && found.data[0]) return found.data[0].id;
-  }
-  if (options.email) {
-    const existing = await stripe.customers.list({ email: options.email, limit: 1 });
-    const customer = existing.data[0];
-    if (customer) {
-      if (options.userId && customer.metadata?.["userId"] !== options.userId) {
-        await stripe.customers.update(customer.id, {
-          metadata: { ...customer.metadata, userId: options.userId },
-        });
-      }
-      return customer.id;
-    }
-  }
+  const found = await stripe.customers.search({
+    query: `metadata['userId']:'${options.userId}'`,
+    limit: 1,
+  });
+  if (found.data.length && found.data[0]) return found.data[0].id;
+
   const created = await stripe.customers.create({
     ...(options.email && { email: options.email }),
-    ...(options.userId && { metadata: { userId: options.userId } }),
+    metadata: { userId: options.userId },
   });
   return created.id;
 }
@@ -59,17 +46,24 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
     try {
       const stripe = createStripeClient(data.environment);
 
+      // Identity is derived from the verified session only — client-supplied
+      // userId/customerEmail are ignored to prevent Stripe customer hijacking.
+      const { resolveVerifiedIdentity } = await import("@/lib/auth-identity.server");
+      const identity = await resolveVerifiedIdentity();
+      const userId = identity?.userId;
+      const customerEmail = identity?.email;
+
       const prices = await stripe.prices.list({ lookup_keys: [data.priceId] });
       const stripePrice = prices.data[0];
       if (!stripePrice) throw new Error("Price not found");
 
-      const customerId =
-        data.customerEmail || data.userId
-          ? await resolveOrCreateCustomer(stripe, {
-              ...(data.customerEmail ? { email: data.customerEmail } : {}),
-              ...(data.userId ? { userId: data.userId } : {}),
-            })
-          : undefined;
+      const customerId = userId
+        ? await resolveOrCreateCustomer(stripe, {
+            userId,
+            ...(customerEmail ? { email: customerEmail } : {}),
+          })
+        : undefined;
+
 
       const productId =
         typeof stripePrice.product === "string" ? stripePrice.product : stripePrice.product.id;
