@@ -103,22 +103,48 @@ function Demand() {
         >
           ← Property file
         </Link>
-        <div className="flex gap-2">
+        {unlocked ? (
+          <div className="flex gap-2">
+            <button
+              onClick={save}
+              disabled={saving}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent disabled:opacity-50"
+            >
+              <Save className="h-3.5 w-3.5" /> Save to file
+            </button>
+            <button
+              onClick={() => window.print()}
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
+            >
+              <Printer className="h-3.5 w-3.5" /> Save as PDF
+            </button>
+          </div>
+        ) : (
           <button
-            onClick={save}
-            disabled={saving}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent disabled:opacity-50"
-          >
-            <Save className="h-3.5 w-3.5" /> Save to file
-          </button>
-          <button
-            onClick={() => window.print()}
+            onClick={unlock}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
           >
-            <Printer className="h-3.5 w-3.5" /> Save as PDF
+            <Lock className="h-3.5 w-3.5" /> Unlock demand letter — $29
           </button>
-        </div>
+        )}
       </div>
+
+      {isOpen ? (
+        <section className="glass-panel mt-6 p-6 print:hidden">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Complete your purchase</h2>
+            <button
+              onClick={closeCheckout}
+              className="rounded-full border border-border bg-card px-4 py-2 text-xs font-medium hover:bg-accent"
+            >
+              Cancel
+            </button>
+          </div>
+          {checkoutElement}
+        </section>
+      ) : null}
+
+
 
       <div className="mt-6 grid gap-5 lg:grid-cols-[320px_1fr]">
         <aside className="glass-panel h-fit space-y-4 p-6 print:hidden">
