@@ -47,6 +47,10 @@ const roleDetails: Record<
   },
 };
 
+function roleNoun(role: Role) {
+  return role === "tenant" ? "a tenant" : "a landlord";
+}
+
 function AuthPage() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
