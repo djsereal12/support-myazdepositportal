@@ -299,8 +299,18 @@ export const respondToInvite = createServerFn({ method: "POST" })
       .eq("id", invite.id);
     if (error) throw new Error(error.message);
 
+    const { notifyTenantOfLandlordResponse } = await import("@/lib/notify.server");
+    await notifyTenantOfLandlordResponse({
+      inviteId: invite.id,
+      reportId: invite.report_id,
+      tenantUserId: invite.user_id,
+      event: data.action,
+      note: data.action === "disputed" ? data.note : data.signatureName,
+    });
+
     return { status: data.action };
   });
+
 
 export type PortalInvite = {
   token: string;
@@ -418,7 +428,7 @@ export const postLandlordReply = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: invite } = await supabaseAdmin
       .from("landlord_invites")
-      .select("id, report_id, landlord_name")
+      .select("id, report_id, landlord_name, user_id")
       .eq("token", data.token)
       .maybeSingle();
     if (!invite) throw new Error("This link is no longer valid.");
@@ -431,5 +441,17 @@ export const postLandlordReply = createServerFn({ method: "POST" })
       body: data.body,
     });
     if (error) throw new Error(error.message);
+
+    const { notifyTenantOfLandlordResponse } = await import("@/lib/notify.server");
+    await notifyTenantOfLandlordResponse({
+      inviteId: invite.id,
+      reportId: invite.report_id,
+      tenantUserId: invite.user_id,
+      event: "replied",
+      landlordName: data.authorName || invite.landlord_name,
+      note: data.body,
+    });
+
     return { ok: true };
+
   });

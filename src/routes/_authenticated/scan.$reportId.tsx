@@ -16,6 +16,7 @@ import {
   REPORT_TYPE_LABEL,
   type Condition,
 } from "@/lib/deposit";
+import { sendReportReadyEmail } from "@/utils/notifications.functions";
 import { Camera, Check, Loader2, MapPin } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/scan/$reportId")({
@@ -142,8 +143,10 @@ function Scan() {
           .update({ status: report.type === "move_out" ? "complete" : "move_in_complete" })
           .eq("id", report.property_id);
       }
+      void sendReportReadyEmail({ data: { reportId } }).catch(() => {});
       await queryClient.invalidateQueries();
       navigate({ to: "/reports/$reportId", params: { reportId } });
+
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not seal report");
     } finally {
