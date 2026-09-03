@@ -71,6 +71,13 @@
       "when": 1788373781562,
       "tag": "0009_tighten_definer_exec_and_write_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1788406987683,
+      "tag": "0010_fix_handle_new_user_role_cast",
+      "breakpoints": true
     }
   ]
 }
