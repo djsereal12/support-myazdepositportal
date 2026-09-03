@@ -345,6 +345,105 @@ export type Database = {
         }
         Relationships: []
       }
+      marketing_campaigns: {
+        Row: {
+          body: string
+          created_at: string
+          created_by: string | null
+          cta_label: string | null
+          cta_url: string | null
+          error_message: string | null
+          headline: string | null
+          id: string
+          name: string
+          preview_text: string | null
+          recipient_count: number
+          resend_broadcast_id: string | null
+          sent_at: string | null
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          created_by?: string | null
+          cta_label?: string | null
+          cta_url?: string | null
+          error_message?: string | null
+          headline?: string | null
+          id?: string
+          name: string
+          preview_text?: string | null
+          recipient_count?: number
+          resend_broadcast_id?: string | null
+          sent_at?: string | null
+          status?: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          created_by?: string | null
+          cta_label?: string | null
+          cta_url?: string | null
+          error_message?: string | null
+          headline?: string | null
+          id?: string
+          name?: string
+          preview_text?: string | null
+          recipient_count?: number
+          resend_broadcast_id?: string | null
+          sent_at?: string | null
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      marketing_subscribers: {
+        Row: {
+          consent_at: string
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          resend_contact_id: string | null
+          source: string
+          status: string
+          unsubscribed_at: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          consent_at?: string
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id?: string
+          resend_contact_id?: string | null
+          source?: string
+          status?: string
+          unsubscribed_at?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          consent_at?: string
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          resend_contact_id?: string | null
+          source?: string
+          status?: string
+          unsubscribed_at?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       media: {
         Row: {
           condition: string
