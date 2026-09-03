@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
 import { Page } from "@/components/site-shell";
@@ -109,15 +109,24 @@ const landlordTiers = [
 
 function Pricing() {
   const { openCheckout, closeCheckout, isOpen, checkoutElement } = useStripeCheckout();
+  const navigate = useNavigate();
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
+  const [checkedAuth, setCheckedAuth] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) =>
-      setUser(data.user ? { id: data.user.id, ...(data.user.email ? { email: data.user.email } : {}) } : null),
-    );
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user ? { id: data.user.id, ...(data.user.email ? { email: data.user.email } : {}) } : null);
+      setCheckedAuth(true);
+    });
   }, []);
 
+  const signedIn = checkedAuth && !!user?.id;
+
   function buy(priceId: string) {
+    if (!signedIn) {
+      void navigate({ to: "/auth", search: { next: "/pricing" } });
+      return;
+    }
     openCheckout({
       priceId,
       ...(user?.id ? { userId: user.id } : {}),
@@ -186,7 +195,7 @@ function Pricing() {
                   : "border border-border bg-card hover:bg-accent"
               }`}
             >
-              Buy {t.price}
+              {signedIn ? `Buy ${t.price}` : `Sign in to buy ${t.price}`}
             </button>
           </article>
         ))}
@@ -216,7 +225,7 @@ function Pricing() {
                 onClick={() => buy(t.priceId)}
                 className="mt-8 rounded-full border border-border bg-card px-5 py-3 text-center text-sm font-medium transition-opacity hover:bg-accent"
               >
-                Buy {t.price}
+                {signedIn ? `Buy ${t.price}` : `Sign in to buy ${t.price}`}
               </button>
             </article>
           ))}

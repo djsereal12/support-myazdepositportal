@@ -53,6 +53,12 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       const userId = identity?.userId;
       const customerEmail = identity?.email;
 
+      // Without a verified account the purchase could never be linked to
+      // anyone, so the buyer would pay and receive nothing. Block it.
+      if (!userId) {
+        return { error: "Please sign in before checking out so your purchase unlocks your account." };
+      }
+
       const prices = await stripe.prices.list({ lookup_keys: [data.priceId] });
       const stripePrice = prices.data[0];
       if (!stripePrice) throw new Error("Price not found");
