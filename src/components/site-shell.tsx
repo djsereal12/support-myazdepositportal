@@ -2,6 +2,8 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { NewsletterSignup } from "@/components/newsletter-signup";
+
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
