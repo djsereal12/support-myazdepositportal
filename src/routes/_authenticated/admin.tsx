@@ -79,12 +79,17 @@ function AdminPage() {
         Every signed-up account with role, activity and confirmation status. Deleting an account
         removes its auth record and cascading data.
       </p>
-      <a
-        href="/marketing"
-        className="glass-button mt-5 inline-flex rounded-xl px-4 py-2 text-sm font-medium"
-      >
-        Marketing emails
-      </a>
+      <div className="mt-5 flex flex-wrap gap-3">
+        <a href="/marketing" className="glass-button inline-flex rounded-xl px-4 py-2 text-sm font-medium">
+          Marketing emails
+        </a>
+        <a
+          href="/admin/purchases"
+          className="glass-button inline-flex rounded-xl px-4 py-2 text-sm font-medium"
+        >
+          Purchase lookup
+        </a>
+      </div>
 
 
       {isLoading ? (
