@@ -18,6 +18,7 @@ import { Route as LawRouteImport } from './routes/law'
 import { Route as LegalRouteImport } from './routes/legal'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -81,6 +82,11 @@ const McpRoute = McpRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
@@ -203,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/legal': typeof LegalRoute
   '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -233,6 +240,7 @@ export interface FileRoutesByTo {
   '/legal': typeof LegalRoute
   '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -265,6 +273,7 @@ export interface FileRoutesById {
   '/legal': typeof LegalRoute
   '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -297,6 +306,7 @@ export interface FileRouteTypes {
     | '/legal'
     | '/mcp'
     | '/pricing'
+    | '/sitemap.xml'
     | '/.well-known/oauth-protected-resource'
     | '/admin'
     | '/dashboard'
@@ -327,6 +337,7 @@ export interface FileRouteTypes {
     | '/legal'
     | '/mcp'
     | '/pricing'
+    | '/sitemap.xml'
     | '/.well-known/oauth-protected-resource'
     | '/admin'
     | '/dashboard'
@@ -358,6 +369,7 @@ export interface FileRouteTypes {
     | '/legal'
     | '/mcp'
     | '/pricing'
+    | '/sitemap.xml'
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
@@ -390,6 +402,7 @@ export interface RootRouteChildren {
   LegalRoute: typeof LegalRoute
   McpRoute: typeof McpRoute
   PricingRoute: typeof PricingRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   VerifyTokenRoute: typeof VerifyTokenRoute
@@ -463,6 +476,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.well-known/oauth-protected-resource': {
@@ -671,6 +691,7 @@ const rootRouteChildren: RootRouteChildren = {
   LegalRoute: LegalRoute,
   McpRoute: McpRoute,
   PricingRoute: PricingRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
