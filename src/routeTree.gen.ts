@@ -23,6 +23,7 @@ import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } fr
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedLandlordRouteImport } from './routes/_authenticated/landlord'
+import { Route as AuthenticatedMarketingRouteImport } from './routes/_authenticated/marketing'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
@@ -108,6 +109,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
 const AuthenticatedLandlordRoute = AuthenticatedLandlordRouteImport.update({
   id: '/landlord',
   path: '/landlord',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMarketingRoute = AuthenticatedMarketingRouteImport.update({
+  id: '/marketing',
+  path: '/marketing',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
@@ -214,6 +220,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
+  '/marketing': typeof AuthenticatedMarketingRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -245,6 +252,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
+  '/marketing': typeof AuthenticatedMarketingRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -278,6 +286,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/landlord': typeof AuthenticatedLandlordRouteWithChildren
+  '/_authenticated/marketing': typeof AuthenticatedMarketingRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
@@ -311,6 +320,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/landlord'
+    | '/marketing'
     | '/profile'
     | '/auth/callback'
     | '/checkout/return'
@@ -342,6 +352,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/landlord'
+    | '/marketing'
     | '/profile'
     | '/auth/callback'
     | '/checkout/return'
@@ -374,6 +385,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/_authenticated/landlord'
+    | '/_authenticated/marketing'
     | '/_authenticated/profile'
     | '/auth/callback'
     | '/checkout/return'
@@ -513,6 +525,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLandlordRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/marketing': {
+      id: '/_authenticated/marketing'
+      path: '/marketing'
+      fullPath: '/marketing'
+      preLoaderRoute: typeof AuthenticatedMarketingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -645,6 +664,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedLandlordRoute: typeof AuthenticatedLandlordRouteWithChildren
+  AuthenticatedMarketingRoute: typeof AuthenticatedMarketingRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedComparePropertyIdRoute: typeof AuthenticatedComparePropertyIdRoute
   AuthenticatedDemandPropertyIdRoute: typeof AuthenticatedDemandPropertyIdRoute
@@ -658,6 +678,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedLandlordRoute: AuthenticatedLandlordRouteWithChildren,
+  AuthenticatedMarketingRoute: AuthenticatedMarketingRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedComparePropertyIdRoute: AuthenticatedComparePropertyIdRoute,
   AuthenticatedDemandPropertyIdRoute: AuthenticatedDemandPropertyIdRoute,

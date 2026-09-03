@@ -2,6 +2,8 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { NewsletterSignup } from "@/components/newsletter-signup";
+
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
@@ -93,12 +95,17 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer className="mt-24 border-t border-border/70 py-10">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-        <span className="font-script text-lg text-lavender-deep">deposit</span>
-        <p className="max-w-md">
-          Documentation software, not legal advice. Statute references are for informational
-          purposes under A.R.S. § 33-1321.
-        </p>
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 text-xs text-muted-foreground">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+          <div className="max-w-md">
+            <span className="font-script text-lg text-lavender-deep">deposit</span>
+            <p className="mt-2">
+              Documentation software, not legal advice. Statute references are for informational
+              purposes under A.R.S. § 33-1321.
+            </p>
+          </div>
+          <NewsletterSignup />
+        </div>
         <div className="flex gap-4">
           <Link to="/law" className="transition-colors hover:text-foreground">
             Arizona law
@@ -106,11 +113,15 @@ export function SiteFooter() {
           <Link to="/legal" className="transition-colors hover:text-foreground">
             Disclaimer & privacy
           </Link>
+          <Link to="/faq" className="transition-colors hover:text-foreground">
+            Tenant FAQ
+          </Link>
         </div>
       </div>
     </footer>
   );
 }
+
 
 
 export function Page({ children }: { children: ReactNode }) {
