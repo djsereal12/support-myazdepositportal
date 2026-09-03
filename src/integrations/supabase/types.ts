@@ -681,7 +681,6 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      current_email: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -690,15 +689,6 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
-      landlord_can_view_property: {
-        Args: { _property_id: string }
-        Returns: boolean
-      }
-      landlord_can_view_report: {
-        Args: { _report_id: string }
-        Returns: boolean
-      }
-      report_owner: { Args: { _report_id: string }; Returns: string }
     }
     Enums: {
       app_role: "tenant" | "landlord"

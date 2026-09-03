@@ -78,6 +78,13 @@
       "when": 1788406987683,
       "tag": "0010_fix_handle_new_user_role_cast",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1788408924671,
+      "tag": "0011_move_definer_helpers_to_private_and_user_roles_admin_policies",
+      "breakpoints": true
     }
   ]
 }
