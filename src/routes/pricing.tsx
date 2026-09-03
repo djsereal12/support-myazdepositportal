@@ -195,7 +195,7 @@ function Pricing() {
                   : "border border-border bg-card hover:bg-accent"
               }`}
             >
-              Buy {t.price}
+              {signedIn ? `Buy ${t.price}` : `Sign in to buy ${t.price}`}
             </button>
           </article>
         ))}
