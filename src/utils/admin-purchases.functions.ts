@@ -141,7 +141,7 @@ export const resyncPurchase = createServerFn({ method: "POST" })
       .maybeSingle();
 
     const env = (existing?.environment as "sandbox" | "live" | undefined) ?? data.environment;
-    const stripe = createStripeClient(env);
+    const stripe = createStripeClient(env as "sandbox" | "live");
 
     let session: any;
     try {
