@@ -30,6 +30,7 @@ import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as VerifyTokenRouteImport } from './routes/verify.$token'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as AuthenticatedAdminPurchasesRouteImport } from './routes/_authenticated/admin.purchases'
 import { Route as AuthenticatedComparePropertyIdRouteImport } from './routes/_authenticated/compare.$propertyId'
 import { Route as AuthenticatedDemandPropertyIdRouteImport } from './routes/_authenticated/demand.$propertyId'
 import { Route as AuthenticatedLandlordReportIdRouteImport } from './routes/_authenticated/landlord.$reportId'
@@ -147,6 +148,12 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminPurchasesRoute =
+  AuthenticatedAdminPurchasesRouteImport.update({
+    id: '/purchases',
+    path: '/purchases',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedComparePropertyIdRoute =
   AuthenticatedComparePropertyIdRouteImport.update({
     id: '/compare/$propertyId',
@@ -224,7 +231,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
-  '/admin': typeof AuthenticatedAdminRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/marketing': typeof AuthenticatedMarketingRoute
@@ -233,6 +240,7 @@ export interface FileRoutesByFullPath {
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$token': typeof VerifyTokenRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/admin/purchases': typeof AuthenticatedAdminPurchasesRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
   '/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
@@ -257,7 +265,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
-  '/admin': typeof AuthenticatedAdminRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/marketing': typeof AuthenticatedMarketingRoute
@@ -266,6 +274,7 @@ export interface FileRoutesByTo {
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$token': typeof VerifyTokenRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/admin/purchases': typeof AuthenticatedAdminPurchasesRoute
   '/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
   '/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
@@ -292,7 +301,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/_authenticated/marketing': typeof AuthenticatedMarketingRoute
@@ -301,6 +310,7 @@ export interface FileRoutesById {
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$token': typeof VerifyTokenRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/_authenticated/admin/purchases': typeof AuthenticatedAdminPurchasesRoute
   '/_authenticated/compare/$propertyId': typeof AuthenticatedComparePropertyIdRoute
   '/_authenticated/demand/$propertyId': typeof AuthenticatedDemandPropertyIdRoute
   '/_authenticated/landlord/$reportId': typeof AuthenticatedLandlordReportIdRoute
@@ -336,6 +346,7 @@ export interface FileRouteTypes {
     | '/checkout/return'
     | '/verify/$token'
     | '/.lovable/oauth/consent'
+    | '/admin/purchases'
     | '/compare/$propertyId'
     | '/demand/$propertyId'
     | '/landlord/$reportId'
@@ -369,6 +380,7 @@ export interface FileRouteTypes {
     | '/checkout/return'
     | '/verify/$token'
     | '/.lovable/oauth/consent'
+    | '/admin/purchases'
     | '/compare/$propertyId'
     | '/demand/$propertyId'
     | '/landlord/$reportId'
@@ -403,6 +415,7 @@ export interface FileRouteTypes {
     | '/checkout/return'
     | '/verify/$token'
     | '/.lovable/oauth/consent'
+    | '/_authenticated/admin/purchases'
     | '/_authenticated/compare/$propertyId'
     | '/_authenticated/demand/$propertyId'
     | '/_authenticated/landlord/$reportId'
@@ -587,6 +600,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/purchases': {
+      id: '/_authenticated/admin/purchases'
+      path: '/purchases'
+      fullPath: '/admin/purchases'
+      preLoaderRoute: typeof AuthenticatedAdminPurchasesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/compare/$propertyId': {
       id: '/_authenticated/compare/$propertyId'
       path: '/compare/$propertyId'
@@ -667,6 +687,17 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminPurchasesRoute: typeof AuthenticatedAdminPurchasesRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminPurchasesRoute: AuthenticatedAdminPurchasesRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
 interface AuthenticatedLandlordRouteChildren {
   AuthenticatedLandlordReportIdRoute: typeof AuthenticatedLandlordReportIdRoute
 }
@@ -681,7 +712,7 @@ const AuthenticatedLandlordRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedLandlordRoute: typeof AuthenticatedLandlordRouteWithChildren
   AuthenticatedMarketingRoute: typeof AuthenticatedMarketingRoute
@@ -695,7 +726,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedLandlordRoute: AuthenticatedLandlordRouteWithChildren,
   AuthenticatedMarketingRoute: AuthenticatedMarketingRoute,
