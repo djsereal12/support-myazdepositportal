@@ -73,13 +73,13 @@ function Landing() {
         <div className="mt-9 flex flex-wrap gap-3">
           <Link
             to="/auth"
-            className="rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            className="btn-glass-pink px-6 py-3 text-sm font-medium"
           >
             Start your move-in scan
           </Link>
           <Link
             to="/pricing"
-            className="rounded-full border border-border bg-card px-6 py-3 text-sm font-medium transition-colors hover:bg-accent"
+            className="btn-glass px-6 py-3 text-sm font-medium"
           >
             See pricing
           </Link>
@@ -127,7 +127,7 @@ function Landing() {
           </div>
           <Link
             to="/law"
-            className="mt-8 inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:bg-accent"
+            className="btn-glass mt-8 w-fit px-5 py-2.5 text-sm font-medium"
           >
             <MapPin className="h-4 w-4" /> Read the statute
           </Link>
