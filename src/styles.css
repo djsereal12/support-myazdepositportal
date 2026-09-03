@@ -7,7 +7,7 @@
 /*
  * deposit design system
  * Stone/clay editorial neutrals with soft lavender accents.
- * Fraunces (display) + Inter (body) + Parisienne (script logotype).
+ * Fraunces (display) + Inter (body) + Pinyon Script (script logotype).
  */
 
 @theme inline {
@@ -20,7 +20,7 @@
 
   --font-display: "Fraunces", ui-serif, Georgia, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-script: "Parisienne", cursive;
+  --font-script: "Pinyon Script", cursive;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -78,19 +78,19 @@
   --secondary-foreground: oklch(0.18 0 0);
   --muted: oklch(0.949 0.005 85);
   --muted-foreground: oklch(0.5 0.012 75);
-  --accent: oklch(0.943 0.029 294);
-  --accent-foreground: oklch(0.36 0.14 292);
+  --accent: oklch(0.945 0.04 340);
+  --accent-foreground: oklch(0.42 0.17 340);
   --destructive: oklch(0.56 0.19 25);
   --destructive-foreground: oklch(1 0 0);
 
   --border: oklch(0.929 0.004 90);
   --input: oklch(0.929 0.004 90);
-  --ring: oklch(0.7 0.11 292);
+  --ring: oklch(0.7 0.13 340);
 
   --clay: oklch(0.855 0.014 70);
-  --lavender: oklch(0.66 0.15 292);
-  --lavender-soft: oklch(0.943 0.029 294);
-  --lavender-deep: oklch(0.42 0.16 292);
+  --lavender: oklch(0.64 0.17 340);
+  --lavender-soft: oklch(0.945 0.04 340);
+  --lavender-deep: oklch(0.44 0.18 340);
   --success: oklch(0.62 0.11 155);
   --warning: oklch(0.74 0.14 70);
 
@@ -111,13 +111,15 @@
 
   --gradient-lavender: linear-gradient(
     135deg,
-    oklch(0.943 0.029 294) 0%,
-    oklch(0.965 0.018 320) 45%,
+    oklch(0.93 0.055 350) 0%,
+    oklch(0.955 0.035 330) 40%,
+    oklch(0.965 0.02 300) 75%,
     oklch(0.976 0.008 80) 100%
   );
+  --gradient-pink: linear-gradient(135deg, oklch(0.72 0.19 350) 0%, oklch(0.64 0.17 340) 55%, oklch(0.58 0.15 320) 100%);
   --gradient-aurora: radial-gradient(
       60% 80% at 15% 10%,
-      color-mix(in oklab, var(--lavender) 26%, transparent) 0%,
+      color-mix(in oklab, var(--lavender) 30%, transparent) 0%,
       transparent 60%
     ),
     radial-gradient(
@@ -202,6 +204,96 @@
 
 @utility lavender-wash {
   background-image: var(--gradient-lavender);
+}
+
+@utility pink-wash {
+  background-image: var(--gradient-pink);
+}
+
+@utility btn-glass {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  background-color: color-mix(in oklab, var(--card) 55%, transparent);
+  backdrop-filter: blur(14px) saturate(1.6);
+  border: 1px solid color-mix(in oklab, var(--card) 80%, transparent);
+  box-shadow:
+    0 1px 2px oklch(0.18 0 0 / 0.05),
+    0 10px 28px -14px color-mix(in oklab, var(--lavender) 45%, transparent),
+    inset 0 1px 0 oklch(1 0 0 / 0.6);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    background-color: color-mix(in oklab, var(--card) 70%, transparent);
+    border-color: color-mix(in oklab, var(--lavender) 40%, transparent);
+    box-shadow:
+      0 2px 4px oklch(0.18 0 0 / 0.06),
+      0 18px 40px -16px color-mix(in oklab, var(--lavender) 60%, transparent),
+      inset 0 1px 0 oklch(1 0 0 / 0.7);
+  }
+
+  &:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow:
+      0 1px 2px oklch(0.18 0 0 / 0.08),
+      0 4px 12px -6px color-mix(in oklab, var(--lavender) 45%, transparent),
+      inset 0 2px 6px oklch(0.18 0 0 / 0.08);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@utility btn-glass-pink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  color: oklch(1 0 0);
+  background-image: var(--gradient-pink);
+  border: 1px solid oklch(1 0 0 / 0.35);
+  box-shadow:
+    0 1px 2px oklch(0.18 0 0 / 0.08),
+    0 12px 32px -12px color-mix(in oklab, var(--lavender) 70%, transparent),
+    inset 0 1px 0 oklch(1 0 0 / 0.35);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.06) saturate(1.1);
+    box-shadow:
+      0 2px 4px oklch(0.18 0 0 / 0.08),
+      0 20px 44px -14px color-mix(in oklab, var(--lavender) 85%, transparent),
+      inset 0 1px 0 oklch(1 0 0 / 0.45);
+  }
+
+  &:active {
+    transform: translateY(1px) scale(0.97);
+    filter: brightness(0.96);
+    box-shadow:
+      0 1px 2px oklch(0.18 0 0 / 0.1),
+      inset 0 2px 8px oklch(0.3 0.1 340 / 0.35);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
 }
 
 @utility shadow-lift {
