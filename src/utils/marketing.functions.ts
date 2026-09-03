@@ -326,11 +326,14 @@ export const sendCampaignTest = createServerFn({ method: "POST" })
       previewText: c.preview_text,
     };
     const { sendPreviewEmail } = await import("@/lib/resend-marketing.server");
+    const { unsubscribeUrl } = await import("@/lib/unsubscribe.server");
+    const unsub = unsubscribeUrl(data.to);
     await sendPreviewEmail({
       to: data.to,
       subject: c.subject,
-      html: renderCampaignHtml(content, "https://myazdepositportal.live/legal"),
-      text: renderCampaignText(content, "https://myazdepositportal.live/legal"),
+      html: renderCampaignHtml(content, unsub),
+      text: renderCampaignText(content, unsub),
+      unsubscribeUrl: unsub,
     });
     return { ok: true };
   });

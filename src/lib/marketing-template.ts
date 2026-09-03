@@ -17,6 +17,19 @@ export type CampaignContent = {
 };
 
 /** Renders the campaign into brand-consistent HTML with Resend's unsubscribe token. */
+/** Turns bare URLs and email addresses in campaign copy into real links. */
+function linkify(escaped: string) {
+  return escaped
+    .replace(
+      /(https?:\/\/[^\s<]+[^\s<.,;:!?)"'])/g,
+      '<a href="$1" style="color:#7c5cc4;text-decoration:underline;">$1</a>',
+    )
+    .replace(
+      /(^|[\s(])([\w.+-]+@[\w-]+\.[\w.-]{2,})/g,
+      '$1<a href="mailto:$2" style="color:#7c5cc4;text-decoration:underline;">$2</a>',
+    );
+}
+
 export function renderCampaignHtml(c: CampaignContent, unsubscribeUrl = "{{{RESEND_UNSUBSCRIBE_URL}}}") {
   const paragraphs = c.body
     .split(/\n{2,}/)
@@ -24,8 +37,8 @@ export function renderCampaignHtml(c: CampaignContent, unsubscribeUrl = "{{{RESE
     .filter(Boolean)
     .map(
       (p) =>
-        `<p style="margin:0 0 16px;font-size:16px;line-height:1.65;color:#2c2733;">${escapeHtml(
-          p,
+        `<p style="margin:0 0 16px;font-size:16px;line-height:1.65;color:#2c2733;">${linkify(
+          escapeHtml(p),
         ).replace(/\n/g, "<br />")}</p>`,
     )
     .join("");

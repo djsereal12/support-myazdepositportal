@@ -125,6 +125,7 @@ export async function sendPreviewEmail(input: {
   subject: string;
   html: string;
   text: string;
+  unsubscribeUrl?: string;
 }) {
   await call("/emails", {
     method: "POST",
@@ -135,6 +136,40 @@ export async function sendPreviewEmail(input: {
       subject: `[Test] ${input.subject}`,
       html: input.html,
       text: input.text,
+      // Gmail/Yahoo require a working list-unsubscribe on bulk mail.
+      ...(input.unsubscribeUrl
+        ? {
+            headers: {
+              "List-Unsubscribe": `<${input.unsubscribeUrl}>`,
+              "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+            },
+          }
+        : {}),
+    }),
+  });
+}
+
+/** One-off marketing send to a single address (ads, re-engagement). */
+export async function sendMarketingEmail(input: {
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+  unsubscribeUrl: string;
+}) {
+  return call<{ id: string }>("/emails", {
+    method: "POST",
+    body: JSON.stringify({
+      from: marketingFrom(),
+      reply_to: marketingReplyTo(),
+      to: [input.to],
+      subject: input.subject,
+      html: input.html,
+      text: input.text,
+      headers: {
+        "List-Unsubscribe": `<${input.unsubscribeUrl}>`,
+        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+      },
     }),
   });
 }
