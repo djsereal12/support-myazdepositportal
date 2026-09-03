@@ -225,7 +225,7 @@ function Pricing() {
                 onClick={() => buy(t.priceId)}
                 className="mt-8 rounded-full border border-border bg-card px-5 py-3 text-center text-sm font-medium transition-opacity hover:bg-accent"
               >
-                Buy {t.price}
+                {signedIn ? `Buy ${t.price}` : `Sign in to buy ${t.price}`}
               </button>
             </article>
           ))}
