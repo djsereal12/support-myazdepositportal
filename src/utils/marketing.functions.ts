@@ -120,7 +120,7 @@ export const importAppUsers = createServerFn({ method: "POST" })
       .filter((u) => u.email && u.email_confirmed_at)
       .map((u) => ({
         email: u.email!.toLowerCase(),
-        full_name: (u.user_metadata?.full_name as string | undefined) ?? null,
+        full_name: (u.user_metadata?.['full_name'] as string | undefined) ?? null,
         user_id: u.id,
         source: "app" as const,
       }));
@@ -212,14 +212,14 @@ export const listCampaigns = createServerFn({ method: "GET" })
   });
 
 type CampaignInput = {
-  id?: string;
+  id?: string | undefined;
   name: string;
   subject: string;
-  previewText?: string;
-  headline?: string;
+  previewText?: string | undefined;
+  headline?: string | undefined;
   body: string;
-  ctaLabel?: string;
-  ctaUrl?: string;
+  ctaLabel?: string | undefined;
+  ctaUrl?: string | undefined;
 };
 
 function validateCampaign(data: CampaignInput): CampaignInput {

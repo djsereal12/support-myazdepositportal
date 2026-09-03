@@ -125,7 +125,10 @@ function MarketingPage() {
   }
 
   async function onSend() {
-    if (!draft.id) return toast.error("Save the draft first");
+    if (!draft.id) {
+      toast.error("Save the draft first");
+      return;
+    }
     if (!confirm(`Send "${draft.subject}" to ${active} subscribers? This cannot be undone.`)) return;
     await run("Campaign sent", () => send({ data: { id: draft.id! } }));
     setDraft(emptyDraft);
@@ -207,12 +210,12 @@ function MarketingPage() {
         <section className="glass-panel p-6">
           <h2 className="text-lg font-semibold">Compose</h2>
           <div className="mt-5 space-y-4">
-            {[
+            {([
               ["Campaign name", "name", "October Arizona deposit tips"],
               ["Subject line", "subject", "Get your Arizona deposit back in 14 days"],
               ["Preview text", "previewText", "What landlords must return under A.R.S. § 33-1321"],
               ["Headline", "headline", "Your deposit has a deadline"],
-            ].map(([label, key, placeholder]) => (
+            ] as const).map(([label, key, placeholder]) => (
               <label key={key} className="block">
                 <span className="text-xs font-medium text-muted-foreground">{label}</span>
                 <input
