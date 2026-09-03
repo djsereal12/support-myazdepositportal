@@ -92,6 +92,13 @@
       "when": 1788429133576,
       "tag": "0012_marketing_subscribers_and_campaigns",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1788478999991,
+      "tag": "0013_lock_down_invite_and_purchase_writes",
+      "breakpoints": true
     }
   ]
 }
