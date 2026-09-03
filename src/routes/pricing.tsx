@@ -109,15 +109,24 @@ const landlordTiers = [
 
 function Pricing() {
   const { openCheckout, closeCheckout, isOpen, checkoutElement } = useStripeCheckout();
+  const navigate = useNavigate();
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
+  const [checkedAuth, setCheckedAuth] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) =>
-      setUser(data.user ? { id: data.user.id, ...(data.user.email ? { email: data.user.email } : {}) } : null),
-    );
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user ? { id: data.user.id, ...(data.user.email ? { email: data.user.email } : {}) } : null);
+      setCheckedAuth(true);
+    });
   }, []);
 
+  const signedIn = checkedAuth && !!user?.id;
+
   function buy(priceId: string) {
+    if (!signedIn) {
+      void navigate({ to: "/auth", search: { next: "/pricing" } });
+      return;
+    }
     openCheckout({
       priceId,
       ...(user?.id ? { userId: user.id } : {}),
