@@ -28,6 +28,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedLandlordRouteImport } from './routes/_authenticated/landlord'
 import { Route as AuthenticatedMarketingRouteImport } from './routes/_authenticated/marketing'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as VerifyTokenRouteImport } from './routes/verify.$token'
@@ -140,6 +141,11 @@ const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/callback',
   path: '/callback',
@@ -250,6 +256,7 @@ export interface FileRoutesByFullPath {
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/marketing': typeof AuthenticatedMarketingRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/api/chat': typeof ApiChatRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$token': typeof VerifyTokenRoute
@@ -286,6 +293,7 @@ export interface FileRoutesByTo {
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/marketing': typeof AuthenticatedMarketingRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/api/chat': typeof ApiChatRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$token': typeof VerifyTokenRoute
@@ -324,6 +332,7 @@ export interface FileRoutesById {
   '/_authenticated/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/_authenticated/marketing': typeof AuthenticatedMarketingRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/api/chat': typeof ApiChatRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/verify/$token': typeof VerifyTokenRoute
@@ -362,6 +371,7 @@ export interface FileRouteTypes {
     | '/landlord'
     | '/marketing'
     | '/profile'
+    | '/api/chat'
     | '/auth/callback'
     | '/checkout/return'
     | '/verify/$token'
@@ -398,6 +408,7 @@ export interface FileRouteTypes {
     | '/landlord'
     | '/marketing'
     | '/profile'
+    | '/api/chat'
     | '/auth/callback'
     | '/checkout/return'
     | '/verify/$token'
@@ -435,6 +446,7 @@ export interface FileRouteTypes {
     | '/_authenticated/landlord'
     | '/_authenticated/marketing'
     | '/_authenticated/profile'
+    | '/api/chat'
     | '/auth/callback'
     | '/checkout/return'
     | '/verify/$token'
@@ -468,6 +480,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  ApiChatRoute: typeof ApiChatRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   VerifyTokenRoute: typeof VerifyTokenRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
@@ -611,6 +624,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/profile'
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/auth/callback': {
       id: '/auth/callback'
@@ -809,6 +829,7 @@ const rootRouteChildren: RootRouteChildren = {
   UnsubscribeRoute: UnsubscribeRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  ApiChatRoute: ApiChatRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
   VerifyTokenRoute: VerifyTokenRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
