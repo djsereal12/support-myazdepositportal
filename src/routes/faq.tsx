@@ -103,7 +103,7 @@ function Faq() {
         </p>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
           Getting your deposit back, {" "}
-          <span className="font-script text-5xl font-normal text-lavender-deep">
+          <span className="font-script text-5xl font-normal holo-text">
             without the guesswork.
           </span>
         </h1>

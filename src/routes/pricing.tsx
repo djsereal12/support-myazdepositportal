@@ -141,7 +141,7 @@ function Pricing() {
       <section className="mt-4 rounded-3xl border border-border lavender-wash px-6 py-14 shadow-lift sm:px-12">
         <h1 className="max-w-2xl text-4xl font-semibold leading-tight sm:text-5xl">
           Less than a dinner out. Against an{" "}
-          <span className="font-script text-5xl font-normal text-lavender-deep">$1,800</span> average
+          <span className="font-script text-5xl font-normal holo-text">$1,800</span> average
           loss.
         </h1>
         <p className="mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground">

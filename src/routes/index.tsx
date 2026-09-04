@@ -61,7 +61,7 @@ function Landing() {
         </span>
         <h1 className="mt-7 max-w-3xl text-4xl font-semibold leading-[1.05] sm:text-6xl">
           The average renter loses{" "}
-          <span className="font-script text-5xl font-normal text-lavender-deep sm:text-7xl">
+          <span className="font-script text-5xl font-normal holo-text sm:text-7xl">
             $1,800
           </span>{" "}
           to a deposit they never see again.

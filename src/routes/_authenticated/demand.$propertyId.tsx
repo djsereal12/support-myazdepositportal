@@ -197,7 +197,7 @@ function Demand() {
         </aside>
 
         <article className="rounded-2xl border border-border bg-card p-8 shadow-soft sm:p-12">
-          <p className="font-script text-3xl text-lavender-deep">deposit</p>
+          <p className="font-script text-3xl holo-text">deposit</p>
           <p className="mt-8 text-xs text-muted-foreground">
             {new Date().toLocaleDateString("en-US", { dateStyle: "long" })}
           </p>
