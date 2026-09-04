@@ -188,9 +188,11 @@ export function Page({ children }: { children: ReactNode }) {
       <SiteHeader />
       <main className="mx-auto w-full max-w-6xl px-5 pb-16 pt-10">{children}</main>
       <SiteFooter />
+      <AskWidget />
     </div>
   );
 }
+
 
 export function StatusChip({ status }: { status: string }) {
   const map: Record<string, string> = {
