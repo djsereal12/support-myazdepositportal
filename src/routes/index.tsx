@@ -295,12 +295,12 @@ function Landing() {
         <div>
           <h2 className="text-xl font-semibold">Move-in day takes five minutes</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Free first scan. Seal it before you unpack a single box.
+            {"\n"}
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link to="/auth" className="btn-glass-pink px-5 py-2.5 text-sm font-medium">
-            <Camera className="h-4 w-4" /> Start free scan
+            <Camera className="h-4 w-4" /> Start scan
           </Link>
           <Link to="/pricing" className="btn-glass px-5 py-2.5 text-sm font-medium">
             See pricing
