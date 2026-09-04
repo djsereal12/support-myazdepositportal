@@ -167,7 +167,6 @@ function LandlordPortal() {
     return [...map.values()];
   }, [filtered]);
 
-
   if (roleLoading) {
     return (
       <Page>
@@ -313,8 +312,6 @@ function LandlordPortal() {
               </button>
             ))}
           </div>
-
-
 
           <div className="mt-6">
             <h1 className="text-3xl font-semibold sm:text-4xl">
@@ -472,7 +469,10 @@ function LandlordPortal() {
                       </div>
                       <ul className="mt-4 space-y-2">
                         {t.reports.slice(0, 3).map((r) => (
-                          <li key={r.id} className="flex items-center justify-between gap-3 text-xs">
+                          <li
+                            key={r.id}
+                            className="flex items-center justify-between gap-3 text-xs"
+                          >
                             <span className="min-w-0 truncate text-muted-foreground">
                               {REPORT_TYPE_LABEL[r.type] ?? r.type} · {formatDate(r.created_at)}
                             </span>
@@ -500,75 +500,73 @@ function LandlordPortal() {
                 <span className="text-xs text-muted-foreground">{filtered.length} records</span>
               </div>
 
-
-            {isLoading ? (
-              <div className="mt-6 h-32 animate-pulse rounded-2xl bg-muted" />
-            ) : !filtered.length ? (
-              <div className="mt-6">
-                <FileText className="h-6 w-6 text-lavender" strokeWidth={1.5} />
-                <h3 className="mt-4 text-xl font-semibold">Nothing shared yet</h3>
-                <p className="mt-2 max-w-md text-sm text-muted-foreground">
-                  Ask your tenant to add {role.email} as the landlord contact on their property, or
-                  to share the report from their report page.
-                </p>
-              </div>
-            ) : (
-              <div className="mt-5 overflow-x-auto">
-                <table className="w-full min-w-[720px] border-collapse text-left text-sm">
-                  <thead>
-                    <tr className="border-b border-border text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">
-                      <th className="py-3 pr-4 font-medium">Unit</th>
-                      <th className="py-3 pr-4 font-medium">Report</th>
-                      <th className="py-3 pr-4 font-medium">Status</th>
-                      <th className="py-3 pr-4 font-medium">Seal</th>
-                      <th className="py-3 font-medium">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filtered.map((r) => {
-                      const p = r.properties as PropertyRef;
-                      return (
-                        <tr key={r.id} className="border-b border-border/70">
-                          <td className="py-4 pr-4">
-                            <p className="font-medium">
-                              {p?.address}
-                              {p?.unit ? ` · ${p.unit}` : ""}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              Deposit {money(p?.deposit_amount)}
-                            </p>
-                          </td>
-                          <td className="py-4 pr-4">
-                            <p>{REPORT_TYPE_LABEL[r.type] ?? r.type}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {r.report_number} · {formatDate(r.created_at)}
-                            </p>
-                          </td>
-                          <td className="py-4 pr-4">
-                            <StatusChip status={r.status} />
-                          </td>
-                          <td className="py-4 pr-4 font-mono text-xs">
-                            {shortHash(r.overall_hash) || "—"}
-                          </td>
-                          <td className="py-4">
-                            <Link
-                              to="/landlord/$reportId"
-                              params={{ reportId: r.id }}
-                              className="rounded-full border border-border bg-card px-4 py-2 text-xs font-medium hover:bg-accent"
-                            >
-                              View
-                            </Link>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            )}
+              {isLoading ? (
+                <div className="mt-6 h-32 animate-pulse rounded-2xl bg-muted" />
+              ) : !filtered.length ? (
+                <div className="mt-6">
+                  <FileText className="h-6 w-6 text-lavender" strokeWidth={1.5} />
+                  <h3 className="mt-4 text-xl font-semibold">Nothing shared yet</h3>
+                  <p className="mt-2 max-w-md text-sm text-muted-foreground">
+                    Ask your tenant to add {role.email} as the landlord contact on their property,
+                    or to share the report from their report page.
+                  </p>
+                </div>
+              ) : (
+                <div className="mt-5 overflow-x-auto">
+                  <table className="w-full min-w-[720px] border-collapse text-left text-sm">
+                    <thead>
+                      <tr className="border-b border-border text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">
+                        <th className="py-3 pr-4 font-medium">Unit</th>
+                        <th className="py-3 pr-4 font-medium">Report</th>
+                        <th className="py-3 pr-4 font-medium">Status</th>
+                        <th className="py-3 pr-4 font-medium">Seal</th>
+                        <th className="py-3 font-medium">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filtered.map((r) => {
+                        const p = r.properties as PropertyRef;
+                        return (
+                          <tr key={r.id} className="border-b border-border/70">
+                            <td className="py-4 pr-4">
+                              <p className="font-medium">
+                                {p?.address}
+                                {p?.unit ? ` · ${p.unit}` : ""}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                Deposit {money(p?.deposit_amount)}
+                              </p>
+                            </td>
+                            <td className="py-4 pr-4">
+                              <p>{REPORT_TYPE_LABEL[r.type] ?? r.type}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {r.report_number} · {formatDate(r.created_at)}
+                              </p>
+                            </td>
+                            <td className="py-4 pr-4">
+                              <StatusChip status={r.status} />
+                            </td>
+                            <td className="py-4 pr-4 font-mono text-xs">
+                              {shortHash(r.overall_hash) || "—"}
+                            </td>
+                            <td className="py-4">
+                              <Link
+                                to="/landlord/$reportId"
+                                params={{ reportId: r.id }}
+                                className="rounded-full border border-border bg-card px-4 py-2 text-xs font-medium hover:bg-accent"
+                              >
+                                View
+                              </Link>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </section>
           ) : null}
-
 
           <p className="mt-6 text-xs text-muted-foreground">
             A.R.S. §33-1321(D)(E) — security deposit itemization requires move-in condition
