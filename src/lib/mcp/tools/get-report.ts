@@ -26,7 +26,9 @@ export default defineTool({
 
     const { data: media, error: mediaError } = await supabase
       .from("media")
-      .select("id, room_label, condition, note, gps_lat, gps_lng, exif_timestamp, device_model, file_hash_sha256, created_at")
+      .select(
+        "id, room_label, condition, note, gps_lat, gps_lng, exif_timestamp, device_model, file_hash_sha256, created_at",
+      )
       .eq("report_id", report_id)
       .order("created_at", { ascending: true });
     if (mediaError) return { content: [{ type: "text", text: mediaError.message }], isError: true };

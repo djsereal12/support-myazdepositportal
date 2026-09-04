@@ -50,7 +50,9 @@ function CallbackPage() {
             .eq("role", validRole)
             .maybeSingle();
           if (!existing) {
-            await supabase.from("user_roles").insert({ user_id: data.session.user.id, role: validRole });
+            await supabase
+              .from("user_roles")
+              .insert({ user_id: data.session.user.id, role: validRole });
           }
         }
 

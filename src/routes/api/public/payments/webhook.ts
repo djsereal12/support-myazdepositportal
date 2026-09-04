@@ -16,24 +16,24 @@ function getSupabase() {
 async function recordPurchase(session: any, env: StripeEnv, status: string) {
   const metadata = session.metadata ?? {};
   await (getSupabase().from("purchases") as any).upsert(
-      {
-        user_id: metadata.userId ?? null,
-        email: session.customer_details?.email ?? null,
-        price_id: metadata.priceId ?? "unknown",
-        product_id: metadata.priceId ?? null,
-        stripe_session_id: session.id,
-        stripe_customer_id:
-          typeof session.customer === "string" ? session.customer : (session.customer?.id ?? null),
-        amount_total: session.amount_total != null ? session.amount_total / 100 : null,
-        currency: session.currency ?? null,
-        status,
-        environment: env,
-        report_id: metadata.reportId ?? null,
-        property_id: metadata.propertyId ?? null,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "stripe_session_id" },
-    );
+    {
+      user_id: metadata.userId ?? null,
+      email: session.customer_details?.email ?? null,
+      price_id: metadata.priceId ?? "unknown",
+      product_id: metadata.priceId ?? null,
+      stripe_session_id: session.id,
+      stripe_customer_id:
+        typeof session.customer === "string" ? session.customer : (session.customer?.id ?? null),
+      amount_total: session.amount_total != null ? session.amount_total / 100 : null,
+      currency: session.currency ?? null,
+      status,
+      environment: env,
+      report_id: metadata.reportId ?? null,
+      property_id: metadata.propertyId ?? null,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "stripe_session_id" },
+  );
 }
 
 async function handleWebhook(req: Request, env: StripeEnv) {

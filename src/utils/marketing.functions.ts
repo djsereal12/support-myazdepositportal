@@ -120,7 +120,7 @@ export const importAppUsers = createServerFn({ method: "POST" })
       .filter((u) => u.email && u.email_confirmed_at)
       .map((u) => ({
         email: u.email!.toLowerCase(),
-        full_name: (u.user_metadata?.['full_name'] as string | undefined) ?? null,
+        full_name: (u.user_metadata?.["full_name"] as string | undefined) ?? null,
         user_id: u.id,
         source: "app" as const,
       }));
@@ -230,7 +230,8 @@ function validateCampaign(data: CampaignInput): CampaignInput {
   if (!subject) throw new Error("Subject line is required");
   if (!body) throw new Error("Email body is required");
   const ctaUrl = (data.ctaUrl ?? "").trim();
-  if (ctaUrl && !/^https:\/\//.test(ctaUrl)) throw new Error("Button link must start with https://");
+  if (ctaUrl && !/^https:\/\//.test(ctaUrl))
+    throw new Error("Button link must start with https://");
   return {
     id: data.id,
     name: name.slice(0, 120),
@@ -365,9 +366,8 @@ export const sendCampaign = createServerFn({ method: "POST" })
     await supabaseAdmin.from("marketing_campaigns").update({ status: "sending" }).eq("id", c.id);
 
     try {
-      const { ensureAudience, createBroadcast, sendBroadcast } = await import(
-        "@/lib/resend-marketing.server"
-      );
+      const { ensureAudience, createBroadcast, sendBroadcast } =
+        await import("@/lib/resend-marketing.server");
       const audienceId = await ensureAudience();
       const content = {
         headline: c.headline,

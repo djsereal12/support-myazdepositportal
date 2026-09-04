@@ -199,10 +199,7 @@ function Landing() {
               ) : null}
               {s.step === "Step 2" ? <SealAnimation /> : null}
               {s.step === "Step 3" ? (
-                <Link
-                  to="/sample"
-                  className="btn-glass mt-4 w-fit px-4 py-2 text-xs font-medium"
-                >
+                <Link to="/sample" className="btn-glass mt-4 w-fit px-4 py-2 text-xs font-medium">
                   View a sample report
                 </Link>
               ) : null}
@@ -265,7 +262,11 @@ function Landing() {
             <figure key={t.name} className="glass-panel p-7">
               <div className="flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-3.5 w-3.5 fill-current text-lavender" strokeWidth={0} />
+                  <Star
+                    key={i}
+                    className="h-3.5 w-3.5 fill-current text-lavender"
+                    strokeWidth={0}
+                  />
                 ))}
               </div>
               <blockquote className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -273,7 +274,10 @@ function Landing() {
               </blockquote>
               <figcaption className="mt-4 text-xs">
                 <span className="font-medium">{t.name}</span>
-                <span className="text-muted-foreground"> · {t.city}, AZ · {t.amount}</span>
+                <span className="text-muted-foreground">
+                  {" "}
+                  · {t.city}, AZ · {t.amount}
+                </span>
               </figcaption>
             </figure>
           ))}
@@ -294,9 +298,7 @@ function Landing() {
       <section className="glass-panel mt-8 flex flex-col gap-4 p-8 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-semibold">Move-in day takes five minutes</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {"\n"}
-          </p>
+          <p className="mt-2 text-sm text-muted-foreground">{"\n"}</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link to="/auth" className="btn-glass-pink px-5 py-2.5 text-sm font-medium">
@@ -328,9 +330,7 @@ function PhoneMock() {
               <div className="space-y-1 text-[0.55rem] text-muted-foreground">
                 <p className="rounded bg-background/80 px-2 py-1">112°F Clear — Phoenix, AZ</p>
                 <p className="rounded bg-background/80 px-2 py-1">33.4576° N, 112.0740° W</p>
-                <p className="rounded bg-background/80 px-2 py-1 font-mono">
-                  sha256 c41f77b2…0d18
-                </p>
+                <p className="rounded bg-background/80 px-2 py-1 font-mono">sha256 c41f77b2…0d18</p>
               </div>
             </div>
           </div>

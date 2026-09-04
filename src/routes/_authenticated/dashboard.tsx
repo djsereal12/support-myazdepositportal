@@ -9,7 +9,10 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
       { title: "Your properties — deposit" },
-      { name: "description", content: "Every unit you're documenting, with report status at a glance." },
+      {
+        name: "description",
+        content: "Every unit you're documenting, with report status at a glance.",
+      },
       { property: "og:title", content: "Your properties — deposit" },
       { property: "og:description", content: "Manage your Arizona deposit documentation." },
     ],

@@ -7,7 +7,11 @@ import { Page } from "@/components/site-shell";
 import { MediaThumb } from "@/components/media-image";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDate, money, shortHash, REPORT_TYPE_LABEL } from "@/lib/deposit";
-import { fetchPurchases, landlordLetterUnlocked, landlordUnlimitedActive } from "@/lib/entitlements";
+import {
+  fetchPurchases,
+  landlordLetterUnlocked,
+  landlordUnlimitedActive,
+} from "@/lib/entitlements";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 import { PRICES } from "@/lib/stripe";
 
@@ -17,7 +21,8 @@ export const Route = createFileRoute("/_authenticated/landlord/$reportId")({
       { title: "Review tenant report — deposit" },
       {
         name: "description",
-        content: "Review a tenant's condition report, dispute the deposit, or send a response letter.",
+        content:
+          "Review a tenant's condition report, dispute the deposit, or send a response letter.",
       },
       { property: "og:title", content: "Review tenant report — deposit" },
       { property: "og:description", content: "Landlord review, dispute, and response letter." },
@@ -88,9 +93,12 @@ function LandlordReport() {
     },
   });
 
-  const property = report?.properties as
-    | { address: string; unit: string | null; deposit_amount: number | null; landlord_name: string | null }
-    | null;
+  const property = report?.properties as {
+    address: string;
+    unit: string | null;
+    deposit_amount: number | null;
+    landlord_name: string | null;
+  } | null;
 
   async function fileDispute() {
     setBusy(true);
@@ -212,7 +220,9 @@ function LandlordReport() {
                     <MediaThumb path={m.file_url} alt={m.room_label} className="h-16 w-24" />
                   </td>
                   <td className="py-4 pr-4 font-mono text-xs">{shortHash(m.file_hash_sha256)}</td>
-                  <td className="py-4 text-xs text-muted-foreground">{formatDate(m.exif_timestamp)}</td>
+                  <td className="py-4 text-xs text-muted-foreground">
+                    {formatDate(m.exif_timestamp)}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -269,7 +279,9 @@ function LandlordReport() {
                 <li key={d.id} className="rounded-xl border border-border bg-card p-4">
                   <div className="flex justify-between">
                     <span className="font-medium">{money(d.amount_claimed)}</span>
-                    <span className="text-xs text-muted-foreground">{formatDate(d.created_at)}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {formatDate(d.created_at)}
+                    </span>
                   </div>
                   {d.reason ? <p className="mt-2 text-muted-foreground">{d.reason}</p> : null}
                 </li>

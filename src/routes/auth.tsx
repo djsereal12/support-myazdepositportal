@@ -9,20 +9,24 @@ import { Logo } from "@/components/site-shell";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>): { next?: string } => {
-    const raw = s['next'];
-    return typeof raw === "string" && raw.startsWith("/") && !raw.startsWith("//") ? { next: raw } : {};
+    const raw = s["next"];
+    return typeof raw === "string" && raw.startsWith("/") && !raw.startsWith("//")
+      ? { next: raw }
+      : {};
   },
   head: () => ({
     meta: [
       { title: "Sign in — deposit" },
-      { name: "description", content: "Sign in or create your deposit account to start a tamper-proof move-in scan." },
+      {
+        name: "description",
+        content: "Sign in or create your deposit account to start a tamper-proof move-in scan.",
+      },
       { property: "og:title", content: "Sign in — deposit" },
       { property: "og:description", content: "Access your Arizona deposit documentation." },
     ],
   }),
   component: AuthPage,
 });
-
 
 const schema = z.object({
   email: z.string().trim().email("Enter a valid email").max(255),
@@ -47,7 +51,11 @@ const roleDetails: Record<
     label: "I'm a landlord",
     description: "View shared reports, dispute claims, and send response letters.",
     icon: ShieldCheck,
-    features: ["Access tenant reports", "Dispute deposit deductions", "Professional response letters"],
+    features: [
+      "Access tenant reports",
+      "Dispute deposit deductions",
+      "Professional response letters",
+    ],
     home: "/landlord",
   },
 };
@@ -86,7 +94,6 @@ function AuthPage() {
     const firstRole = roles?.[0]?.role as Role | undefined;
     navigate({ to: firstRole ? roleDetails[firstRole].home : "/dashboard", replace: true });
   }
-
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -202,7 +209,10 @@ function AuthPage() {
                   </p>
                   <ul className="mt-3 space-y-1">
                     {details.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-2 text-[0.7rem] text-muted-foreground">
+                      <li
+                        key={feature}
+                        className="flex items-center gap-2 text-[0.7rem] text-muted-foreground"
+                      >
                         <KeyRound className="h-3 w-3 text-lavender" />
                         {feature}
                       </li>
@@ -252,7 +262,11 @@ function AuthPage() {
               disabled={busy}
               className="w-full rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
             >
-              {busy ? "Working…" : mode === "signin" ? `Sign in as ${roleNoun(role)}` : "Create account"}
+              {busy
+                ? "Working…"
+                : mode === "signin"
+                  ? `Sign in as ${roleNoun(role)}`
+                  : "Create account"}
             </button>
           </form>
 

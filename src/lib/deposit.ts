@@ -50,7 +50,10 @@ export async function sha256(input: string): Promise<string> {
 /** Mock weather snapshot — swap for a live feed later. */
 export function weatherSnapshot(): string {
   const month = new Date().getMonth();
-  const temp = month >= 4 && month <= 8 ? 104 + Math.floor(Math.random() * 12) : 68 + Math.floor(Math.random() * 14);
+  const temp =
+    month >= 4 && month <= 8
+      ? 104 + Math.floor(Math.random() * 12)
+      : 68 + Math.floor(Math.random() * 14);
   const sky = temp > 100 ? "Clear" : "Partly Cloudy";
   return `${temp}°F ${sky} - Phoenix, AZ`;
 }
@@ -61,7 +64,9 @@ export function shortHash(hash: string | null | undefined): string {
 }
 
 export function money(n: number | null | undefined): string {
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(n ?? 0));
+  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+    Number(n ?? 0),
+  );
 }
 
 export function formatDate(iso: string | null | undefined): string {

@@ -9,7 +9,10 @@ export const Route = createFileRoute("/_authenticated/compare/$propertyId")({
   head: () => ({
     meta: [
       { title: "Move-in vs move-out — deposit" },
-      { name: "description", content: "Side-by-side comparison with new damage and pre-existing flags." },
+      {
+        name: "description",
+        content: "Side-by-side comparison with new damage and pre-existing flags.",
+      },
       { property: "og:title", content: "Move-in vs move-out — deposit" },
       { property: "og:description", content: "See exactly what changed, room by room." },
     ],
@@ -51,10 +54,14 @@ function Compare() {
   });
 
   const inMap = new Map(
-    (data?.media ?? []).filter((m) => m.report_id === data?.moveIn?.id).map((m) => [m.room_label, m]),
+    (data?.media ?? [])
+      .filter((m) => m.report_id === data?.moveIn?.id)
+      .map((m) => [m.room_label, m]),
   );
   const outMap = new Map(
-    (data?.media ?? []).filter((m) => m.report_id === data?.moveOut?.id).map((m) => [m.room_label, m]),
+    (data?.media ?? [])
+      .filter((m) => m.report_id === data?.moveOut?.id)
+      .map((m) => [m.room_label, m]),
   );
 
   return (
@@ -115,7 +122,9 @@ function Side({
   room,
 }: {
   label: string;
-  item: { file_url: string; condition: string; note: string | null; file_hash_sha256: string | null } | undefined;
+  item:
+    | { file_url: string; condition: string; note: string | null; file_hash_sha256: string | null }
+    | undefined;
   room: string;
 }) {
   return (

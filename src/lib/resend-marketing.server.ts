@@ -15,10 +15,7 @@ function apiKey() {
 }
 
 export function marketingFrom() {
-  return (
-    process.env["MARKETING_FROM_EMAIL"] ??
-    "deposit <news@news.myazdepositportal.live>"
-  );
+  return process.env["MARKETING_FROM_EMAIL"] ?? "deposit <news@news.myazdepositportal.live>";
 }
 
 export function marketingReplyTo() {

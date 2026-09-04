@@ -1,9 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import {
-  type StripeEnv,
-  createStripeClient,
-  getStripeErrorMessage,
-} from "@/lib/stripe.server";
+import { type StripeEnv, createStripeClient, getStripeErrorMessage } from "@/lib/stripe.server";
 
 type CheckoutSessionResult = { clientSecret: string } | { error: string };
 
@@ -56,7 +52,9 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
       // Without a verified account the purchase could never be linked to
       // anyone, so the buyer would pay and receive nothing. Block it.
       if (!userId) {
-        return { error: "Please sign in before checking out so your purchase unlocks your account." };
+        return {
+          error: "Please sign in before checking out so your purchase unlocks your account.",
+        };
       }
 
       const prices = await stripe.prices.list({ lookup_keys: [data.priceId] });
@@ -69,7 +67,6 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
             ...(customerEmail ? { email: customerEmail } : {}),
           })
         : undefined;
-
 
       const productId =
         typeof stripePrice.product === "string" ? stripePrice.product : stripePrice.product.id;

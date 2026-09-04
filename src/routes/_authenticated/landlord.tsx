@@ -340,7 +340,8 @@ function LandlordPortal() {
                             {sealed ? "sealed" : "in progress"}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            {formatDate(r.created_at)} · {shortHash(r.overall_hash) || "no seal yet"}
+                            {formatDate(r.created_at)} ·{" "}
+                            {shortHash(r.overall_hash) || "no seal yet"}
                           </p>
                         </div>
                       </li>
@@ -403,7 +404,11 @@ function LandlordPortal() {
           <section className="glass-panel mt-6 p-6">
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-lg font-semibold">
-                {tab === "tenants" ? "Tenants" : tab === "reports" ? "All reports" : "Latest reports"}
+                {tab === "tenants"
+                  ? "Tenants"
+                  : tab === "reports"
+                    ? "All reports"
+                    : "Latest reports"}
               </h2>
               <span className="text-xs text-muted-foreground">{filtered.length} records</span>
             </div>

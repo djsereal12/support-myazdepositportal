@@ -4,7 +4,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 
-
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <Link to="/" className={`flex items-baseline gap-2 ${className}`}>
@@ -78,18 +77,12 @@ export function SiteHeader() {
             <span className="hidden max-w-[9rem] truncate text-xs text-muted-foreground sm:inline">
               {email}
             </span>
-            <button
-              onClick={signOut}
-              className="btn-glass px-4 py-2 text-xs font-medium"
-            >
+            <button onClick={signOut} className="btn-glass px-4 py-2 text-xs font-medium">
               Sign out
             </button>
           </div>
         ) : (
-          <Link
-            to="/auth"
-            className="btn-glass-pink px-4 py-2 text-xs font-medium"
-          >
+          <Link to="/auth" className="btn-glass-pink px-4 py-2 text-xs font-medium">
             Sign in
           </Link>
         )}
@@ -161,8 +154,6 @@ export function SiteFooter() {
     </footer>
   );
 }
-
-
 
 function FooterCol({ title, children }: { title: string; children: ReactNode }) {
   return (

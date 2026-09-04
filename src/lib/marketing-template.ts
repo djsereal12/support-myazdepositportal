@@ -30,7 +30,10 @@ function linkify(escaped: string) {
     );
 }
 
-export function renderCampaignHtml(c: CampaignContent, unsubscribeUrl = "{{{RESEND_UNSUBSCRIBE_URL}}}") {
+export function renderCampaignHtml(
+  c: CampaignContent,
+  unsubscribeUrl = "{{{RESEND_UNSUBSCRIBE_URL}}}",
+) {
   const paragraphs = c.body
     .split(/\n{2,}/)
     .map((p) => p.trim())
@@ -83,7 +86,10 @@ export function renderCampaignHtml(c: CampaignContent, unsubscribeUrl = "{{{RESE
 </body></html>`;
 }
 
-export function renderCampaignText(c: CampaignContent, unsubscribeUrl = "{{{RESEND_UNSUBSCRIBE_URL}}}") {
+export function renderCampaignText(
+  c: CampaignContent,
+  unsubscribeUrl = "{{{RESEND_UNSUBSCRIBE_URL}}}",
+) {
   return [
     c.headline ?? "",
     "",

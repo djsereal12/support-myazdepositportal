@@ -35,8 +35,8 @@ function Legal() {
         </p>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
           What deposit is, what it{" "}
-          <span className="font-script text-5xl font-normal holo-text">isn't</span>, and
-          where your evidence lives.
+          <span className="font-script text-5xl font-normal holo-text">isn't</span>, and where your
+          evidence lives.
         </h1>
         <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           Last updated {updated}. This page covers both our legal disclaimer regarding Arizona
@@ -245,8 +245,8 @@ function Legal() {
             email you signed up with and we will respond to the request.
           </p>
           <p>
-            We may update this page as the product changes. The "last updated" date at the top always
-            reflects the current version, and material changes will be surfaced in the app.
+            We may update this page as the product changes. The "last updated" date at the top
+            always reflects the current version, and material changes will be surfaced in the app.
           </p>
         </Section>
       </div>

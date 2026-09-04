@@ -9,7 +9,10 @@ export const Route = createFileRoute("/_authenticated/properties/new")({
   head: () => ({
     meta: [
       { title: "Add a property — deposit" },
-      { name: "description", content: "Add the unit, landlord contact and deposit amount you're protecting." },
+      {
+        name: "description",
+        content: "Add the unit, landlord contact and deposit amount you're protecting.",
+      },
       { property: "og:title", content: "Add a property — deposit" },
       { property: "og:description", content: "Start documenting a new rental unit." },
     ],
@@ -21,7 +24,10 @@ const schema = z.object({
   address: z.string().trim().min(4, "Enter the street address").max(200),
   unit: z.string().trim().max(40).optional(),
   landlord_name: z.string().trim().max(120).optional(),
-  landlord_email: z.union([z.string().trim().email("Invalid landlord email").max(255), z.literal("")]),
+  landlord_email: z.union([
+    z.string().trim().email("Invalid landlord email").max(255),
+    z.literal(""),
+  ]),
   deposit_amount: z.number().min(0).max(1_000_000),
   lease_start: z.string().optional(),
   lease_end: z.string().optional(),
@@ -84,7 +90,12 @@ function NewProperty() {
       </p>
       <h1 className="mt-3 text-4xl font-semibold">Add a property</h1>
       <form onSubmit={submit} className="glass-panel mt-8 max-w-2xl space-y-5 p-8">
-        <Field label="Street address" value={form.address} onChange={set("address")} placeholder="1420 E Camelback Rd" />
+        <Field
+          label="Street address"
+          value={form.address}
+          onChange={set("address")}
+          placeholder="1420 E Camelback Rd"
+        />
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Unit" value={form.unit} onChange={set("unit")} placeholder="Apt 312" />
           <Field
@@ -96,7 +107,12 @@ function NewProperty() {
           />
         </div>
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Landlord name" value={form.landlord_name} onChange={set("landlord_name")} placeholder="Sonoran Property Group" />
+          <Field
+            label="Landlord name"
+            value={form.landlord_name}
+            onChange={set("landlord_name")}
+            placeholder="Sonoran Property Group"
+          />
           <Field
             label="Landlord email"
             type="email"
@@ -106,7 +122,12 @@ function NewProperty() {
           />
         </div>
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Lease start" type="date" value={form.lease_start} onChange={set("lease_start")} />
+          <Field
+            label="Lease start"
+            type="date"
+            value={form.lease_start}
+            onChange={set("lease_start")}
+          />
           <Field label="Lease end" type="date" value={form.lease_end} onChange={set("lease_end")} />
         </div>
         <button

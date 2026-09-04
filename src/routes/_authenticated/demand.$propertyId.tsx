@@ -20,7 +20,10 @@ export const Route = createFileRoute("/_authenticated/demand/$propertyId")({
           "Generate a formal Arizona security deposit demand letter citing A.R.S. § 33-1321(D) and (E).",
       },
       { property: "og:title", content: "Demand letter — deposit" },
-      { property: "og:description", content: "A formal, statute-cited demand your landlord must answer." },
+      {
+        property: "og:description",
+        content: "A formal, statute-cited demand your landlord must answer.",
+      },
     ],
   }),
   component: Demand,
@@ -63,9 +66,13 @@ function Demand() {
   const { openCheckout, closeCheckout, isOpen, checkoutElement } = useStripeCheckout();
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: u }) =>
-      setUser(u.user ? { id: u.user.id, ...(u.user.email ? { email: u.user.email } : {}) } : null),
-    );
+    supabase.auth
+      .getUser()
+      .then(({ data: u }) =>
+        setUser(
+          u.user ? { id: u.user.id, ...(u.user.email ? { email: u.user.email } : {}) } : null,
+        ),
+      );
   }, []);
   const { data: purchases } = useQuery({ queryKey: ["purchases"], queryFn: fetchPurchases });
   const unlocked = demandLetterUnlocked(purchases ?? [], propertyId);
@@ -80,8 +87,6 @@ function Demand() {
       returnUrl: `${window.location.origin}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
     });
   }
-
-
 
   async function save() {
     setSaving(true);
@@ -170,14 +175,17 @@ function Demand() {
         </section>
       ) : null}
 
-
-
       <div className="mt-6 grid gap-5 lg:grid-cols-[320px_1fr]">
         <aside className="glass-panel h-fit space-y-4 p-6 print:hidden">
           <p className="text-[0.68rem] font-medium uppercase tracking-[0.24em] text-muted-foreground">
             Dispute letter · $29
           </p>
-          <Field label="Your full name" value={tenantName} onChange={setTenantName} placeholder={tenant} />
+          <Field
+            label="Your full name"
+            value={tenantName}
+            onChange={setTenantName}
+            placeholder={tenant}
+          />
           <Field
             label="Amount withheld"
             type="number"
