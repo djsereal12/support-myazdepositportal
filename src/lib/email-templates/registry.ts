@@ -4,6 +4,8 @@ import { template as reportReadyTemplate } from "./report-ready";
 import { template as landlordResponseTemplate } from "./landlord-response";
 import { template as landlordInviteTemplate } from "./landlord-invite";
 import { template as demandLetterTemplate } from "./demand-letter";
+import { template as nudgeFirstScanTemplate } from "./nudge-first-scan";
+import { template as moveOutDeadlineTemplate } from "./moveout-deadline";
 
 export interface TemplateEntry {
   component: ComponentType<any>;
@@ -28,4 +30,6 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   "landlord-response": landlordResponseTemplate,
   "landlord-invite": landlordInviteTemplate,
   "demand-letter": demandLetterTemplate,
+  "nudge-first-scan": nudgeFirstScanTemplate,
+  "moveout-deadline": moveOutDeadlineTemplate,
 };
