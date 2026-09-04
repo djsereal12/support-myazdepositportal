@@ -15,7 +15,7 @@ export function FauxQr({ size = 21, seed = 7 }: { size?: number; seed?: number }
   };
   const finderOn = (r: number, c: number) => {
     const rel = (br: number, bc: number) => ({ dr: r - br, dc: c - bc });
-    const boxes = [
+    const boxes: Array<[number, number]> = [
       [0, 0],
       [0, size - 7],
       [size - 7, 0],
