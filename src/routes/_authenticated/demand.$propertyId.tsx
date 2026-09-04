@@ -8,7 +8,9 @@ import { money, businessDaysFrom, formatDate } from "@/lib/deposit";
 import { fetchPurchases, demandLetterUnlocked } from "@/lib/entitlements";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 import { PRICES } from "@/lib/stripe";
-import { Printer, Save, Lock } from "lucide-react";
+import { Printer, Save, Lock, Send, Loader2 } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { sendDemandLetter } from "@/utils/demand.functions";
 
 export const Route = createFileRoute("/_authenticated/demand/$propertyId")({
   head: () => ({
@@ -35,6 +37,8 @@ function Demand() {
   const [moveOutDate, setMoveOutDate] = useState(new Date().toISOString().slice(0, 10));
   const [tenantName, setTenantName] = useState("");
   const [saving, setSaving] = useState(false);
+  const [sending, setSending] = useState(false);
+  const emailLetter = useServerFn(sendDemandLetter);
 
   const { data } = useQuery({
     queryKey: ["demand-context", propertyId],
@@ -103,6 +107,34 @@ function Demand() {
     else toast.success("Demand letter saved to your file");
   }
 
+  async function sendToLandlord() {
+    if (!property?.landlord_email) {
+      toast.error("Add the landlord's email to this property first.");
+      return;
+    }
+    setSending(true);
+    try {
+      const result = await emailLetter({
+        data: {
+          propertyId,
+          body: letterText(),
+          amountWithheld: amount,
+          deadline: deadline.toLocaleDateString("en-US"),
+          tenantName: tenant,
+        },
+      });
+      toast.success(
+        result.sent
+          ? `Demand letter emailed to ${result.to}`
+          : `Saved. ${result.to} has unsubscribed, so no email was delivered.`,
+      );
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not send the letter");
+    } finally {
+      setSending(false);
+    }
+  }
+
   function letterText() {
     return [
       `RE: Demand for return of security deposit — ${property?.address ?? ""}${property?.unit ? ` ${property.unit}` : ""}`,
@@ -142,6 +174,18 @@ function Demand() {
               className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent disabled:opacity-50"
             >
               <Save className="h-3.5 w-3.5" /> Save to file
+            </button>
+            <button
+              onClick={sendToLandlord}
+              disabled={sending}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent disabled:opacity-50"
+            >
+              {sending ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Send className="h-3.5 w-3.5" />
+              )}
+              Generate &amp; email to landlord
             </button>
             <button
               onClick={() => window.print()}
