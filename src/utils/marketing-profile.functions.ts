@@ -95,7 +95,12 @@ export const resetMarketingProfile = createServerFn({ method: "POST" })
     const { error } = await context.supabase
       .from("marketing_profile")
       .upsert(
-        { id: "default", ...DEFAULT_MARKETING_PROFILE, updated_by: context.userId },
+        {
+          id: "default",
+          ...DEFAULT_MARKETING_PROFILE,
+          updated_at: new Date().toISOString(),
+          updated_by: context.userId,
+        },
         { onConflict: "id" },
       );
     if (error) throw new Error(error.message);

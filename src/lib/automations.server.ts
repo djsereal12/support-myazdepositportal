@@ -9,11 +9,7 @@ export type AutomationResult = {
   errors: string[];
 };
 
-type Admin = Awaited<
-  ReturnType<typeof import("@/integrations/supabase/client.server").then>
-> extends never
-  ? any
-  : any;
+type Admin = any;
 
 function daysAgo(n: number) {
   return new Date(Date.now() - n * 24 * 60 * 60 * 1000).toISOString();
@@ -81,7 +77,7 @@ export async function runEmailAutomations(): Promise<AutomationResult> {
         templateData,
         idempotencyKey: `${automation}-${key.refId ?? key.userId}`,
       });
-      if (outcome.sent) result.sent[counter] += 1;
+      if (outcome.sent) result.sent[counter] = (result.sent[counter] ?? 0) + 1;
       else result.skipped += 1;
     } catch (e) {
       await release(supabaseAdmin, automation, key);

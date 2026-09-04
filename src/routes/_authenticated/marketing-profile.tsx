@@ -98,10 +98,11 @@ function ListField({
 }
 
 function MarketingProfilePage() {
-  const { data: isAdmin, isLoading: checking } = useQuery({
+  const { data: adminCheck, isLoading: checking } = useQuery({
     queryKey: ["am-i-admin"],
     queryFn: () => amIAdmin(),
   });
+  const isAdmin = adminCheck?.admin === true;
   const load = useServerFn(getMarketingProfile);
   const save = useServerFn(saveMarketingProfile);
   const reset = useServerFn(resetMarketingProfile);
@@ -109,7 +110,7 @@ function MarketingProfilePage() {
   const { data } = useQuery({
     queryKey: ["marketing-profile"],
     queryFn: () => load(),
-    enabled: isAdmin === true,
+    enabled: isAdmin,
   });
 
   const [draft, setDraft] = useState<MarketingProfile>(DEFAULT_MARKETING_PROFILE);
@@ -238,7 +239,7 @@ function MarketingProfilePage() {
         </div>
       </div>
 
-      <AutomationsPanel enabled={isAdmin === true} />
+      <AutomationsPanel enabled={isAdmin} />
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <section className="glass space-y-5 rounded-3xl p-6">
