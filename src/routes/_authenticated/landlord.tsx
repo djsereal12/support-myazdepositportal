@@ -145,6 +145,29 @@ function LandlordPortal() {
     };
   }, [rows, disputes]);
 
+  const tenants = useMemo(() => {
+    const map = new Map<
+      string,
+      { key: string; label: string; deposit: number; sealed: number; reports: typeof filtered }
+    >();
+    filtered.forEach((r) => {
+      const p = r.properties as PropertyRef;
+      const key = `${p?.address ?? "Unknown"}${p?.unit ?? ""}`;
+      const entry = map.get(key) ?? {
+        key,
+        label: `${p?.address ?? "Unknown property"}${p?.unit ? ` · ${p.unit}` : ""}`,
+        deposit: p?.deposit_amount ?? 0,
+        sealed: 0,
+        reports: [] as typeof filtered,
+      };
+      entry.reports.push(r);
+      if (SEALED.has(r.status)) entry.sealed += 1;
+      map.set(key, entry);
+    });
+    return [...map.values()];
+  }, [filtered]);
+
+
   if (roleLoading) {
     return (
       <Page>
