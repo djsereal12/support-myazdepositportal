@@ -121,7 +121,7 @@ function InviteReport({
       <article className="mt-6 rounded-2xl border border-border bg-card p-8 shadow-soft sm:p-12">
         <header className="flex flex-wrap items-start justify-between gap-6 border-b border-border pb-8">
           <div>
-            <p className="font-script text-3xl text-lavender-deep">deposit</p>
+            <p className="font-script text-3xl holo-text">deposit</p>
             <h1 className="mt-4 text-3xl font-semibold tracking-tight">
               {REPORT_TYPE_LABEL[invite.report.type] ?? "Move-In"} Condition Report
             </h1>

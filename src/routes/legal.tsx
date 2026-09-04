@@ -35,7 +35,7 @@ function Legal() {
         </p>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
           What deposit is, what it{" "}
-          <span className="font-script text-5xl font-normal text-lavender-deep">isn't</span>, and
+          <span className="font-script text-5xl font-normal holo-text">isn't</span>, and
           where your evidence lives.
         </h1>
         <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">

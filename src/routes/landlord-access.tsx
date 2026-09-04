@@ -93,7 +93,7 @@ function LandlordAccess() {
         </p>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
           Review, reply and accept —{" "}
-          <span className="font-script text-5xl font-normal text-lavender-deep">no account.</span>
+          <span className="font-script text-5xl font-normal holo-text">no account.</span>
         </h1>
         <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           Paste the secure review link a tenant emailed you. It opens every report sent to your

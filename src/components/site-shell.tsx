@@ -8,7 +8,7 @@ import { NewsletterSignup } from "@/components/newsletter-signup";
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <Link to="/" className={`flex items-baseline gap-2 ${className}`}>
-      <span className="font-script text-2xl leading-none text-lavender-deep">deposit</span>
+      <span className="font-script text-2xl leading-none holo-text">deposit</span>
       <span className="hidden text-[0.6rem] font-medium uppercase tracking-[0.32em] text-muted-foreground sm:inline">
         Arizona
       </span>
@@ -98,7 +98,7 @@ export function SiteFooter() {
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 text-xs text-muted-foreground">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="max-w-md">
-            <span className="font-script text-lg text-lavender-deep">deposit</span>
+            <span className="font-script text-lg holo-text">deposit</span>
             <p className="mt-2">
               Documentation software, not legal advice. Statute references are for informational
               purposes under A.R.S. § 33-1321.

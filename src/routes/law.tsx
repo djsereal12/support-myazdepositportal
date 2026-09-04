@@ -44,7 +44,7 @@ function Law() {
       <section className="rounded-3xl border border-border lavender-wash px-6 py-14 shadow-lift sm:px-12">
         <h1 className="max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
           Arizona already wrote the rules. Most renters just can't{" "}
-          <span className="font-script text-5xl font-normal text-lavender-deep">prove it.</span>
+          <span className="font-script text-5xl font-normal holo-text">prove it.</span>
         </h1>
       </section>
       <div className="mt-8 grid gap-4 md:grid-cols-3">
