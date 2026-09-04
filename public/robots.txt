@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://myazdepositportal.live/sitemap.xml
+Sitemap: https://www.myazdepositportal.live/sitemap.xml
