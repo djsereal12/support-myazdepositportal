@@ -28,6 +28,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedLandlordRouteImport } from './routes/_authenticated/landlord'
 import { Route as AuthenticatedMarketingRouteImport } from './routes/_authenticated/marketing'
+import { Route as AuthenticatedMarketingProfileRouteImport } from './routes/_authenticated/marketing-profile'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
@@ -142,6 +143,12 @@ const AuthenticatedMarketingRoute = AuthenticatedMarketingRouteImport.update({
   path: '/marketing',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMarketingProfileRoute =
+  AuthenticatedMarketingProfileRouteImport.update({
+    id: '/marketing-profile',
+    path: '/marketing-profile',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -262,6 +269,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/marketing': typeof AuthenticatedMarketingRoute
+  '/marketing-profile': typeof AuthenticatedMarketingProfileRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/api/chat': typeof ApiChatRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -300,6 +308,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/marketing': typeof AuthenticatedMarketingRoute
+  '/marketing-profile': typeof AuthenticatedMarketingProfileRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/api/chat': typeof ApiChatRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -340,6 +349,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/landlord': typeof AuthenticatedLandlordRouteWithChildren
   '/_authenticated/marketing': typeof AuthenticatedMarketingRoute
+  '/_authenticated/marketing-profile': typeof AuthenticatedMarketingProfileRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/api/chat': typeof ApiChatRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -380,6 +390,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/landlord'
     | '/marketing'
+    | '/marketing-profile'
     | '/profile'
     | '/api/chat'
     | '/auth/callback'
@@ -418,6 +429,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/landlord'
     | '/marketing'
+    | '/marketing-profile'
     | '/profile'
     | '/api/chat'
     | '/auth/callback'
@@ -457,6 +469,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/landlord'
     | '/_authenticated/marketing'
+    | '/_authenticated/marketing-profile'
     | '/_authenticated/profile'
     | '/api/chat'
     | '/auth/callback'
@@ -638,6 +651,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMarketingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/marketing-profile': {
+      id: '/_authenticated/marketing-profile'
+      path: '/marketing-profile'
+      fullPath: '/marketing-profile'
+      preLoaderRoute: typeof AuthenticatedMarketingProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -796,6 +816,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedLandlordRoute: typeof AuthenticatedLandlordRouteWithChildren
   AuthenticatedMarketingRoute: typeof AuthenticatedMarketingRoute
+  AuthenticatedMarketingProfileRoute: typeof AuthenticatedMarketingProfileRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedComparePropertyIdRoute: typeof AuthenticatedComparePropertyIdRoute
   AuthenticatedDemandPropertyIdRoute: typeof AuthenticatedDemandPropertyIdRoute
@@ -810,6 +831,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedLandlordRoute: AuthenticatedLandlordRouteWithChildren,
   AuthenticatedMarketingRoute: AuthenticatedMarketingRoute,
+  AuthenticatedMarketingProfileRoute: AuthenticatedMarketingProfileRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedComparePropertyIdRoute: AuthenticatedComparePropertyIdRoute,
   AuthenticatedDemandPropertyIdRoute: AuthenticatedDemandPropertyIdRoute,
