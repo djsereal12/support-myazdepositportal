@@ -275,6 +275,24 @@ function LandlordPortal() {
             </select>
           </div>
 
+          <div className="mt-4 flex gap-2 overflow-x-auto lg:hidden">
+            {(["dashboard", "tenants", "reports"] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className={`shrink-0 rounded-full px-4 py-2 text-xs font-medium capitalize transition-colors ${
+                  tab === t
+                    ? "bg-foreground text-background"
+                    : "border border-border bg-card text-muted-foreground"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+
+
+
           <div className="mt-6">
             <h1 className="text-3xl font-semibold sm:text-4xl">
               Protect deposits. Prevent disputes.
@@ -401,17 +419,64 @@ function LandlordPortal() {
             </div>
           ) : null}
 
-          <section className="glass-panel mt-6 p-6">
-            <div className="flex items-center justify-between gap-3">
-              <h2 className="text-lg font-semibold">
-                {tab === "tenants"
-                  ? "Tenants"
-                  : tab === "reports"
-                    ? "All reports"
-                    : "Latest reports"}
-              </h2>
-              <span className="text-xs text-muted-foreground">{filtered.length} records</span>
-            </div>
+          {tab === "tenants" ? (
+            <section className="glass-panel mt-6 p-6">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-lg font-semibold">Tenants</h2>
+                <span className="text-xs text-muted-foreground">{tenants.length} units</span>
+              </div>
+              {isLoading ? (
+                <div className="mt-6 h-32 animate-pulse rounded-2xl bg-muted" />
+              ) : !tenants.length ? (
+                <p className="mt-5 text-sm text-muted-foreground">
+                  No tenants have shared a report with {role.email} yet.
+                </p>
+              ) : (
+                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                  {tenants.map((t) => (
+                    <div key={t.key} className="rounded-2xl border border-border bg-card p-4">
+                      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-medium">{t.label}</p>
+                          <p className="text-xs text-muted-foreground">
+                            Deposit {money(t.deposit)} · {t.reports.length} report
+                            {t.reports.length === 1 ? "" : "s"}
+                          </p>
+                        </div>
+                        <span className="shrink-0 rounded-full border border-border px-3 py-1 text-[0.65rem] uppercase tracking-[0.14em] text-muted-foreground">
+                          {t.sealed}/{t.reports.length} sealed
+                        </span>
+                      </div>
+                      <ul className="mt-4 space-y-2">
+                        {t.reports.slice(0, 3).map((r) => (
+                          <li key={r.id} className="flex items-center justify-between gap-3 text-xs">
+                            <span className="min-w-0 truncate text-muted-foreground">
+                              {REPORT_TYPE_LABEL[r.type] ?? r.type} · {formatDate(r.created_at)}
+                            </span>
+                            <Link
+                              to="/landlord/$reportId"
+                              params={{ reportId: r.id }}
+                              className="shrink-0 underline underline-offset-4"
+                            >
+                              Open
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+          ) : null}
+
+          {tab === "reports" ? (
+            <section className="glass-panel mt-6 p-6">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-lg font-semibold">All reports</h2>
+                <span className="text-xs text-muted-foreground">{filtered.length} records</span>
+              </div>
+
 
             {isLoading ? (
               <div className="mt-6 h-32 animate-pulse rounded-2xl bg-muted" />
@@ -437,7 +502,7 @@ function LandlordPortal() {
                     </tr>
                   </thead>
                   <tbody>
-                    {(tab === "dashboard" ? filtered.slice(0, 5) : filtered).map((r) => {
+                    {filtered.map((r) => {
                       const p = r.properties as PropertyRef;
                       return (
                         <tr key={r.id} className="border-b border-border/70">
@@ -478,7 +543,9 @@ function LandlordPortal() {
                 </table>
               </div>
             )}
-          </section>
+            </section>
+          ) : null}
+
 
           <p className="mt-6 text-xs text-muted-foreground">
             A.R.S. §33-1321(D)(E) — security deposit itemization requires move-in condition
