@@ -12,6 +12,7 @@ import {
   resetMarketingProfile,
 } from "@/utils/marketing-profile.functions";
 import { DEFAULT_MARKETING_PROFILE, type MarketingProfile } from "@/lib/marketing-profile";
+import { runAutomationsNow, listAutomationSends } from "@/utils/automations.functions";
 
 export const Route = createFileRoute("/_authenticated/marketing-profile")({
   head: () => ({
@@ -237,6 +238,8 @@ function MarketingProfilePage() {
         </div>
       </div>
 
+      <AutomationsPanel enabled={isAdmin === true} />
+
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <section className="glass space-y-5 rounded-3xl p-6">
           <h2 className="text-lg font-semibold">Positioning</h2>
@@ -320,5 +323,99 @@ function MarketingProfilePage() {
         </p>
       )}
     </Page>
+  );
+}
+
+const AUTOMATIONS = [
+  {
+    name: "First scan nudge",
+    when: "2 days after signup with no property added",
+    what: "Invites them to add their place and run the free scan.",
+  },
+  {
+    name: "Unsealed report reminder",
+    when: "24 hours after a scan is started but not sealed",
+    what: "Explains that an unsealed report has no hash and links straight back to it.",
+  },
+  {
+    name: "Move-out deadline reminder",
+    when: "Lease end within 21 days",
+    what: "Prompts the move-out scan and explains the 14 business day refund clock.",
+  },
+];
+
+function AutomationsPanel({ enabled }: { enabled: boolean }) {
+  const run = useServerFn(runAutomationsNow);
+  const load = useServerFn(listAutomationSends);
+  const [running, setRunning] = useState(false);
+
+  const { data: recent, refetch } = useQuery({
+    queryKey: ["automation-sends"],
+    queryFn: () => load(),
+    enabled,
+  });
+
+  async function onRun() {
+    setRunning(true);
+    try {
+      const summary = await run();
+      const total = Object.values(summary.sent).reduce((a, b) => a + b, 0);
+      toast.success(
+        total ? `Sent ${total} email${total === 1 ? "" : "s"}` : "Nothing due right now",
+      );
+      if (summary.errors.length) toast.error(summary.errors[0] ?? "Some sends failed");
+      void refetch();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not run automations");
+    } finally {
+      setRunning(false);
+    }
+  }
+
+  return (
+    <section className="glass mt-8 rounded-3xl p-6">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h2 className="text-lg font-semibold">Automated emails</h2>
+          <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+            These go out on their own from the notification sender. Everyone gets each one at most
+            once, and anyone who turned email off in their profile is skipped.
+          </p>
+        </div>
+        <button
+          onClick={onRun}
+          disabled={running}
+          className="glass rounded-full px-4 py-2 text-sm disabled:opacity-50"
+        >
+          {running ? "Running…" : "Run now"}
+        </button>
+      </div>
+
+      <div className="mt-5 grid gap-3 md:grid-cols-3">
+        {AUTOMATIONS.map((a) => (
+          <div key={a.name} className="rounded-2xl border border-border/50 p-4">
+            <p className="text-sm font-medium">{a.name}</p>
+            <p className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">
+              {a.when}
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">{a.what}</p>
+          </div>
+        ))}
+      </div>
+
+      {recent && recent.length > 0 && (
+        <div className="mt-5">
+          <p className="text-sm font-medium">Recently sent</p>
+          <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
+            {recent.slice(0, 8).map((r, i) => (
+              <li key={`${r.email}-${i}`}>
+                {new Date(r.sent_at).toLocaleString()} · {r.automation.replace(/_/g, " ")} ·{" "}
+                {r.email ?? "—"}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
   );
 }
