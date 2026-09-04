@@ -168,7 +168,11 @@ function ProfilePage() {
           <h2 className="text-xl font-semibold">Personal</h2>
         </div>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <Field label="Full name" value={p.full_name} onChange={(v) => setP({ ...p, full_name: v })} />
+          <Field
+            label="Full name"
+            value={p.full_name}
+            onChange={(v) => setP({ ...p, full_name: v })}
+          />
           <Field label="Phone" value={p.phone} onChange={(v) => setP({ ...p, phone: v })} />
           <Field
             label="Mailing address"

@@ -143,9 +143,7 @@ function CalculatorPage() {
                     <p className="text-[0.6rem] uppercase tracking-[0.16em] text-muted-foreground">
                       Max claim
                     </p>
-                    <p className="mt-1 text-lg font-semibold holo-text">
-                      {money(result.maxClaim)}
-                    </p>
+                    <p className="mt-1 text-lg font-semibold holo-text">{money(result.maxClaim)}</p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       {money(result.deposit)} withheld + up to {money(result.penalty)} damages.
                     </p>

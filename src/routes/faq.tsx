@@ -102,10 +102,8 @@ function Faq() {
           Tenant FAQ
         </p>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
-          Getting your deposit back, {" "}
-          <span className="font-script text-5xl font-normal holo-text">
-            without the guesswork.
-          </span>
+          Getting your deposit back,{" "}
+          <span className="font-script text-5xl font-normal holo-text">without the guesswork.</span>
         </h1>
         <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           Arizona deadlines, move-in documentation, dispute notes and landlord e-signatures —

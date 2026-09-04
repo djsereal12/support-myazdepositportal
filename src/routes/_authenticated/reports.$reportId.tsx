@@ -20,7 +20,10 @@ export const Route = createFileRoute("/_authenticated/reports/$reportId")({
   head: () => ({
     meta: [
       { title: "Report — deposit" },
-      { name: "description", content: "A numbered, hashed condition report ready to print or share." },
+      {
+        name: "description",
+        content: "A numbered, hashed condition report ready to print or share.",
+      },
       { property: "og:title", content: "Report — deposit" },
       { property: "og:description", content: "Court-ready Arizona condition report." },
     ],
@@ -70,11 +73,15 @@ function ReportView() {
   const sendInvite = useServerFn(createLandlordInvite);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) =>
-      setUser(
-        data.user ? { id: data.user.id, ...(data.user.email ? { email: data.user.email } : {}) } : null,
-      ),
-    );
+    supabase.auth
+      .getUser()
+      .then(({ data }) =>
+        setUser(
+          data.user
+            ? { id: data.user.id, ...(data.user.email ? { email: data.user.email } : {}) }
+            : null,
+        ),
+      );
   }, []);
 
   const { data: purchases } = useQuery({ queryKey: ["purchases"], queryFn: fetchPurchases });
@@ -115,8 +122,6 @@ function ReportView() {
       return data;
     },
   });
-
-
 
   const unlocked = reportUnlocked(purchases ?? [], reportId, report?.property_id ?? null);
   const certified = certifiedPdfUnlocked(purchases ?? [], reportId);
@@ -161,7 +166,9 @@ function ReportView() {
       setInviteLink(res.link);
       if (res.emailSent) toast.success(`Request emailed to ${inviteEmail}`);
       else
-        toast.info("Request created. Email sending isn't configured yet — copy the link or send it yourself.");
+        toast.info(
+          "Request created. Email sending isn't configured yet — copy the link or send it yourself.",
+        );
       queryClient.invalidateQueries({ queryKey: ["invites", reportId] });
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Could not send the request.");
@@ -170,7 +177,12 @@ function ReportView() {
     }
   }
 
-  const property = report?.properties as { address: string; unit: string | null; landlord_email: string | null; landlord_name: string | null } | null;
+  const property = report?.properties as {
+    address: string;
+    unit: string | null;
+    landlord_email: string | null;
+    landlord_name: string | null;
+  } | null;
   useEffect(() => {
     if (property?.landlord_email && !inviteEmail) setInviteEmail(property.landlord_email);
     if (property?.landlord_name && !inviteName) setInviteName(property.landlord_name);
@@ -295,7 +307,6 @@ function ReportView() {
               <Send className="h-3.5 w-3.5" /> Send to Landlord for Acceptance
             </button>
           ) : (
-
             <div className="mt-5 space-y-4 rounded-2xl border border-border bg-card p-5">
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block text-sm">
@@ -350,7 +361,9 @@ function ReportView() {
               </div>
               {inviteLink ? (
                 <div className="rounded-xl border border-border bg-muted/50 p-4 text-xs">
-                  <p className="text-muted-foreground">Shareable review link (expires in 7 days):</p>
+                  <p className="text-muted-foreground">
+                    Shareable review link (expires in 7 days):
+                  </p>
                   <p className="mt-2 break-all font-mono">{inviteLink}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     <button
@@ -405,8 +418,8 @@ function ReportView() {
                     .map((m) => (
                       <p key={m.id} className="w-full text-muted-foreground">
                         {m.author_role === "landlord" ? "Landlord reply" : "Your reply"}
-                        {m.author_name ? ` (${m.author_name})` : ""} ·{" "}
-                        {formatDate(m.created_at)}: {m.body}
+                        {m.author_name ? ` (${m.author_name})` : ""} · {formatDate(m.created_at)}:{" "}
+                        {m.body}
                       </p>
                     ))}
                 </li>
@@ -461,8 +474,6 @@ function ReportView() {
         ) : null}
       </section>
 
-
-
       <article className="mt-6 rounded-2xl border border-border bg-card p-8 shadow-soft sm:p-12">
         <header className="flex flex-wrap items-start justify-between gap-6 border-b border-border pb-8">
           <div>
@@ -491,7 +502,9 @@ function ReportView() {
             <div>
               <dt className="uppercase tracking-[0.18em] text-muted-foreground">GPS</dt>
               <dd className="text-sm">
-                {report?.gps_lat ? `${report.gps_lat.toFixed(5)}, ${report.gps_lng?.toFixed(5)}` : "—"}
+                {report?.gps_lat
+                  ? `${report.gps_lat.toFixed(5)}, ${report.gps_lng?.toFixed(5)}`
+                  : "—"}
               </dd>
             </div>
           </dl>
@@ -519,7 +532,9 @@ function ReportView() {
                     <MediaThumb path={m.file_url} alt={m.room_label} className="h-16 w-24" />
                   </td>
                   <td className="py-4 pr-4 font-mono text-xs">{shortHash(m.file_hash_sha256)}</td>
-                  <td className="py-4 text-xs text-muted-foreground">{formatDate(m.exif_timestamp)}</td>
+                  <td className="py-4 text-xs text-muted-foreground">
+                    {formatDate(m.exif_timestamp)}
+                  </td>
                 </tr>
               ))}
             </tbody>

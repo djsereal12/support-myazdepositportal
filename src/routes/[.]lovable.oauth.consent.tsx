@@ -13,7 +13,7 @@ const oauth = () => (supabase.auth as unknown as { oauth: OAuthApi }).oauth;
 export const Route = createFileRoute("/.lovable/oauth/consent")({
   ssr: false,
   validateSearch: (s: Record<string, unknown>) => ({
-    authorization_id: typeof s['authorization_id'] === "string" ? s['authorization_id'] : "",
+    authorization_id: typeof s["authorization_id"] === "string" ? s["authorization_id"] : "",
   }),
   beforeLoad: async ({ search, location }) => {
     if (!search.authorization_id) throw new Error("Missing authorization_id");
@@ -73,7 +73,8 @@ function Consent() {
           Connect {clientName} to deposit
         </h1>
         <p className="mt-3 text-sm text-[#111111]/70">
-          {clientName} will be able to read and manage your deposit properties and inspection reports as you.
+          {clientName} will be able to read and manage your deposit properties and inspection
+          reports as you.
         </p>
         {error && (
           <p role="alert" className="mt-4 text-sm text-red-600">

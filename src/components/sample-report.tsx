@@ -9,8 +9,7 @@ export function FauxQr({ size = 21, seed = 7 }: { size?: number; seed?: number }
     cells.push((x >> 8) % 3 !== 0);
   }
   const isFinder = (r: number, c: number) => {
-    const inBox = (br: number, bc: number) =>
-      r >= br && r < br + 7 && c >= bc && c < bc + 7;
+    const inBox = (br: number, bc: number) => r >= br && r < br + 7 && c >= bc && c < bc + 7;
     return inBox(0, 0) || inBox(0, size - 7) || inBox(size - 7, 0);
   };
   const finderOn = (r: number, c: number) => {
@@ -131,10 +130,10 @@ export function SampleReportSheet() {
       </div>
 
       <p className="mt-5 text-[0.65rem] leading-relaxed text-muted-foreground">
-        Prepared under A.R.S. § 33-1321. Landlord must return the deposit, less itemized
-        deductions, within 14 business days of termination and receipt of a forwarding address.
-        Wrongfully withheld amounts may be recovered up to twice the amount withheld under
-        § 33-1321(E). This document is evidence, not legal advice.{" "}
+        Prepared under A.R.S. § 33-1321. Landlord must return the deposit, less itemized deductions,
+        within 14 business days of termination and receipt of a forwarding address. Wrongfully
+        withheld amounts may be recovered up to twice the amount withheld under § 33-1321(E). This
+        document is evidence, not legal advice.{" "}
         <Link to="/law" className="underline">
           Read the statute
         </Link>

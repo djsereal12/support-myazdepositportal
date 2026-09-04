@@ -173,9 +173,7 @@ function AdminPurchasesPage() {
                     <div className="font-medium">{p.email ?? p.linked_email ?? "—"}</div>
                     <div className="text-xs text-muted-foreground">
                       {p.user_id ? (
-                        <>
-                          linked account{p.phone ? ` · ${p.phone}` : ""}
-                        </>
+                        <>linked account{p.phone ? ` · ${p.phone}` : ""}</>
                       ) : (
                         <span className="inline-flex items-center gap-1 text-amber-600">
                           <AlertTriangle className="h-3.5 w-3.5" /> not linked to an account
@@ -207,10 +205,7 @@ function AdminPurchasesPage() {
                   <td className="px-4 py-3 text-right">
                     <button
                       onClick={() =>
-                        onResync(
-                          p.stripe_session_id,
-                          p.environment === "live" ? "live" : "sandbox",
-                        )
+                        onResync(p.stripe_session_id, p.environment === "live" ? "live" : "sandbox")
                       }
                       disabled={busy === p.stripe_session_id}
                       className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs transition-colors hover:border-lavender disabled:opacity-60"

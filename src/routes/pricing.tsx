@@ -115,7 +115,11 @@ function Pricing() {
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user ? { id: data.user.id, ...(data.user.email ? { email: data.user.email } : {}) } : null);
+      setUser(
+        data.user
+          ? { id: data.user.id, ...(data.user.email ? { email: data.user.email } : {}) }
+          : null,
+      );
       setCheckedAuth(true);
     });
   }, []);
@@ -141,8 +145,7 @@ function Pricing() {
       <section className="mt-4 rounded-3xl border border-border lavender-wash px-6 py-14 shadow-lift sm:px-12">
         <h1 className="max-w-2xl text-4xl font-semibold leading-tight sm:text-5xl">
           Less than a dinner out. Against an{" "}
-          <span className="font-script text-5xl font-normal holo-text">$1,800</span> average
-          loss.
+          <span className="font-script text-5xl font-normal holo-text">$1,800</span> average loss.
         </h1>
         <p className="mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground">
           Arizona renters lose roughly $1,800 on average when a deposit dispute goes undocumented.
@@ -178,7 +181,9 @@ function Pricing() {
             ) : null}
             <h2 className="text-xl font-semibold">{t.name}</h2>
             <p className="mt-4 text-display text-4xl font-semibold">{t.price}</p>
-            <p className="mt-1 text-xs uppercase tracking-[0.16em] text-muted-foreground">{t.tag}</p>
+            <p className="mt-1 text-xs uppercase tracking-[0.16em] text-muted-foreground">
+              {t.tag}
+            </p>
             <ul className="mt-6 flex-1 space-y-3 text-sm text-muted-foreground">
               {t.features.map((f) => (
                 <li key={f} className="flex gap-2.5">
@@ -212,7 +217,9 @@ function Pricing() {
             <article key={t.name} className="glass-panel flex flex-col p-8">
               <h3 className="text-xl font-semibold">{t.name}</h3>
               <p className="mt-4 text-display text-4xl font-semibold">{t.price}</p>
-              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-muted-foreground">{t.tag}</p>
+              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                {t.tag}
+              </p>
               <ul className="mt-6 flex-1 space-y-3 text-sm text-muted-foreground">
                 {t.features.map((f) => (
                   <li key={f} className="flex gap-2.5">

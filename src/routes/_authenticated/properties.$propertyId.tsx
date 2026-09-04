@@ -26,7 +26,11 @@ function PropertyDetail() {
   const { data: property } = useQuery({
     queryKey: ["property", propertyId],
     queryFn: async () => {
-      const { data, error } = await supabase.from("properties").select("*").eq("id", propertyId).single();
+      const { data, error } = await supabase
+        .from("properties")
+        .select("*")
+        .eq("id", propertyId)
+        .single();
       if (error) throw error;
       return data;
     },
@@ -72,10 +76,13 @@ function PropertyDetail() {
         <div>
           <h1 className="text-4xl font-semibold leading-tight">
             {property?.address ?? "Loading…"}
-            {property?.unit ? <span className="text-muted-foreground"> · {property.unit}</span> : null}
+            {property?.unit ? (
+              <span className="text-muted-foreground"> · {property.unit}</span>
+            ) : null}
           </h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            {property?.landlord_name ?? "Landlord not set"} · Deposit {money(property?.deposit_amount)}
+            {property?.landlord_name ?? "Landlord not set"} · Deposit{" "}
+            {money(property?.deposit_amount)}
           </p>
         </div>
         {property ? <StatusChip status={property.status} /> : null}
@@ -120,7 +127,9 @@ function PropertyDetail() {
           <span>
             <span className="block font-semibold">Side-by-side comparison</span>
             <span className="text-xs text-muted-foreground">
-              {hasMoveIn && hasMoveOut ? "Ready to review" : "Needs a completed move-in and move-out"}
+              {hasMoveIn && hasMoveOut
+                ? "Ready to review"
+                : "Needs a completed move-in and move-out"}
             </span>
           </span>
         </Link>

@@ -9,7 +9,11 @@ export default defineTool({
   inputSchema: {
     address: z.string().trim().min(1).describe("Street address of the rental."),
     unit: z.string().trim().optional().describe("Unit or apartment number."),
-    deposit_amount: z.number().nonnegative().optional().describe("Security deposit amount in dollars."),
+    deposit_amount: z
+      .number()
+      .nonnegative()
+      .optional()
+      .describe("Security deposit amount in dollars."),
     lease_start: z.string().optional().describe("Lease start date, YYYY-MM-DD."),
     lease_end: z.string().optional().describe("Lease end date, YYYY-MM-DD."),
     landlord_name: z.string().trim().optional(),

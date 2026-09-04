@@ -80,7 +80,10 @@ function AdminPage() {
         removes its auth record and cascading data.
       </p>
       <div className="mt-5 flex flex-wrap gap-3">
-        <a href="/marketing" className="glass-button inline-flex rounded-xl px-4 py-2 text-sm font-medium">
+        <a
+          href="/marketing"
+          className="glass-button inline-flex rounded-xl px-4 py-2 text-sm font-medium"
+        >
           Marketing emails
         </a>
         <a
@@ -90,7 +93,6 @@ function AdminPage() {
           Purchase lookup
         </a>
       </div>
-
 
       {isLoading ? (
         <div className="mt-8 h-48 animate-pulse rounded-2xl bg-muted" />

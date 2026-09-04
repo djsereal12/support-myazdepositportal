@@ -169,11 +169,7 @@ function LandlordAccess() {
               </div>
             ) : (
               visible.map((invite) => (
-                <InviteCard
-                  key={invite.token}
-                  invite={invite}
-                  onChanged={() => portal.refetch()}
-                />
+                <InviteCard key={invite.token} invite={invite} onChanged={() => portal.refetch()} />
               ))
             )}
           </div>

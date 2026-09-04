@@ -7,7 +7,7 @@ import { Page } from "@/components/site-shell";
 export const Route = createFileRoute("/unsubscribe")({
   component: UnsubscribePage,
   validateSearch: (search: Record<string, unknown>) => ({
-    token: typeof search['token'] === "string" ? (search['token'] as string) : "",
+    token: typeof search["token"] === "string" ? (search["token"] as string) : "",
   }),
   head: () => ({
     meta: [
@@ -65,8 +65,7 @@ function UnsubscribePage() {
                 : "This link isn't valid"}
           </h1>
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-            {state === "working" &&
-              "One moment while we remove you from the deposit mailing list."}
+            {state === "working" && "One moment while we remove you from the deposit mailing list."}
             {state === "done" &&
               `${email ?? "That address"} will no longer receive marketing email from deposit. Account, report and landlord notifications are unaffected.`}
             {state === "invalid" &&

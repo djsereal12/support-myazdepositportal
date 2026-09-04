@@ -134,7 +134,8 @@
     oklch(0.74 0.1 230) 78%,
     oklch(0.52 0.03 260) 100%
   );
-  --gradient-aurora: radial-gradient(
+  --gradient-aurora:
+    radial-gradient(
       60% 80% at 15% 10%,
       color-mix(in oklab, var(--lavender) 30%, transparent) 0%,
       transparent 60%
@@ -214,7 +215,8 @@
   color: transparent;
   animation: holo-shift 9s ease-in-out infinite;
   text-shadow: none;
-  filter: drop-shadow(0 2px 6px oklch(0.6 0.06 290 / 0.35)) drop-shadow(0 0 18px oklch(0.75 0.08 300 / 0.25));
+  filter: drop-shadow(0 2px 6px oklch(0.6 0.06 290 / 0.35))
+    drop-shadow(0 0 18px oklch(0.75 0.08 300 / 0.25));
   transition:
     transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
     filter 0.3s ease;
@@ -223,7 +225,8 @@
   &:hover {
     animation-duration: 3s;
     transform: translateY(-2px) scale(1.04) rotate(-1deg);
-    filter: drop-shadow(0 4px 12px oklch(0.6 0.1 300 / 0.5)) drop-shadow(0 0 28px oklch(0.78 0.12 320 / 0.4));
+    filter: drop-shadow(0 4px 12px oklch(0.6 0.1 300 / 0.5))
+      drop-shadow(0 0 28px oklch(0.78 0.12 320 / 0.4));
   }
 }
 

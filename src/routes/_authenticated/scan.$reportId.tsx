@@ -23,7 +23,10 @@ export const Route = createFileRoute("/_authenticated/scan/$reportId")({
   head: () => ({
     meta: [
       { title: "Guided scan — deposit" },
-      { name: "description", content: "Capture every room the guided way: hashed, stamped and sealed." },
+      {
+        name: "description",
+        content: "Capture every room the guided way: hashed, stamped and sealed.",
+      },
       { property: "og:title", content: "Guided scan — deposit" },
       { property: "og:description", content: "Eight prompts, tamper-proof evidence." },
     ],
@@ -146,7 +149,6 @@ function Scan() {
       void sendReportReadyEmail({ data: { reportId } }).catch(() => {});
       await queryClient.invalidateQueries();
       navigate({ to: "/reports/$reportId", params: { reportId } });
-
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not seal report");
     } finally {
@@ -284,7 +286,11 @@ function ChecklistCard({
           disabled={uploading}
           className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 text-xs font-medium transition-colors hover:bg-accent disabled:opacity-50"
         >
-          {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Camera className="h-3.5 w-3.5" />}
+          {uploading ? (
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+          ) : (
+            <Camera className="h-3.5 w-3.5" />
+          )}
           {item ? "Replace" : "Capture"}
         </button>
       </div>

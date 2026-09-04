@@ -48,7 +48,9 @@ function VerifyPage() {
   }
 
   if (invite.data?.ok) {
-    return <InviteReport token={token} invite={invite.data.invite} onDone={() => invite.refetch()} />;
+    return (
+      <InviteReport token={token} invite={invite.data.invite} onDone={() => invite.refetch()} />
+    );
   }
 
   if (invite.data && !invite.data.ok && invite.data.reason === "expired") {
@@ -95,7 +97,9 @@ function InviteReport({
         },
       }),
     onSuccess: (res) => {
-      toast.success(res.status === "accepted" ? "Report accepted and e-signed." : "Dispute submitted.");
+      toast.success(
+        res.status === "accepted" ? "Report accepted and e-signed." : "Dispute submitted.",
+      );
       setMode(null);
       onDone();
     },
@@ -165,7 +169,11 @@ function InviteReport({
             <figure key={m.id} className="rounded-2xl border border-border bg-card p-3 shadow-soft">
               {m.url ? (
                 m.is_video ? (
-                  <video src={m.url} controls className="h-48 w-full rounded-xl bg-black object-cover" />
+                  <video
+                    src={m.url}
+                    controls
+                    className="h-48 w-full rounded-xl bg-black object-cover"
+                  />
                 ) : (
                   <img
                     src={m.url}
@@ -184,7 +192,9 @@ function InviteReport({
                 <p className="text-muted-foreground">
                   {m.gps_lat ? `${m.gps_lat.toFixed(5)}, ${m.gps_lng?.toFixed(5)}` : "GPS —"}
                 </p>
-                <p className="text-muted-foreground">{formatDate(m.exif_timestamp ?? m.created_at)}</p>
+                <p className="text-muted-foreground">
+                  {formatDate(m.exif_timestamp ?? m.created_at)}
+                </p>
                 <p className="break-all font-mono text-[0.65rem] text-muted-foreground">
                   {shortHash(m.file_hash_sha256)}
                 </p>

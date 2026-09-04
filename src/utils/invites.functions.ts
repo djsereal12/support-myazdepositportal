@@ -82,28 +82,30 @@ async function sendInviteEmail(args: {
   }
 }
 
-
 /** Tenant-only: create an e-sign invite for a move-in report and email the landlord. */
 export const createLandlordInvite = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: {
-    reportId: string;
-    landlordEmail: string;
-    landlordName?: string;
-    customMessage?: string;
-    origin: string;
-  }) => {
-    const email = input.landlordEmail.trim().toLowerCase();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("Enter a valid landlord email.");
-    if (!input.reportId) throw new Error("Missing report.");
-    return {
-      reportId: input.reportId,
-      landlordEmail: email,
-      landlordName: (input.landlordName ?? "").trim().slice(0, 120),
-      customMessage: (input.customMessage ?? "").trim().slice(0, 2000),
-      origin: input.origin.replace(/\/$/, ""),
-    };
-  })
+  .inputValidator(
+    (input: {
+      reportId: string;
+      landlordEmail: string;
+      landlordName?: string;
+      customMessage?: string;
+      origin: string;
+    }) => {
+      const email = input.landlordEmail.trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+        throw new Error("Enter a valid landlord email.");
+      if (!input.reportId) throw new Error("Missing report.");
+      return {
+        reportId: input.reportId,
+        landlordEmail: email,
+        landlordName: (input.landlordName ?? "").trim().slice(0, 120),
+        customMessage: (input.customMessage ?? "").trim().slice(0, 2000),
+        origin: input.origin.replace(/\/$/, ""),
+      };
+    },
+  )
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 
@@ -126,8 +128,7 @@ export const createLandlordInvite = createServerFn({ method: "POST" })
         (p.price_id === "protection_bundle_onetime" &&
           !!report.property_id &&
           p.property_id === report.property_id) ||
-        (p.price_id === "landlord_unlimited_yearly" &&
-          new Date(p.created_at).getTime() > yearAgo),
+        (p.price_id === "landlord_unlimited_yearly" && new Date(p.created_at).getTime() > yearAgo),
     );
     if (!hasAccess) {
       throw new Error(
@@ -135,9 +136,11 @@ export const createLandlordInvite = createServerFn({ method: "POST" })
       );
     }
 
-    const property = report.properties as unknown as { address: string; unit: string | null } | null;
+    const property = report.properties as unknown as {
+      address: string;
+      unit: string | null;
+    } | null;
     const token = randomToken();
-
 
     const { data: invite, error: insertError } = await supabase
       .from("landlord_invites")
@@ -152,7 +155,8 @@ export const createLandlordInvite = createServerFn({ method: "POST" })
       })
       .select("id, token, expires_at")
       .single();
-    if (insertError || !invite) throw new Error(insertError?.message ?? "Could not create the request.");
+    if (insertError || !invite)
+      throw new Error(insertError?.message ?? "Could not create the request.");
 
     const address = `${property?.address ?? "your rental"}${property?.unit ? ` ${property.unit}` : ""}`;
     const link = `${data.origin}/verify/${invite.token}`;
@@ -178,113 +182,138 @@ export const createLandlordInvite = createServerFn({ method: "POST" })
       link,
       inviteId: invite.id,
     });
-    return { inviteId: invite.id, token: invite.token, link, subject, text, emailSent: result.sent, reason: result.reason ?? null };
-
+    return {
+      inviteId: invite.id,
+      token: invite.token,
+      link,
+      subject,
+      text,
+      emailSent: result.sent,
+      reason: result.reason ?? null,
+    };
   });
 
 /** Public: load an invite and its full report by token. */
 export const getInviteByToken = createServerFn({ method: "POST" })
   .inputValidator((input: { token: string }) => ({ token: (input.token ?? "").trim() }))
-  .handler(async ({ data }): Promise<{ ok: false; reason: "not_found" | "expired" } | { ok: true; invite: InviteView }> => {
-    if (!data.token) return { ok: false, reason: "not_found" };
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  .handler(
+    async ({
+      data,
+    }): Promise<
+      { ok: false; reason: "not_found" | "expired" } | { ok: true; invite: InviteView }
+    > => {
+      if (!data.token) return { ok: false, reason: "not_found" };
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    const { data: invite } = await supabaseAdmin
-      .from("landlord_invites")
-      .select("*")
-      .eq("token", data.token)
-      .maybeSingle();
-    if (!invite) return { ok: false, reason: "not_found" };
-    if (new Date(invite.expires_at).getTime() < Date.now() && invite.status === "pending") {
-      return { ok: false, reason: "expired" };
-    }
+      const { data: invite } = await supabaseAdmin
+        .from("landlord_invites")
+        .select("*")
+        .eq("token", data.token)
+        .maybeSingle();
+      if (!invite) return { ok: false, reason: "not_found" };
+      if (new Date(invite.expires_at).getTime() < Date.now() && invite.status === "pending") {
+        return { ok: false, reason: "expired" };
+      }
 
-    const { data: report } = await supabaseAdmin
-      .from("reports")
-      .select("id, report_number, type, created_at, overall_hash, weather_snapshot, gps_lat, gps_lng, user_id, properties(address, unit, lease_start, landlord_name)")
-      .eq("id", invite.report_id)
-      .maybeSingle();
-    if (!report) return { ok: false, reason: "not_found" };
+      const { data: report } = await supabaseAdmin
+        .from("reports")
+        .select(
+          "id, report_number, type, created_at, overall_hash, weather_snapshot, gps_lat, gps_lng, user_id, properties(address, unit, lease_start, landlord_name)",
+        )
+        .eq("id", invite.report_id)
+        .maybeSingle();
+      if (!report) return { ok: false, reason: "not_found" };
 
-    const { data: profile } = await supabaseAdmin
-      .from("profiles")
-      .select("full_name")
-      .eq("id", report.user_id)
-      .maybeSingle();
+      const { data: profile } = await supabaseAdmin
+        .from("profiles")
+        .select("full_name")
+        .eq("id", report.user_id)
+        .maybeSingle();
 
-    const { data: media } = await supabaseAdmin
-      .from("media")
-      .select("id, room_label, condition, note, file_url, file_hash_sha256, gps_lat, gps_lng, exif_timestamp, created_at")
-      .eq("report_id", invite.report_id)
-      .order("created_at");
-
-    const withUrls: InviteMedia[] = [];
-    for (const m of media ?? []) {
-      const { data: signed } = await supabaseAdmin.storage
+      const { data: media } = await supabaseAdmin
         .from("media")
-        .createSignedUrl(m.file_url, 60 * 60 * 2);
-      withUrls.push({
-        id: m.id,
-        room_label: m.room_label,
-        condition: m.condition,
-        note: m.note,
-        file_hash_sha256: m.file_hash_sha256,
-        gps_lat: m.gps_lat,
-        gps_lng: m.gps_lng,
-        exif_timestamp: m.exif_timestamp,
-        created_at: m.created_at,
-        url: signed?.signedUrl ?? null,
-        is_video: /\.(mp4|mov|webm|m4v)$/i.test(m.file_url),
-      });
-    }
+        .select(
+          "id, room_label, condition, note, file_url, file_hash_sha256, gps_lat, gps_lng, exif_timestamp, created_at",
+        )
+        .eq("report_id", invite.report_id)
+        .order("created_at");
 
-    const property = report.properties as unknown as InviteView["property"];
+      const withUrls: InviteMedia[] = [];
+      for (const m of media ?? []) {
+        const { data: signed } = await supabaseAdmin.storage
+          .from("media")
+          .createSignedUrl(m.file_url, 60 * 60 * 2);
+        withUrls.push({
+          id: m.id,
+          room_label: m.room_label,
+          condition: m.condition,
+          note: m.note,
+          file_hash_sha256: m.file_hash_sha256,
+          gps_lat: m.gps_lat,
+          gps_lng: m.gps_lng,
+          exif_timestamp: m.exif_timestamp,
+          created_at: m.created_at,
+          url: signed?.signedUrl ?? null,
+          is_video: /\.(mp4|mov|webm|m4v)$/i.test(m.file_url),
+        });
+      }
 
-    return {
-      ok: true,
-      invite: {
-        status: invite.status,
-        landlord_name: invite.landlord_name,
-        landlord_email: invite.landlord_email,
-        custom_message: invite.custom_message,
-        sent_at: invite.sent_at,
-        expires_at: invite.expires_at,
-        responded_at: invite.responded_at,
-        response_signature_name: invite.response_signature_name,
-        response_note: invite.response_note,
-        report: {
-          id: report.id,
-          report_number: report.report_number,
-          type: report.type,
-          created_at: report.created_at,
-          overall_hash: report.overall_hash,
-          weather_snapshot: report.weather_snapshot,
-          gps_lat: report.gps_lat,
-          gps_lng: report.gps_lng,
+      const property = report.properties as unknown as InviteView["property"];
+
+      return {
+        ok: true,
+        invite: {
+          status: invite.status,
+          landlord_name: invite.landlord_name,
+          landlord_email: invite.landlord_email,
+          custom_message: invite.custom_message,
+          sent_at: invite.sent_at,
+          expires_at: invite.expires_at,
+          responded_at: invite.responded_at,
+          response_signature_name: invite.response_signature_name,
+          response_note: invite.response_note,
+          report: {
+            id: report.id,
+            report_number: report.report_number,
+            type: report.type,
+            created_at: report.created_at,
+            overall_hash: report.overall_hash,
+            weather_snapshot: report.weather_snapshot,
+            gps_lat: report.gps_lat,
+            gps_lng: report.gps_lng,
+          },
+          property,
+          tenant_name: profile?.full_name ?? null,
+          media: withUrls,
         },
-        property,
-        tenant_name: profile?.full_name ?? null,
-        media: withUrls,
-      },
-    };
-  });
+      };
+    },
+  );
 
 /** Public: landlord accepts (e-signs) or disputes the report. */
 export const respondToInvite = createServerFn({ method: "POST" })
-  .inputValidator((input: { token: string; action: "accepted" | "disputed"; signatureName?: string; note?: string }) => {
-    const token = (input.token ?? "").trim();
-    if (!token) throw new Error("Missing link token.");
-    if (input.action !== "accepted" && input.action !== "disputed") throw new Error("Invalid action.");
-    const signatureName = (input.signatureName ?? "").trim().slice(0, 120);
-    const note = (input.note ?? "").trim().slice(0, 2000);
-    if (input.action === "accepted" && signatureName.length < 2) {
-      throw new Error("Type your full legal name to e-sign.");
-    }
-    if (input.action === "disputed" && note.length < 5) {
-      throw new Error("Add a note describing the dispute.");
-    }
-    return { token, action: input.action, signatureName, note };
-  })
+  .inputValidator(
+    (input: {
+      token: string;
+      action: "accepted" | "disputed";
+      signatureName?: string;
+      note?: string;
+    }) => {
+      const token = (input.token ?? "").trim();
+      if (!token) throw new Error("Missing link token.");
+      if (input.action !== "accepted" && input.action !== "disputed")
+        throw new Error("Invalid action.");
+      const signatureName = (input.signatureName ?? "").trim().slice(0, 120);
+      const note = (input.note ?? "").trim().slice(0, 2000);
+      if (input.action === "accepted" && signatureName.length < 2) {
+        throw new Error("Type your full legal name to e-sign.");
+      }
+      if (input.action === "disputed" && note.length < 5) {
+        throw new Error("Add a note describing the dispute.");
+      }
+      return { token, action: input.action, signatureName, note };
+    },
+  )
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
@@ -333,7 +362,6 @@ export const respondToInvite = createServerFn({ method: "POST" })
     return { status: data.action };
   });
 
-
 export type PortalInvite = {
   token: string;
   status: string;
@@ -349,93 +377,104 @@ export type PortalInvite = {
   address: string;
   unit: string | null;
   tenant_name: string | null;
-  messages: { id: string; author_role: string; author_name: string | null; body: string; created_at: string }[];
+  messages: {
+    id: string;
+    author_role: string;
+    author_name: string | null;
+    body: string;
+    created_at: string;
+  }[];
 };
 
 /** Public: with any valid invite token, load every request sent to that landlord email. */
 export const getLandlordPortal = createServerFn({ method: "POST" })
   .inputValidator((input: { token: string }) => ({ token: (input.token ?? "").trim() }))
-  .handler(async ({ data }): Promise<
-    { ok: false; reason: "not_found" } | { ok: true; landlordEmail: string; invites: PortalInvite[] }
-  > => {
-    if (!data.token) return { ok: false, reason: "not_found" };
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  .handler(
+    async ({
+      data,
+    }): Promise<
+      | { ok: false; reason: "not_found" }
+      | { ok: true; landlordEmail: string; invites: PortalInvite[] }
+    > => {
+      if (!data.token) return { ok: false, reason: "not_found" };
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    const { data: seed } = await supabaseAdmin
-      .from("landlord_invites")
-      .select("landlord_email")
-      .eq("token", data.token)
-      .maybeSingle();
-    if (!seed) return { ok: false, reason: "not_found" };
+      const { data: seed } = await supabaseAdmin
+        .from("landlord_invites")
+        .select("landlord_email")
+        .eq("token", data.token)
+        .maybeSingle();
+      if (!seed) return { ok: false, reason: "not_found" };
 
-    const { data: invites } = await supabaseAdmin
-      .from("landlord_invites")
-      .select(
-        "id, token, status, sent_at, expires_at, responded_at, response_note, response_signature_name, report_id, reports(report_number, type, created_at, overall_hash, user_id, properties(address, unit))",
-      )
-      .eq("landlord_email", seed.landlord_email)
-      .order("sent_at", { ascending: false });
+      const { data: invites } = await supabaseAdmin
+        .from("landlord_invites")
+        .select(
+          "id, token, status, sent_at, expires_at, responded_at, response_note, response_signature_name, report_id, reports(report_number, type, created_at, overall_hash, user_id, properties(address, unit))",
+        )
+        .eq("landlord_email", seed.landlord_email)
+        .order("sent_at", { ascending: false });
 
-    const rows = invites ?? [];
-    const ids = rows.map((r) => r.id);
-    const { data: messages } = ids.length
-      ? await supabaseAdmin
-          .from("invite_messages")
-          .select("id, invite_id, author_role, author_name, body, created_at")
-          .in("invite_id", ids)
-          .order("created_at")
-      : { data: [] as never[] };
+      const rows = invites ?? [];
+      const ids = rows.map((r) => r.id);
+      const { data: messages } = ids.length
+        ? await supabaseAdmin
+            .from("invite_messages")
+            .select("id, invite_id, author_role, author_name, body, created_at")
+            .in("invite_id", ids)
+            .order("created_at")
+        : { data: [] as never[] };
 
-    const tenantIds = Array.from(
-      new Set(
-        rows
-          .map((r) => (r.reports as unknown as { user_id?: string } | null)?.user_id)
-          .filter((v): v is string => Boolean(v)),
-      ),
-    );
-    const { data: profiles } = tenantIds.length
-      ? await supabaseAdmin.from("profiles").select("id, full_name").in("id", tenantIds)
-      : { data: [] as never[] };
-    const nameById = new Map((profiles ?? []).map((p) => [p.id, p.full_name]));
+      const tenantIds = Array.from(
+        new Set(
+          rows
+            .map((r) => (r.reports as unknown as { user_id?: string } | null)?.user_id)
+            .filter((v): v is string => Boolean(v)),
+        ),
+      );
+      const { data: profiles } = tenantIds.length
+        ? await supabaseAdmin.from("profiles").select("id, full_name").in("id", tenantIds)
+        : { data: [] as never[] };
+      const nameById = new Map((profiles ?? []).map((p) => [p.id, p.full_name]));
 
-    const list: PortalInvite[] = rows.map((r) => {
-      const report = r.reports as unknown as {
-        report_number: string;
-        type: string;
-        created_at: string;
-        overall_hash: string | null;
-        user_id: string;
-        properties: { address: string; unit: string | null } | null;
-      } | null;
-      return {
-        token: r.token,
-        status: r.status,
-        sent_at: r.sent_at,
-        expires_at: r.expires_at,
-        responded_at: r.responded_at,
-        response_note: r.response_note,
-        response_signature_name: r.response_signature_name,
-        report_number: report?.report_number ?? "—",
-        report_type: report?.type ?? "move_in",
-        report_created_at: report?.created_at ?? r.sent_at,
-        overall_hash: report?.overall_hash ?? null,
-        address: report?.properties?.address ?? "Rental property",
-        unit: report?.properties?.unit ?? null,
-        tenant_name: report ? (nameById.get(report.user_id) ?? null) : null,
-        messages: (messages ?? [])
-          .filter((m) => m.invite_id === r.id)
-          .map((m) => ({
-            id: m.id,
-            author_role: m.author_role,
-            author_name: m.author_name,
-            body: m.body,
-            created_at: m.created_at,
-          })),
-      };
-    });
+      const list: PortalInvite[] = rows.map((r) => {
+        const report = r.reports as unknown as {
+          report_number: string;
+          type: string;
+          created_at: string;
+          overall_hash: string | null;
+          user_id: string;
+          properties: { address: string; unit: string | null } | null;
+        } | null;
+        return {
+          token: r.token,
+          status: r.status,
+          sent_at: r.sent_at,
+          expires_at: r.expires_at,
+          responded_at: r.responded_at,
+          response_note: r.response_note,
+          response_signature_name: r.response_signature_name,
+          report_number: report?.report_number ?? "—",
+          report_type: report?.type ?? "move_in",
+          report_created_at: report?.created_at ?? r.sent_at,
+          overall_hash: report?.overall_hash ?? null,
+          address: report?.properties?.address ?? "Rental property",
+          unit: report?.properties?.unit ?? null,
+          tenant_name: report ? (nameById.get(report.user_id) ?? null) : null,
+          messages: (messages ?? [])
+            .filter((m) => m.invite_id === r.id)
+            .map((m) => ({
+              id: m.id,
+              author_role: m.author_role,
+              author_name: m.author_name,
+              body: m.body,
+              created_at: m.created_at,
+            })),
+        };
+      });
 
-    return { ok: true, landlordEmail: seed.landlord_email, invites: list };
-  });
+      return { ok: true, landlordEmail: seed.landlord_email, invites: list };
+    },
+  );
 
 /** Public: landlord posts a reply on a dispute thread using their link token. */
 export const postLandlordReply = createServerFn({ method: "POST" })
@@ -475,5 +514,4 @@ export const postLandlordReply = createServerFn({ method: "POST" })
     });
 
     return { ok: true };
-
   });

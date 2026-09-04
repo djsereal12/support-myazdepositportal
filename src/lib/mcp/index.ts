@@ -4,7 +4,7 @@ import createPropertyTool from "./tools/create-property";
 import listReportsTool from "./tools/list-reports";
 import getReportTool from "./tools/get-report";
 
-const projectRef = import.meta.env['VITE_SUPABASE_PROJECT_ID'] ?? "project-ref-unset";
+const projectRef = import.meta.env["VITE_SUPABASE_PROJECT_ID"] ?? "project-ref-unset";
 
 export default defineMcp({
   name: "deposit",
@@ -16,5 +16,10 @@ export default defineMcp({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated",
   }),
-  tools: [listPropertiesTool, createPropertyTool, listReportsTool, getReportTool] as unknown as Parameters<typeof defineMcp>[0]["tools"],
+  tools: [
+    listPropertiesTool,
+    createPropertyTool,
+    listReportsTool,
+    getReportTool,
+  ] as unknown as Parameters<typeof defineMcp>[0]["tools"],
 });

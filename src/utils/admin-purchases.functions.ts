@@ -164,7 +164,8 @@ export const resyncPurchase = createServerFn({ method: "POST" })
       userId = match?.id ?? null;
     }
 
-    const status = session.payment_status === "paid" ? "paid" : (session.payment_status ?? "pending");
+    const status =
+      session.payment_status === "paid" ? "paid" : (session.payment_status ?? "pending");
 
     const { error } = await (supabaseAdmin.from("purchases") as any).upsert(
       {

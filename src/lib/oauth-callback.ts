@@ -1,9 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 
 export type OAuthCallbackResult =
-  | { status: "none" }
-  | { status: "signed_in" }
-  | { status: "error"; message: string };
+  { status: "none" } | { status: "signed_in" } | { status: "error"; message: string };
 
 function readTokens(): {
   access_token?: string | undefined;

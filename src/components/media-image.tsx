@@ -51,5 +51,7 @@ export function MediaThumb({
   if (isVideo) {
     return <video src={url} controls className={`rounded-xl bg-black object-cover ${className}`} />;
   }
-  return <img src={url} alt={alt} loading="lazy" className={`rounded-xl object-cover ${className}`} />;
+  return (
+    <img src={url} alt={alt} loading="lazy" className={`rounded-xl object-cover ${className}`} />
+  );
 }
