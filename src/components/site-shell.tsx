@@ -3,6 +3,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { NewsletterSignup } from "@/components/newsletter-signup";
+import { AskWidget } from "@/components/ask-widget";
 import logoWordmarkAsset from "@/assets/deposit-logo-wordmark.png.asset.json";
 import logoSquareAsset from "@/assets/deposit-logo-square.png.asset.json";
 
@@ -69,6 +70,9 @@ export function SiteHeader() {
           </Link>
           <Link to="/faq" className="transition-colors hover:text-foreground">
             Tenant FAQ
+          </Link>
+          <Link to="/ask" className="transition-colors hover:text-foreground">
+            Ask
           </Link>
           <Link to="/law" className="transition-colors hover:text-foreground">
             Arizona law
