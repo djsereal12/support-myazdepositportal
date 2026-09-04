@@ -236,18 +236,9 @@ function ReportView() {
           </div>
         ) : (
           <div className="flex gap-2">
-            <button
-              onClick={() => unlock(PRICES.singleReport)}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
-            >
-              <Lock className="h-3.5 w-3.5" /> Unlock this report — $14.99
-            </button>
-            <button
-              onClick={() => unlock(PRICES.bundle)}
-              className="rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent"
-            >
-              Bundle for this property — $24.99
-            </button>
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium text-muted-foreground">
+              <Lock className="h-3.5 w-3.5" /> Report locked
+            </span>
           </div>
         )}
       </div>
@@ -280,24 +271,21 @@ function ReportView() {
 
           {!unlocked ? (
             <div className="mt-4 rounded-2xl border border-border bg-card p-5">
-              <p className="text-xs text-muted-foreground">
-                Unlock this report to send it to your landlord. Payment covers the verified,
-                court-ready copy your landlord reviews and e-signs.
+              <button
+                onClick={() => unlock(PRICES.singleReport)}
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground"
+              >
+                <Lock className="h-4 w-4" /> Unlock &amp; send — $14.99
+              </button>
+              <p className="mt-3 text-center text-xs text-muted-foreground">
+                Sends verified report to landlord, enables e-signature and dispute notes.
               </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <button
-                  onClick={() => unlock(PRICES.singleReport)}
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
-                >
-                  <Lock className="h-3.5 w-3.5" /> Unlock &amp; send — $14.99
-                </button>
-                <button
-                  onClick={() => unlock(PRICES.bundle)}
-                  className="rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent"
-                >
-                  Bundle for this property — $24.99
-                </button>
-              </div>
+              <button
+                onClick={() => unlock(PRICES.bundle)}
+                className="mt-4 w-full text-center text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+              >
+                Bundle for this property — $24.99 (includes move-out + demand letter, save $19)
+              </button>
             </div>
           ) : !inviteOpen ? (
             <button
@@ -436,21 +424,29 @@ function ReportView() {
         <p className="mt-2 text-xs text-muted-foreground">
           They sign in with this email address and see the report read-only in the landlord portal.
         </p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          <input
-            value={shareEmail}
-            onChange={(e) => setShareEmail(e.target.value)}
-            type="email"
-            placeholder="landlord@example.com"
-            className="min-w-[16rem] flex-1 rounded-full border border-border bg-card px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-lavender/40"
-          />
-          <button
-            onClick={share}
-            className="rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
-          >
-            Share
-          </button>
-        </div>
+        {unlocked ? (
+          <div className="mt-4 flex flex-wrap gap-2">
+            <input
+              value={shareEmail}
+              onChange={(e) => setShareEmail(e.target.value)}
+              type="email"
+              placeholder="landlord@example.com"
+              className="min-w-[16rem] flex-1 rounded-full border border-border bg-card px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-lavender/40"
+            />
+            <button
+              onClick={share}
+              className="rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
+            >
+              Share
+            </button>
+          </div>
+        ) : (
+          <div className="mt-4 rounded-2xl border border-border bg-card p-5 opacity-70">
+            <p className="text-xs text-muted-foreground">
+              <Lock className="inline h-3.5 w-3.5 align-text-bottom" /> Unlock report to share
+            </p>
+          </div>
+        )}
         {shares?.length ? (
           <ul className="mt-4 flex flex-wrap gap-2">
             {shares.map((s) => (
