@@ -99,6 +99,13 @@
       "when": 1788478999991,
       "tag": "0013_lock_down_invite_and_purchase_writes",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1788564554391,
+      "tag": "0014_marketing_profile_and_automations",
+      "breakpoints": true
     }
   ]
 }

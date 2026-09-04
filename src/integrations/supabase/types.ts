@@ -131,6 +131,33 @@ export type Database = {
           },
         ]
       }
+      email_automation_sends: {
+        Row: {
+          automation: string
+          email: string | null
+          id: string
+          ref_id: string | null
+          sent_at: string
+          user_id: string | null
+        }
+        Insert: {
+          automation: string
+          email?: string | null
+          id?: string
+          ref_id?: string | null
+          sent_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          automation?: string
+          email?: string | null
+          id?: string
+          ref_id?: string | null
+          sent_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       invite_messages: {
         Row: {
           author_name: string | null
@@ -399,6 +426,66 @@ export type Database = {
           status?: string
           subject?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      marketing_profile: {
+        Row: {
+          ad_descriptions: Json
+          ad_headlines: Json
+          ad_long_headlines: Json
+          audience: string
+          brand_name: string
+          created_at: string
+          id: string
+          keywords: Json
+          negative_keywords: Json
+          objections: Json
+          one_liner: string
+          positioning: string
+          taglines: Json
+          tone: string
+          updated_at: string
+          updated_by: string | null
+          value_props: Json
+        }
+        Insert: {
+          ad_descriptions?: Json
+          ad_headlines?: Json
+          ad_long_headlines?: Json
+          audience?: string
+          brand_name?: string
+          created_at?: string
+          id?: string
+          keywords?: Json
+          negative_keywords?: Json
+          objections?: Json
+          one_liner?: string
+          positioning?: string
+          taglines?: Json
+          tone?: string
+          updated_at?: string
+          updated_by?: string | null
+          value_props?: Json
+        }
+        Update: {
+          ad_descriptions?: Json
+          ad_headlines?: Json
+          ad_long_headlines?: Json
+          audience?: string
+          brand_name?: string
+          created_at?: string
+          id?: string
+          keywords?: Json
+          negative_keywords?: Json
+          objections?: Json
+          one_liner?: string
+          positioning?: string
+          taglines?: Json
+          tone?: string
+          updated_at?: string
+          updated_by?: string | null
+          value_props?: Json
         }
         Relationships: []
       }
