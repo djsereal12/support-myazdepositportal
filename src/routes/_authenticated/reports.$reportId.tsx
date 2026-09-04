@@ -236,18 +236,9 @@ function ReportView() {
           </div>
         ) : (
           <div className="flex gap-2">
-            <button
-              onClick={() => unlock(PRICES.singleReport)}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-medium text-primary-foreground"
-            >
-              <Lock className="h-3.5 w-3.5" /> Unlock this report — $14.99
-            </button>
-            <button
-              onClick={() => unlock(PRICES.bundle)}
-              className="rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium hover:bg-accent"
-            >
-              Bundle for this property — $24.99
-            </button>
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-xs font-medium text-muted-foreground">
+              <Lock className="h-3.5 w-3.5" /> Report locked
+            </span>
           </div>
         )}
       </div>
