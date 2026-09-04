@@ -3,15 +3,30 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { NewsletterSignup } from "@/components/newsletter-signup";
+import logoWordmarkAsset from "@/assets/deposit-logo-wordmark.png.asset.json";
+import logoSquareAsset from "@/assets/deposit-logo-square.png.asset.json";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
-    <Link to="/" className={`flex items-baseline gap-2 ${className}`}>
-      <span className="font-script text-2xl leading-none holo-text">deposit</span>
-      <span className="hidden text-[0.6rem] font-medium uppercase tracking-[0.32em] text-muted-foreground sm:inline">
-        Arizona
-      </span>
+    <Link to="/" aria-label="deposit — Arizona" className={`flex items-center ${className}`}>
+      <img
+        src={logoWordmarkAsset.url}
+        alt="deposit — Arizona"
+        className="h-8 w-auto"
+        loading="eager"
+      />
     </Link>
+  );
+}
+
+export function FooterLogo({ className = "" }: { className?: string }) {
+  return (
+    <img
+      src={logoSquareAsset.url}
+      alt="deposit — Arizona logo"
+      className={`w-36 ${className}`}
+      loading="lazy"
+    />
   );
 }
 
@@ -97,7 +112,7 @@ export function SiteFooter() {
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 text-xs text-muted-foreground">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="max-w-md">
-            <span className="font-script text-lg holo-text">deposit</span>
+            <FooterLogo />
             <p className="mt-2">
               Documentation software, not legal advice. Statute references are for informational
               purposes under A.R.S. § 33-1321.
