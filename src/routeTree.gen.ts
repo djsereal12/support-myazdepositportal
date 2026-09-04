@@ -18,6 +18,7 @@ import { Route as LawRouteImport } from './routes/law'
 import { Route as LegalRouteImport } from './routes/legal'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as SampleRouteImport } from './routes/sample'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
@@ -85,6 +86,11 @@ const McpRoute = McpRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SampleRoute = SampleRouteImport.update({
+  id: '/sample',
+  path: '/sample',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -228,6 +234,7 @@ export interface FileRoutesByFullPath {
   '/legal': typeof LegalRoute
   '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/sample': typeof SampleRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -262,6 +269,7 @@ export interface FileRoutesByTo {
   '/legal': typeof LegalRoute
   '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/sample': typeof SampleRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -298,6 +306,7 @@ export interface FileRoutesById {
   '/legal': typeof LegalRoute
   '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/sample': typeof SampleRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -334,6 +343,7 @@ export interface FileRouteTypes {
     | '/legal'
     | '/mcp'
     | '/pricing'
+    | '/sample'
     | '/sitemap.xml'
     | '/unsubscribe'
     | '/.well-known/oauth-protected-resource'
@@ -368,6 +378,7 @@ export interface FileRouteTypes {
     | '/legal'
     | '/mcp'
     | '/pricing'
+    | '/sample'
     | '/sitemap.xml'
     | '/unsubscribe'
     | '/.well-known/oauth-protected-resource'
@@ -403,6 +414,7 @@ export interface FileRouteTypes {
     | '/legal'
     | '/mcp'
     | '/pricing'
+    | '/sample'
     | '/sitemap.xml'
     | '/unsubscribe'
     | '/.well-known/oauth-protected-resource'
@@ -439,6 +451,7 @@ export interface RootRouteChildren {
   LegalRoute: typeof LegalRoute
   McpRoute: typeof McpRoute
   PricingRoute: typeof PricingRoute
+  SampleRoute: typeof SampleRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -514,6 +527,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sample': {
+      id: '/sample'
+      path: '/sample'
+      fullPath: '/sample'
+      preLoaderRoute: typeof SampleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -763,6 +783,7 @@ const rootRouteChildren: RootRouteChildren = {
   LegalRoute: LegalRoute,
   McpRoute: McpRoute,
   PricingRoute: PricingRoute,
+  SampleRoute: SampleRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
