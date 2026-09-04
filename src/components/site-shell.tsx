@@ -41,6 +41,12 @@ export function SiteHeader() {
       <div className="glass mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:mt-4 sm:rounded-full sm:px-6">
         <Logo />
         <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
+          <Link to="/sample" className="transition-colors hover:text-foreground">
+            Sample report
+          </Link>
+          <Link to="/calculator" className="transition-colors hover:text-foreground">
+            Calculator
+          </Link>
           <Link to="/pricing" className="transition-colors hover:text-foreground">
             Pricing
           </Link>
