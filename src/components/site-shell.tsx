@@ -164,6 +164,17 @@ export function SiteFooter() {
 
 
 
+function FooterCol({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="text-[0.6rem] font-medium uppercase tracking-[0.2em] text-foreground/70">
+        {title}
+      </p>
+      {children}
+    </div>
+  );
+}
+
 export function Page({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen">
