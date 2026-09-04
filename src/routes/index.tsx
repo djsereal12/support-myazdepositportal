@@ -135,7 +135,7 @@ function Landing() {
               </Link>
             </div>
             <p className="mt-4 text-xs text-muted-foreground">
-              Free first scan · no card required · works on any phone browser.
+              {"\n"}
             </p>
           </div>
 
