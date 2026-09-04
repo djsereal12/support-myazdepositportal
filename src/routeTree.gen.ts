@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CalculatorRouteImport } from './routes/calculator'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as LandlordAccessRouteImport } from './routes/landlord-access'
 import { Route as LawRouteImport } from './routes/law'
@@ -56,6 +57,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalculatorRoute = CalculatorRouteImport.update({
+  id: '/calculator',
+  path: '/calculator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -228,6 +234,7 @@ const LovableEmailTransactionalPreviewRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/calculator': typeof CalculatorRoute
   '/faq': typeof FaqRoute
   '/landlord-access': typeof LandlordAccessRoute
   '/law': typeof LawRoute
@@ -263,6 +270,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/calculator': typeof CalculatorRoute
   '/faq': typeof FaqRoute
   '/landlord-access': typeof LandlordAccessRoute
   '/law': typeof LawRoute
@@ -300,6 +308,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/calculator': typeof CalculatorRoute
   '/faq': typeof FaqRoute
   '/landlord-access': typeof LandlordAccessRoute
   '/law': typeof LawRoute
@@ -337,6 +346,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/calculator'
     | '/faq'
     | '/landlord-access'
     | '/law'
@@ -372,6 +382,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/calculator'
     | '/faq'
     | '/landlord-access'
     | '/law'
@@ -408,6 +419,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/calculator'
     | '/faq'
     | '/landlord-access'
     | '/law'
@@ -445,6 +457,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
+  CalculatorRoute: typeof CalculatorRoute
   FaqRoute: typeof FaqRoute
   LandlordAccessRoute: typeof LandlordAccessRoute
   LawRoute: typeof LawRoute
@@ -485,6 +498,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calculator': {
+      id: '/calculator'
+      path: '/calculator'
+      fullPath: '/calculator'
+      preLoaderRoute: typeof CalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -777,6 +797,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
+  CalculatorRoute: CalculatorRoute,
   FaqRoute: FaqRoute,
   LandlordAccessRoute: LandlordAccessRoute,
   LawRoute: LawRoute,
