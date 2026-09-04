@@ -12,12 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CalculatorRouteImport } from './routes/calculator'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as LandlordAccessRouteImport } from './routes/landlord-access'
 import { Route as LawRouteImport } from './routes/law'
 import { Route as LegalRouteImport } from './routes/legal'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as SampleRouteImport } from './routes/sample'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
@@ -57,6 +59,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CalculatorRoute = CalculatorRouteImport.update({
+  id: '/calculator',
+  path: '/calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
@@ -85,6 +92,11 @@ const McpRoute = McpRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SampleRoute = SampleRouteImport.update({
+  id: '/sample',
+  path: '/sample',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -222,12 +234,14 @@ const LovableEmailTransactionalPreviewRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/calculator': typeof CalculatorRoute
   '/faq': typeof FaqRoute
   '/landlord-access': typeof LandlordAccessRoute
   '/law': typeof LawRoute
   '/legal': typeof LegalRoute
   '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/sample': typeof SampleRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -256,12 +270,14 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/calculator': typeof CalculatorRoute
   '/faq': typeof FaqRoute
   '/landlord-access': typeof LandlordAccessRoute
   '/law': typeof LawRoute
   '/legal': typeof LegalRoute
   '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/sample': typeof SampleRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -292,12 +308,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/calculator': typeof CalculatorRoute
   '/faq': typeof FaqRoute
   '/landlord-access': typeof LandlordAccessRoute
   '/law': typeof LawRoute
   '/legal': typeof LegalRoute
   '/mcp': typeof McpRoute
   '/pricing': typeof PricingRoute
+  '/sample': typeof SampleRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -328,12 +346,14 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/calculator'
     | '/faq'
     | '/landlord-access'
     | '/law'
     | '/legal'
     | '/mcp'
     | '/pricing'
+    | '/sample'
     | '/sitemap.xml'
     | '/unsubscribe'
     | '/.well-known/oauth-protected-resource'
@@ -362,12 +382,14 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/calculator'
     | '/faq'
     | '/landlord-access'
     | '/law'
     | '/legal'
     | '/mcp'
     | '/pricing'
+    | '/sample'
     | '/sitemap.xml'
     | '/unsubscribe'
     | '/.well-known/oauth-protected-resource'
@@ -397,12 +419,14 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/calculator'
     | '/faq'
     | '/landlord-access'
     | '/law'
     | '/legal'
     | '/mcp'
     | '/pricing'
+    | '/sample'
     | '/sitemap.xml'
     | '/unsubscribe'
     | '/.well-known/oauth-protected-resource'
@@ -433,12 +457,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
+  CalculatorRoute: typeof CalculatorRoute
   FaqRoute: typeof FaqRoute
   LandlordAccessRoute: typeof LandlordAccessRoute
   LawRoute: typeof LawRoute
   LegalRoute: typeof LegalRoute
   McpRoute: typeof McpRoute
   PricingRoute: typeof PricingRoute
+  SampleRoute: typeof SampleRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -472,6 +498,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calculator': {
+      id: '/calculator'
+      path: '/calculator'
+      fullPath: '/calculator'
+      preLoaderRoute: typeof CalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -514,6 +547,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sample': {
+      id: '/sample'
+      path: '/sample'
+      fullPath: '/sample'
+      preLoaderRoute: typeof SampleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -757,12 +797,14 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
+  CalculatorRoute: CalculatorRoute,
   FaqRoute: FaqRoute,
   LandlordAccessRoute: LandlordAccessRoute,
   LawRoute: LawRoute,
   LegalRoute: LegalRoute,
   McpRoute: McpRoute,
   PricingRoute: PricingRoute,
+  SampleRoute: SampleRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:

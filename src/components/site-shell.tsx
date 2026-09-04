@@ -41,6 +41,12 @@ export function SiteHeader() {
       <div className="glass mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:mt-4 sm:rounded-full sm:px-6">
         <Logo />
         <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
+          <Link to="/sample" className="transition-colors hover:text-foreground">
+            Sample report
+          </Link>
+          <Link to="/calculator" className="transition-colors hover:text-foreground">
+            Calculator
+          </Link>
           <Link to="/pricing" className="transition-colors hover:text-foreground">
             Pricing
           </Link>
@@ -106,23 +112,68 @@ export function SiteFooter() {
           </div>
           <NewsletterSignup />
         </div>
-        <div className="flex gap-4">
-          <Link to="/law" className="transition-colors hover:text-foreground">
-            Arizona law
-          </Link>
-          <Link to="/legal" className="transition-colors hover:text-foreground">
-            Disclaimer & privacy
-          </Link>
-          <Link to="/faq" className="transition-colors hover:text-foreground">
-            Tenant FAQ
-          </Link>
+        <div className="grid gap-6 sm:grid-cols-4">
+          <FooterCol title="Product">
+            <Link to="/sample" className="transition-colors hover:text-foreground">
+              Sample report
+            </Link>
+            <Link to="/calculator" className="transition-colors hover:text-foreground">
+              Deadline calculator
+            </Link>
+            <Link to="/pricing" className="transition-colors hover:text-foreground">
+              Pricing
+            </Link>
+          </FooterCol>
+          <FooterCol title="Learn">
+            <Link to="/law" className="transition-colors hover:text-foreground">
+              Read the statute
+            </Link>
+            <Link to="/faq" className="transition-colors hover:text-foreground">
+              Tenant FAQ
+            </Link>
+            <Link to="/landlord-access" className="transition-colors hover:text-foreground">
+              Landlord portal
+            </Link>
+          </FooterCol>
+          <FooterCol title="Legal">
+            <Link to="/legal" className="transition-colors hover:text-foreground">
+              Privacy policy
+            </Link>
+            <Link to="/legal" className="transition-colors hover:text-foreground">
+              Terms of use
+            </Link>
+            <Link to="/legal" className="transition-colors hover:text-foreground">
+              Disclaimer
+            </Link>
+          </FooterCol>
+          <FooterCol title="Contact">
+            <a
+              href="mailto:support@myazdepositportal.live"
+              className="transition-colors hover:text-foreground"
+            >
+              support@myazdepositportal.live
+            </a>
+            <span>Phoenix, Arizona</span>
+          </FooterCol>
         </div>
+        <p>© {new Date().getFullYear()} deposit. All rights reserved.</p>
       </div>
     </footer>
   );
 }
 
 
+
+function FooterCol({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="text-[0.6rem] font-medium uppercase tracking-[0.2em] text-foreground/70">
+        {title}
+      </p>
+      {children}
+    </div>
+  );
+}
 
 export function Page({ children }: { children: ReactNode }) {
   return (
