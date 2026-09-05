@@ -106,6 +106,13 @@
       "when": 1788564554391,
       "tag": "0014_marketing_profile_and_automations",
       "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1788582145426,
+      "tag": "0015_restrict_user_roles_self_insert",
+      "breakpoints": true
     }
   ]
 }
