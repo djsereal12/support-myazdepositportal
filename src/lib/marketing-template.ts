@@ -1,4 +1,4 @@
-const SITE = "https://myazdepositportal.live";
+const SITE = "https://www.myazdepositportal.live";
 
 function escapeHtml(value: string) {
   return value

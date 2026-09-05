@@ -24,7 +24,7 @@ interface NudgeProps {
 
 const NudgeEmail = ({
   name,
-  appUrl = "https://myazdepositportal.live",
+  appUrl = "https://www.myazdepositportal.live",
   variant = "no_property",
   address,
   reportId,

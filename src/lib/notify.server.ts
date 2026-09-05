@@ -1,6 +1,6 @@
 import { sendTemplateEmail } from "@/lib/email-templates/send-email";
 
-const APP_URL = "https://myazdepositportal.live";
+const APP_URL = "https://www.myazdepositportal.live";
 
 /**
  * Notifies the tenant who owns a report that their landlord responded.

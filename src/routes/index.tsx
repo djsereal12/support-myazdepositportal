@@ -23,14 +23,14 @@ export const Route = createFileRoute("/")({
           "Protect your Arizona security deposit with verifiable photo evidence per A.R.S. §33-1321. $14.99",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://myazdepositportal.live/" },
+      { property: "og:url", content: "https://www.myazdepositportal.live/" },
       { property: "og:title", content: "DEPOSIT — Arizona Security Deposit Protection" },
       {
         property: "og:description",
         content:
           "Protect your Arizona security deposit with verifiable photo evidence per A.R.S. §33-1321. $14.99",
       },
-      { property: "og:image", content: "https://myazdepositportal.live/og-image.jpg" },
+      { property: "og:image", content: "https://www.myazdepositportal.live/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "DEPOSIT — Arizona Security Deposit Protection" },
       {
@@ -38,9 +38,9 @@ export const Route = createFileRoute("/")({
         content:
           "Protect your Arizona security deposit with verifiable photo evidence per A.R.S. §33-1321. $14.99",
       },
-      { name: "twitter:image", content: "https://myazdepositportal.live/og-image.jpg" },
+      { name: "twitter:image", content: "https://www.myazdepositportal.live/og-image.jpg" },
     ],
-    links: [{ rel: "canonical", href: "https://myazdepositportal.live/" }],
+    links: [{ rel: "canonical", href: "https://www.myazdepositportal.live/" }],
   }),
   component: Landing,
 });

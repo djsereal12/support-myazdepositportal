@@ -62,7 +62,7 @@ export const template = {
     address: "1420 E Camelback Rd Unit 3",
     reportNumber: "DEP-000123",
     customMessage: "Please review the move-in condition report for the unit.",
-    link: "https://myazdepositportal.live/verify/example-token",
+    link: "https://www.myazdepositportal.live/verify/example-token",
   },
 } satisfies TemplateEntry;
 

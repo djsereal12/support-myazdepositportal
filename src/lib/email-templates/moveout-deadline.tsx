@@ -26,7 +26,7 @@ const MoveOutEmail = ({
   address,
   leaseEnd,
   propertyId,
-  appUrl = "https://myazdepositportal.live",
+  appUrl = "https://www.myazdepositportal.live",
 }: MoveOutProps) => (
   <Html lang="en" dir="ltr">
     <Head />

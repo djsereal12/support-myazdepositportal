@@ -24,7 +24,7 @@ export const Route = createFileRoute("/landlord-access")({
           "Landlords: open every move-in report a tenant sent you, reply to disputes and confirm acceptance with an e-signature — no account required.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://myazdepositportal.live/landlord-access" },
+      { property: "og:url", content: "https://www.myazdepositportal.live/landlord-access" },
       { property: "og:title", content: "Landlord portal — review, reply and accept" },
       {
         property: "og:description",
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/landlord-access")({
       },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "https://myazdepositportal.live/landlord-access" }],
+    links: [{ rel: "canonical", href: "https://www.myazdepositportal.live/landlord-access" }],
   }),
   component: LandlordAccess,
 });

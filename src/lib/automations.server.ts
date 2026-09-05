@@ -1,6 +1,6 @@
 import { sendTemplateEmail } from "@/lib/email-templates/send-email";
 
-const APP_URL = "https://myazdepositportal.live";
+const APP_URL = "https://www.myazdepositportal.live";
 
 export type AutomationResult = {
   ran_at: string;

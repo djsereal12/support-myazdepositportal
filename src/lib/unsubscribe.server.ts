@@ -5,7 +5,7 @@
  */
 import { createHmac, timingSafeEqual } from "crypto";
 
-export const SITE_URL = "https://myazdepositportal.live";
+export const SITE_URL = "https://www.myazdepositportal.live";
 
 function secret() {
   const value = process.env["MARKETING_UNSUBSCRIBE_SECRET"];

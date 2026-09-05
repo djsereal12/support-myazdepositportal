@@ -22,7 +22,7 @@ interface WelcomeEmailProps {
 const WelcomeEmail = ({
   name,
   role,
-  appUrl = "https://myazdepositportal.live",
+  appUrl = "https://www.myazdepositportal.live",
 }: WelcomeEmailProps) => {
   const isLandlord = role === "landlord";
   return (
