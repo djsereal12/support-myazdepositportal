@@ -37,7 +37,7 @@ const LandlordResponseEmail = ({
   landlordName,
   note,
   reportId,
-  appUrl = "https://myazdepositportal.live",
+  appUrl = "https://www.myazdepositportal.live",
 }: LandlordResponseEmailProps) => (
   <Html lang="en" dir="ltr">
     <Head />

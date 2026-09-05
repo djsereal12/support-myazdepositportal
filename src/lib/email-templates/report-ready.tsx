@@ -30,7 +30,7 @@ const ReportReadyEmail = ({
   photoCount,
   hash,
   reportId,
-  appUrl = "https://myazdepositportal.live",
+  appUrl = "https://www.myazdepositportal.live",
 }: ReportReadyEmailProps) => (
   <Html lang="en" dir="ltr">
     <Head />

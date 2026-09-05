@@ -95,7 +95,7 @@ export const template = {
     letterBody: "Dear Landlord,\n\nI vacated the above premises…",
     reportNumber: "DEP-00123",
     hash: "34ccf9949cb385cf96a7aae7cd756d33223de4d6f",
-    verifyLink: "https://myazdepositportal.live/verify/example",
+    verifyLink: "https://www.myazdepositportal.live/verify/example",
   },
 } satisfies TemplateEntry;
 

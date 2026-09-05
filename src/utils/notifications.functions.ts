@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-const APP_URL = "https://myazdepositportal.live";
+const APP_URL = "https://www.myazdepositportal.live";
 
 /** Sends the one-time welcome email to the signed-in user. */
 export const sendWelcomeEmail = createServerFn({ method: "POST" })

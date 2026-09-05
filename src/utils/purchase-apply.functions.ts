@@ -34,7 +34,7 @@ export type ApplyResult = {
 export const applyPurchaseToNextReport = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { origin?: string }) => ({
-    origin: (input?.origin ?? "https://myazdepositportal.live").replace(/\/$/, ""),
+    origin: (input?.origin ?? "https://www.myazdepositportal.live").replace(/\/$/, ""),
   }))
   .handler(async ({ data, context }): Promise<ApplyResult> => {
     const { supabase, userId } = context;
