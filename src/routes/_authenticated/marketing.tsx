@@ -14,6 +14,7 @@ import {
   sendCampaign,
   sendCampaignTest,
   importAppUsers,
+  sendLandlordCampaign,
   setSubscriberStatus,
   type Campaign,
 } from "@/utils/marketing.functions";
@@ -61,6 +62,7 @@ function MarketingPage() {
   const send = useServerFn(sendCampaign);
   const sendTest = useServerFn(sendCampaignTest);
   const importUsers = useServerFn(importAppUsers);
+  const sendLandlords = useServerFn(sendLandlordCampaign);
   const setStatus = useServerFn(setSubscriberStatus);
 
   const [draft, setDraft] = useState(emptyDraft);
@@ -206,6 +208,35 @@ function MarketingPage() {
           </button>
         </div>
       </div>
+
+      <section className="glass-panel mt-6 flex flex-wrap items-center justify-between gap-4 p-6">
+        <div>
+          <h2 className="text-lg font-semibold">Landlord outreach</h2>
+          <p className="mt-1 max-w-xl text-sm text-muted-foreground">
+            Sends the ready-made landlord letter — how verified move-in photos cut deposit disputes
+            — with a button linking to the website. Goes to landlord accounts and property managers
+            on your list, never to tenants, and includes a one-click unsubscribe.
+          </p>
+        </div>
+        <button
+          disabled={busy}
+          onClick={() => {
+            if (!confirm("Send the landlord outreach email now?")) return;
+            void run("Landlord emails sent", async () => {
+              const res = (await sendLandlords({})) as { sent: number; failed: number };
+              toast.message(
+                `Sent to ${res.sent} landlord${res.sent === 1 ? "" : "s"}${
+                  res.failed ? ` · ${res.failed} failed` : ""
+                }`,
+              );
+            });
+          }}
+          className="glass-button flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium"
+        >
+          <Send className="h-4 w-4" strokeWidth={1.5} /> Send to landlords
+        </button>
+      </section>
+
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)]">
         <section className="glass-panel p-6">
