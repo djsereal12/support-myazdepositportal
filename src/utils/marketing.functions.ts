@@ -339,6 +339,83 @@ export const sendCampaignTest = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+/**
+ * One-off landlord outreach: sends the landlord-facing campaign through
+ * Resend to every known landlord (landlord-role users plus subscribed
+ * marketing contacts flagged as landlords), with one-click unsubscribe.
+ */
+export const sendLandlordCampaign = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { sendMarketingEmail } = await import("@/lib/resend-marketing.server");
+    const { unsubscribeUrl } = await import("@/lib/unsubscribe.server");
+
+    const { data: roles } = await supabaseAdmin
+      .from("user_roles")
+      .select("user_id")
+      .eq("role", "landlord");
+    const ids = (roles ?? []).map((r: { user_id: string }) => r.user_id);
+    const emails = new Set<string>();
+    for (const id of ids) {
+      const { data: u } = await supabaseAdmin.auth.admin.getUserById(id);
+      if (u.user?.email && u.user.email_confirmed_at) emails.add(u.user.email.toLowerCase());
+    }
+    // Include subscriber list contacts (e.g. property managers who opted in).
+    const { data: subs } = await supabaseAdmin
+      .from("marketing_subscribers")
+      .select("email")
+      .eq("status", "subscribed");
+    for (const s of subs ?? []) emails.add((s.email as string).toLowerCase());
+    // Exclude tenant-role accounts so tenants don't get landlord copy.
+    const { data: tenantRoles } = await supabaseAdmin
+      .from("user_roles")
+      .select("user_id")
+      .eq("role", "tenant");
+    for (const t of tenantRoles ?? []) {
+      const { data: u } = await supabaseAdmin.auth.admin.getUserById(t.user_id);
+      if (u.user?.email) emails.delete(u.user.email.toLowerCase());
+    }
+    if (!emails.size) throw new Error("No landlord recipients found");
+
+    const content = {
+      headline: "Fewer deposit disputes. Zero he-said-she-said.",
+      body: [
+        "If you manage rentals in Arizona, you know how deposit disputes usually go: blurry photos, missing paperwork, and a tenant claiming the damage was already there.",
+        "Deposit fixes that. Your tenants document the unit at move-in with time-stamped, tamper-proof photos sealed under A.R.S. §33-1321. When it's time to return the deposit, both sides work from the same verified record.",
+        "That means faster deposit returns, cleaner dispute resolution, and a paper trail that holds up if a claim ever escalates. Tenants who document with Deposit are far less likely to file a bad-faith claim — and if they do, the evidence is already organized.",
+        "It takes your tenants two minutes and costs you nothing to look.",
+      ].join("\n\n"),
+      ctaLabel: "See how it works",
+      ctaUrl: "https://www.myazdepositportal.live",
+      previewText:
+        "Verified move-in reports make Arizona deposit returns faster and disputes rarer — see how.",
+    };
+    const subject = "Arizona landlords: end deposit disputes before they start";
+
+    let sent = 0;
+    const failed: string[] = [];
+    for (const email of emails) {
+      try {
+        const unsub = unsubscribeUrl(email);
+        await sendMarketingEmail({
+          to: email,
+          subject,
+          html: renderCampaignHtml(content, unsub),
+          text: renderCampaignText(content, unsub),
+          unsubscribeUrl: unsub,
+        });
+        sent++;
+      } catch (e) {
+        console.error(`Landlord campaign send failed for recipient:`, e);
+        failed.push(email);
+      }
+    }
+
+    return { ok: true, sent, failed: failed.length, total: emails.size };
+  });
+
 export const sendCampaign = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: { id: string }) => {
