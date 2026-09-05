@@ -62,6 +62,7 @@ function MarketingPage() {
   const send = useServerFn(sendCampaign);
   const sendTest = useServerFn(sendCampaignTest);
   const importUsers = useServerFn(importAppUsers);
+  const sendLandlords = useServerFn(sendLandlordCampaign);
   const setStatus = useServerFn(setSubscriberStatus);
 
   const [draft, setDraft] = useState(emptyDraft);
