@@ -5,13 +5,18 @@
  * domain used for auth, invites and report notifications.
  */
 
-const API = "https://api.resend.com";
+// Calls route through the Lovable connector gateway — direct api.resend.com
+// fetches from the server runtime get blocked (Cloudflare 403 / 1010).
+const GATEWAY = "https://connector-gateway.lovable.dev/resend";
 export const AUDIENCE_NAME = "deposit — Arizona tenants";
 
-function apiKey() {
-  const key = process.env["RESEND_API_KEY"];
-  if (!key) throw new Error("Marketing email is not configured yet (missing Resend API key).");
-  return key;
+function gatewayAuth() {
+  const lovableKey = process.env["LOVABLE_API_KEY"];
+  const resendKey = process.env["RESEND_API_KEY"];
+  if (!lovableKey || !resendKey) {
+    throw new Error("Marketing email is not configured yet (missing Resend connection).");
+  }
+  return { lovableKey, resendKey };
 }
 
 export function marketingFrom() {
