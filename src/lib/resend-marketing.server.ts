@@ -28,10 +28,12 @@ export function marketingReplyTo() {
 }
 
 async function call<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${API}${path}`, {
+  const { lovableKey, resendKey } = gatewayAuth();
+  const res = await fetch(`${GATEWAY}${path}`, {
     ...init,
     headers: {
-      Authorization: `Bearer ${apiKey()}`,
+      Authorization: `Bearer ${lovableKey}`,
+      "X-Connection-Api-Key": resendKey,
       "Content-Type": "application/json",
       ...(init?.headers ?? {}),
     },
