@@ -13,7 +13,7 @@ export function Logo({ className = "" }: { className?: string }) {
       <img
         src={logoWordmarkAsset.url}
         alt="deposit — Arizona"
-        className="h-8 w-auto"
+        className="h-8 w-auto grayscale contrast-125"
         loading="eager"
       />
     </Link>
@@ -25,7 +25,7 @@ export function FooterLogo({ className = "" }: { className?: string }) {
     <img
       src={logoSquareAsset.url}
       alt="deposit — Arizona logo"
-      className={`w-36 ${className}`}
+      className={`w-36 grayscale contrast-125 ${className}`}
       loading="lazy"
     />
   );

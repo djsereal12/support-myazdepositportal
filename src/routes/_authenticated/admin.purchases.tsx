@@ -175,7 +175,7 @@ function AdminPurchasesPage() {
                       {p.user_id ? (
                         <>linked account{p.phone ? ` · ${p.phone}` : ""}</>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-amber-600">
+                        <span className="inline-flex items-center gap-1 text-muted-foreground">
                           <AlertTriangle className="h-3.5 w-3.5" /> not linked to an account
                         </span>
                       )}

@@ -190,7 +190,7 @@ function LandlordAccess() {
 const STATUS_STYLE: Record<string, string> = {
   pending: "bg-muted text-muted-foreground",
   accepted: "bg-lavender-soft text-lavender-deep",
-  disputed: "bg-amber-100 text-amber-800",
+  disputed: "bg-secondary text-foreground",
   expired: "bg-muted text-muted-foreground",
 };
 
