@@ -32,7 +32,7 @@ export const Route = createFileRoute("/.lovable/oauth/consent")({
   component: Consent,
   errorComponent: ({ error }) => (
     <main className="mx-auto flex min-h-screen max-w-md items-center px-6">
-      <p className="text-sm text-[#111111]/70">
+      <p className="text-sm text-muted-foreground">
         Could not load this authorization request: {String((error as Error)?.message ?? error)}
       </p>
     </main>
@@ -68,16 +68,16 @@ function Consent() {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-md items-center px-6">
-      <div className="w-full rounded-2xl border border-[#EAE9E5] bg-white/80 p-8 shadow-sm backdrop-blur">
-        <h1 className="font-serif text-2xl tracking-[-0.02em] text-[#111111]">
+      <div className="glass-panel w-full p-8">
+        <h1 className="font-serif text-2xl tracking-[-0.02em] text-foreground">
           Connect {clientName} to deposit
         </h1>
-        <p className="mt-3 text-sm text-[#111111]/70">
+        <p className="mt-3 text-sm text-muted-foreground">
           {clientName} will be able to read and manage your deposit properties and inspection
           reports as you.
         </p>
         {error && (
-          <p role="alert" className="mt-4 text-sm text-red-600">
+          <p role="alert" className="mt-4 text-sm text-destructive">
             {error}
           </p>
         )}
@@ -85,14 +85,14 @@ function Consent() {
           <button
             disabled={busy}
             onClick={() => decide(true)}
-            className="flex-1 rounded-xl bg-[#111111] px-4 py-2.5 text-sm text-white disabled:opacity-50"
+            className="flex-1 rounded-xl bg-primary px-4 py-2.5 text-sm text-primary-foreground disabled:opacity-50"
           >
             Approve
           </button>
           <button
             disabled={busy}
             onClick={() => decide(false)}
-            className="flex-1 rounded-xl border border-[#EAE9E5] bg-white px-4 py-2.5 text-sm text-[#111111] disabled:opacity-50"
+            className="flex-1 rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground disabled:opacity-50"
           >
             Deny
           </button>
