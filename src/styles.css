@@ -118,9 +118,9 @@
   );
   --gradient-pink: linear-gradient(
     135deg,
-    oklch(0.2 0 0) 0%,
-    oklch(0.115 0 0) 48%,
-    oklch(0.17 0 0) 100%
+    oklch(0.14 0 0) 0%,
+    oklch(0.14 0 0) 50%,
+    oklch(0.14 0 0) 100%
   );
   --gradient-holo: linear-gradient(
     115deg,
@@ -316,11 +316,10 @@
   border-radius: 9999px;
   color: oklch(1 0 0);
   background-image: var(--gradient-pink);
-  border: 1px solid oklch(1 0 0 / 0.35);
+  border: 1px solid oklch(0.08 0 0);
   box-shadow:
     0 1px 2px oklch(0.18 0 0 / 0.08),
-    0 12px 32px -12px color-mix(in oklab, var(--lavender) 70%, transparent),
-    inset 0 1px 0 oklch(1 0 0 / 0.35);
+    0 12px 32px -12px oklch(0.1 0 0 / 0.5);
   transition:
     transform 0.15s ease,
     box-shadow 0.25s ease,
@@ -328,11 +327,10 @@
 
   &:hover {
     transform: translateY(-1px);
-    filter: brightness(1.08);
+    filter: brightness(1.18);
     box-shadow:
       0 2px 4px oklch(0.18 0 0 / 0.08),
-      0 20px 44px -14px color-mix(in oklab, var(--lavender) 85%, transparent),
-      inset 0 1px 0 oklch(1 0 0 / 0.45);
+      0 20px 44px -14px oklch(0.1 0 0 / 0.58);
   }
 
   &:active {
