@@ -6,6 +6,7 @@ import { template as landlordInviteTemplate } from "./landlord-invite";
 import { template as demandLetterTemplate } from "./demand-letter";
 import { template as nudgeFirstScanTemplate } from "./nudge-first-scan";
 import { template as moveOutDeadlineTemplate } from "./moveout-deadline";
+import { template as depositClaimTemplate } from "./deposit-claim";
 
 export interface TemplateEntry {
   component: ComponentType<any>;
@@ -32,4 +33,5 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   "demand-letter": demandLetterTemplate,
   "nudge-first-scan": nudgeFirstScanTemplate,
   "moveout-deadline": moveOutDeadlineTemplate,
+  "deposit-claim": depositClaimTemplate,
 };
