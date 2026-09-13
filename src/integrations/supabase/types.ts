@@ -77,6 +77,69 @@ export type Database = {
           },
         ]
       }
+      deposit_claims: {
+        Row: {
+          amount_withheld: number | null
+          city: string | null
+          created_at: string
+          deposit_amount: number | null
+          details: string | null
+          dispute_reason: string
+          email: string
+          full_name: string
+          id: string
+          landlord_email: string | null
+          landlord_name: string | null
+          move_out_date: string | null
+          phone: string | null
+          rental_address: string
+          source: string
+          status: string
+          unit: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount_withheld?: number | null
+          city?: string | null
+          created_at?: string
+          deposit_amount?: number | null
+          details?: string | null
+          dispute_reason: string
+          email: string
+          full_name: string
+          id?: string
+          landlord_email?: string | null
+          landlord_name?: string | null
+          move_out_date?: string | null
+          phone?: string | null
+          rental_address: string
+          source?: string
+          status?: string
+          unit?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount_withheld?: number | null
+          city?: string | null
+          created_at?: string
+          deposit_amount?: number | null
+          details?: string | null
+          dispute_reason?: string
+          email?: string
+          full_name?: string
+          id?: string
+          landlord_email?: string | null
+          landlord_name?: string | null
+          move_out_date?: string | null
+          phone?: string | null
+          rental_address?: string
+          source?: string
+          status?: string
+          unit?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       disputes: {
         Row: {
           amount_claimed: number

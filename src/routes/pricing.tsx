@@ -6,6 +6,7 @@ import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 import { PRICES } from "@/lib/stripe";
 import { supabase } from "@/integrations/supabase/client";
+import { DepositClaimForm } from "@/components/deposit-claim-form";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({
@@ -238,6 +239,8 @@ function Pricing() {
           ))}
         </div>
       </section>
+
+      <DepositClaimForm source="pricing" />
     </Page>
   );
 }

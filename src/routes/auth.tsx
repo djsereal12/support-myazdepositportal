@@ -6,6 +6,7 @@ import { Home, ShieldCheck, KeyRound } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Logo } from "@/components/site-shell";
+import { DepositClaimForm } from "@/components/deposit-claim-form";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>): { next?: string } => {
@@ -282,6 +283,8 @@ function AuthPage() {
             </button>
           </p>
         </div>
+        <DepositClaimForm source="auth" />
+
         <p className="mt-6 text-center text-xs text-muted-foreground">
           <Link to="/" className="underline underline-offset-4">
             Back to home
