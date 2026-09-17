@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AskRouteImport } from './routes/ask'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CalculatorRouteImport } from './routes/calculator'
+import { Route as DemandLetterRouteImport } from './routes/demand-letter'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as LandlordAccessRouteImport } from './routes/landlord-access'
 import { Route as LawRouteImport } from './routes/law'
@@ -71,6 +72,11 @@ const AuthRoute = AuthRouteImport.update({
 const CalculatorRoute = CalculatorRouteImport.update({
   id: '/calculator',
   path: '/calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemandLetterRoute = DemandLetterRouteImport.update({
+  id: '/demand-letter',
+  path: '/demand-letter',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -261,6 +267,7 @@ export interface FileRoutesByFullPath {
   '/ask': typeof AskRoute
   '/auth': typeof AuthRouteWithChildren
   '/calculator': typeof CalculatorRoute
+  '/demand-letter': typeof DemandLetterRoute
   '/faq': typeof FaqRoute
   '/landlord-access': typeof LandlordAccessRoute
   '/law': typeof LawRoute
@@ -301,6 +308,7 @@ export interface FileRoutesByTo {
   '/ask': typeof AskRoute
   '/auth': typeof AuthRouteWithChildren
   '/calculator': typeof CalculatorRoute
+  '/demand-letter': typeof DemandLetterRoute
   '/faq': typeof FaqRoute
   '/landlord-access': typeof LandlordAccessRoute
   '/law': typeof LawRoute
@@ -343,6 +351,7 @@ export interface FileRoutesById {
   '/ask': typeof AskRoute
   '/auth': typeof AuthRouteWithChildren
   '/calculator': typeof CalculatorRoute
+  '/demand-letter': typeof DemandLetterRoute
   '/faq': typeof FaqRoute
   '/landlord-access': typeof LandlordAccessRoute
   '/law': typeof LawRoute
@@ -385,6 +394,7 @@ export interface FileRouteTypes {
     | '/ask'
     | '/auth'
     | '/calculator'
+    | '/demand-letter'
     | '/faq'
     | '/landlord-access'
     | '/law'
@@ -425,6 +435,7 @@ export interface FileRouteTypes {
     | '/ask'
     | '/auth'
     | '/calculator'
+    | '/demand-letter'
     | '/faq'
     | '/landlord-access'
     | '/law'
@@ -466,6 +477,7 @@ export interface FileRouteTypes {
     | '/ask'
     | '/auth'
     | '/calculator'
+    | '/demand-letter'
     | '/faq'
     | '/landlord-access'
     | '/law'
@@ -508,6 +520,7 @@ export interface RootRouteChildren {
   AskRoute: typeof AskRoute
   AuthRoute: typeof AuthRouteWithChildren
   CalculatorRoute: typeof CalculatorRoute
+  DemandLetterRoute: typeof DemandLetterRoute
   FaqRoute: typeof FaqRoute
   LandlordAccessRoute: typeof LandlordAccessRoute
   LawRoute: typeof LawRoute
@@ -564,6 +577,13 @@ declare module '@tanstack/react-router' {
       path: '/calculator'
       fullPath: '/calculator'
       preLoaderRoute: typeof CalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demand-letter': {
+      id: '/demand-letter'
+      path: '/demand-letter'
+      fullPath: '/demand-letter'
+      preLoaderRoute: typeof DemandLetterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -881,6 +901,7 @@ const rootRouteChildren: RootRouteChildren = {
   AskRoute: AskRoute,
   AuthRoute: AuthRouteWithChildren,
   CalculatorRoute: CalculatorRoute,
+  DemandLetterRoute: DemandLetterRoute,
   FaqRoute: FaqRoute,
   LandlordAccessRoute: LandlordAccessRoute,
   LawRoute: LawRoute,
