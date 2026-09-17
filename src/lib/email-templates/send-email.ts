@@ -1,44 +1,33 @@
 import * as React from "react";
 import { render } from "@react-email/render";
-import { EmailAPIError, sendLovableEmail } from "@lovable.dev/email-js";
 import { TEMPLATES } from "./registry";
 
-// Server-only: reads LOVABLE_API_KEY. Never import from client components.
+// Server-only: reads LOVABLE_API_KEY and RESEND_API_KEY. Never import from client components.
 
-// Configuration baked in at scaffold time
 const SITE_NAME = "Deposit";
-// SENDER_DOMAIN is the verified sender subdomain FQDN (e.g., "notify.example.com").
-// It MUST match the subdomain delegated to Lovable's nameservers. NEVER use the root domain.
-const SENDER_DOMAIN = "notify.myazdepositportal.live";
-// FROM_DOMAIN is the domain shown in the From: header (e.g., "example.com").
-// Can be the root domain when display_from_root is enabled — this is cosmetic only.
-const FROM_DOMAIN = "myazdepositportal.live";
+const FROM_EMAIL = "Deposit <support@myazdepositportal.live>";
+const RESEND_GATEWAY = "https://connector-gateway.lovable.dev/resend";
 
 export type SendTemplateEmailResult =
   { sent: true } | { sent: false; reason: "recipient_suppressed" };
 
 export interface SendTemplateEmailOptions {
-  templateData?: Record<string, any>;
+  templateData?: Record<string, unknown>;
   /** Dedupes retries of the same logical send; defaults to a random UUID (no dedupe). */
   idempotencyKey?: string;
   replyTo?: string;
 }
 
-/**
- * Renders a registered template and sends it through Lovable's managed email
- * API. Suppression, retries, and rate limits are enforced by Lovable
- * server-side. A suppressed recipient is an expected outcome
- * ({ sent: false }); any other failure throws — EmailAPIError exposes
- * .code and .status for branching.
- */
+/** Renders a registered template and sends it through the configured Resend connection. */
 export async function sendTemplateEmail(
   templateName: string,
   to: string,
   options: SendTemplateEmailOptions = {},
 ): Promise<SendTemplateEmailResult> {
-  const apiKey = process.env["LOVABLE_API_KEY"];
-  if (!apiKey) {
-    throw new Error("LOVABLE_API_KEY is not configured");
+  const lovableKey = process.env["LOVABLE_API_KEY"];
+  const resendKey = process.env["RESEND_API_KEY"];
+  if (!lovableKey || !resendKey) {
+    throw new Error("Transactional email is not configured (missing Resend connection).");
   }
 
   const template = TEMPLATES[templateName];
@@ -62,27 +51,30 @@ export async function sendTemplateEmail(
   const subject =
     typeof template.subject === "function" ? template.subject(templateData) : template.subject;
 
-  try {
-    await sendLovableEmail(
-      {
-        to: recipient,
-        from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
-        sender_domain: SENDER_DOMAIN,
-        subject,
-        html,
-        text,
-        purpose: "transactional",
-        label: templateName,
-        idempotency_key: options.idempotencyKey || crypto.randomUUID(),
-        ...(options.replyTo ? { reply_to: options.replyTo } : {}),
-      },
-      { apiKey, sendUrl: process.env["LOVABLE_SEND_URL"] },
-    );
-  } catch (error) {
-    if (error instanceof EmailAPIError && error.code === "recipient_suppressed") {
+  const response = await fetch(`${RESEND_GATEWAY}/emails`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${lovableKey}`,
+      "X-Connection-Api-Key": resendKey,
+      "Content-Type": "application/json",
+      "Idempotency-Key": options.idempotencyKey || crypto.randomUUID(),
+    },
+    body: JSON.stringify({
+      to: [recipient],
+      from: FROM_EMAIL,
+      subject,
+      html,
+      text,
+      ...(options.replyTo ? { reply_to: options.replyTo } : {}),
+    }),
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    if (response.status === 422 && body.includes("recipient_suppressed")) {
       return { sent: false, reason: "recipient_suppressed" };
     }
-    throw error;
+    throw new Error(`Resend email request failed [${response.status}]: ${body}`);
   }
 
   return { sent: true };
