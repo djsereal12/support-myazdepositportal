@@ -58,6 +58,19 @@ function Law() {
           </article>
         ))}
       </div>
+      <div className="glass-panel mt-8 p-8">
+        <h2 className="text-xl font-semibold">Deposit already late?</h2>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          Read our guide to writing an Arizona security deposit demand letter, including a template
+          you can adapt today.
+        </p>
+        <Link
+          to="/demand-letter"
+          className="glass-button mt-5 inline-flex rounded-xl px-5 py-2.5 text-sm font-medium"
+        >
+          Demand letter guide
+        </Link>
+      </div>
       <p className="mt-8 text-xs text-muted-foreground">
         deposit is documentation software and does not provide legal advice. Consult a licensed
         Arizona attorney for your specific situation.
