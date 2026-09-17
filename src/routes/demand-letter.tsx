@@ -30,7 +30,7 @@ export const Route = createFileRoute("/demand-letter")({
       },
     ],
   }),
-  component: DemandLetterGuide;
+  component: DemandLetterGuide,
 });
 
 const steps = [
