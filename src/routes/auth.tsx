@@ -134,18 +134,21 @@ function AuthPage() {
     }
   }
 
-  async function google() {
+  async function oauth(provider: "google" | "apple") {
     try {
       sessionStorage.setItem("deposit:after-auth", next ?? roleDetails[role].home);
       sessionStorage.setItem("deposit:pending-role", role);
     } catch {
       /* ignore */
     }
-    const result = await lovable.auth.signInWithOAuth("google", {
+    const result = await lovable.auth.signInWithOAuth(provider, {
       redirect_uri: `${window.location.origin}/auth/callback`,
     });
     if (result.error) {
-      toast.error(result.error.message || "Google sign-in failed");
+      toast.error(
+        result.error.message ||
+          `${provider === "google" ? "Google" : "Apple"} sign-in failed`,
+      );
       return;
     }
     if (result.redirected) return;
